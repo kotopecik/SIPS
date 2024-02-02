@@ -1,26 +1,41 @@
-import React from "react";
+import React, {lazy, Suspense} from "react";
 import style from "@/components/main/mainStyle.module.scss"
 import {Route, Routes} from "react-router";
 import Map from "@/components/Map/Map";
-import Header from "@/components/Header/Header";
-import Authorization from "@/components/Pages/Authorization";
-import Registration from "../Pages/Registration";
-import {RestoreAccess} from "@/components/Pages/RestoreAccess";
+const Header = lazy(() => import("@/components/Header/Header"))
+const Authorization = lazy(() => import("@/components/Pages/Authorization"))
+const Registration = lazy(() => import("@/components/Pages/Registration"))
+const RestoreAccess = lazy(() => import("@/components/Pages/RestoreAccess"))
 
 function Main (){
     return (<>
 
         <Routes>
             <Route path="/" element={
-                <>
+                <Suspense fallback={<p>Loading...</p>}>
                     <Header />
                     <Map />
-                </>
+                </Suspense>
 
             }/>
-            <Route path="/Authorization" element={<Authorization />}></Route>
-            <Route path="/registration" element={<Registration />}> </Route>
-            <Route path="/restoreaccess" element={<RestoreAccess />}> </Route>
+            <Route path="/Authorization" element={
+                    <Suspense fallback={<p>Loading...</p>}>
+                        <Authorization />
+                    </Suspense>
+                }
+            />
+            <Route path="/registration" element={
+                    <Suspense fallback={<p>Loading...</p>}>
+                        <Registration />
+                    </Suspense>
+                }
+            />
+            <Route path="/restoreaccess" element={
+                    <Suspense fallback={<p>Loading...</p>}>
+                        <RestoreAccess />
+                    </Suspense>
+                }
+            />
         </Routes>
 
     </>)

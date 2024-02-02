@@ -3,7 +3,7 @@ import {BackArrow} from "@/components/BackArrow/BackArrow";
 import {Link} from "react-router-dom";
 
 
-export const RestoreAccess = () => {
+const RestoreAccess = () => {
     return(
         <div className={styles.root}>
             <BackArrow />
@@ -22,3 +22,5 @@ export const RestoreAccess = () => {
         </div>
     )
 }
+
+export default RestoreAccess
