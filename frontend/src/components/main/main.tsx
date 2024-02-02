@@ -1,28 +1,27 @@
 import React from "react";
 import style from "@/components/main/mainStyle.module.scss"
+import {Route, Routes} from "react-router";
+import Map from "@/components/Map/Map";
+import Header from "@/components/Header/Header";
+import Authorization from "@/components/Pages/Authorization";
+import Registration from "../Pages/Registration";
+import {RestoreAccess} from "@/components/Pages/RestoreAccess";
 
 function Main (){
     return (<>
-        <div className={style.main}>
-            <div className={style.content}>
-                <p>
 
-                    <span>
-                        <h5>this is webpack5 config created for development on:</h5>
-                <h6>
-                    <ul>
-                        <li>typescript</li>
-                        <li>css, scss</li>
-                        <li>scss modules</li>
-                        <li>redux</li>
-                    </ul>
-                </h6>
-                    </span>
-                </p>
+        <Routes>
+            <Route path="/" element={
+                <>
+                    <Header />
+                    <Map />
+                </>
 
-            </div>
-
-        </div>
+            }/>
+            <Route path="/Authorization" element={<Authorization />}></Route>
+            <Route path="/registration" element={<Registration />}> </Route>
+            <Route path="/restoreaccess" element={<RestoreAccess />}> </Route>
+        </Routes>
 
     </>)
 }

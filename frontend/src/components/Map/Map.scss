@@ -1,0 +1,17 @@
+body,#root,.leaflet-container{
+  height: 100vh;
+}
+.txt{
+  position: relative;
+  z-index: 1000;
+  background-color: rgb(249, 247, 247);
+  width: 50px;
+  margin-left: 1480px;
+  margin-top: 447px;
+}
+.txt p{
+  color:rgb(111, 111, 250);
+}
+.leaflet-bottom{
+  visibility: hidden;
+}
