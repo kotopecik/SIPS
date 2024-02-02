@@ -1,6 +1,4 @@
-// import "leaflet/dist/leaflet.css";
 import './Map.scss'
-import './leaflet.scss';
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import {Icon, LatLngExpression} from "leaflet";
 
