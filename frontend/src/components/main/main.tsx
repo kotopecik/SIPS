@@ -1,11 +1,12 @@
 import React, {lazy, Suspense} from "react";
 import style from "@/components/main/mainStyle.module.scss"
 import {Route, Routes} from "react-router";
-import Map from "@/components/Map/Map";
+//import Map from "@/components/Map/Map";
 const Header = lazy(() => import("@/components/Header/Header"))
 const Authorization = lazy(() => import("@/components/Pages/Authorization"))
 const Registration = lazy(() => import("@/components/Pages/Registration"))
 const RestoreAccess = lazy(() => import("@/components/Pages/RestoreAccess"))
+const Map = lazy(() => import("@/components/Map/Map"))
 
 function Main (){
     return (<>
@@ -14,7 +15,7 @@ function Main (){
             <Route path="/" element={
                 <Suspense fallback={<p>Loading...</p>}>
                     <Header />
-                    <Map />
+                    <Suspense fallback={<p>Loading...</p>}><Map /></Suspense>
                 </Suspense>
 
             }/>
