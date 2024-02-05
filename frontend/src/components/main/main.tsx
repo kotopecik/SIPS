@@ -1,6 +1,7 @@
 import React, {lazy, Suspense} from "react";
 import style from "@/components/main/mainStyle.module.scss"
 import {Route, Routes} from "react-router";
+import {Loading} from "@/components/main/Loading/Loading";
 //import Map from "@/components/Map/Map";
 const Header = lazy(() => import("@/components/Header/Header"))
 const Authorization = lazy(() => import("@/components/Pages/Authorization"))
@@ -13,26 +14,26 @@ function Main (){
 
         <Routes>
             <Route path="/" element={
-                <Suspense fallback={<p>Loading...</p>}>
-                    <Header />
-                    <Suspense fallback={<p>Loading...</p>}><Map /></Suspense>
+                <Suspense fallback={<Loading/>}>
+                    <Suspense fallback={<Loading/>}><Header /></Suspense>
+                    <Suspense fallback={<Loading/>}><Map /></Suspense>
                 </Suspense>
 
             }/>
             <Route path="/Authorization" element={
-                    <Suspense fallback={<p>Loading...</p>}>
+                    <Suspense fallback={<Loading/>}>
                         <Authorization />
                     </Suspense>
                 }
             />
             <Route path="/registration" element={
-                    <Suspense fallback={<p>Loading...</p>}>
+                    <Suspense fallback={<Loading/>}>
                         <Registration />
                     </Suspense>
                 }
             />
             <Route path="/restoreaccess" element={
-                    <Suspense fallback={<p>Loading...</p>}>
+                    <Suspense fallback={<Loading/>}>
                         <RestoreAccess />
                     </Suspense>
                 }
