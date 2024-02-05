@@ -8,7 +8,7 @@ const RestoreAccess = () => {
         <div className={styles.root}>
             <BackArrow />
             <form className={styles.wrapper}>
-                <h1>Восстановление Доступа</h1>
+                <h1>Восстановление доступа</h1>
                 <div className={styles.wrapper__input}>
                     <input placeholder="Email" />
                 </div>

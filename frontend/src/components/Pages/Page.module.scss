@@ -42,6 +42,9 @@
       &:active {
         border: 2px solid rgba(0, 98, 255, 0.2);
       }
+      &::placeholder{
+        color: #000000;
+      }
     }
   }
   &__remember {

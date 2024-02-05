@@ -1,8 +1,10 @@
 @import url("~leaflet/dist/leaflet.css");
-body,#root,.leaflet-container{
+body,
+#root,
+.leaflet-container {
   height: 100vh;
 }
-.txt{
+.txt {
   position: relative;
   z-index: 1000;
   background-color: rgb(249, 247, 247);
@@ -10,9 +12,12 @@ body,#root,.leaflet-container{
   margin-left: 1480px;
   margin-top: 447px;
 }
-.txt p{
-  color:rgb(111, 111, 250);
+.txt p {
+  color: rgb(111, 111, 250);
 }
-.leaflet-bottom{
+.leaflet-bottom {
   visibility: hidden;
+}
+.leaflet-top {
+  top: 65px;
 }

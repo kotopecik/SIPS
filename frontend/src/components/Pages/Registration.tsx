@@ -1,8 +1,6 @@
 import { Link } from "react-router-dom";
 import styles from "./Page.module.scss";
-import {BackArrow} from "@/components/BackArrow/BackArrow";
-
-
+import { BackArrow } from "@/components/BackArrow/BackArrow";
 
 const Registration = () => {
   return (
@@ -13,7 +11,9 @@ const Registration = () => {
         <div className={styles.wrapper__input}>
           <input placeholder="Имя" />
         </div>
-
+        <div className={styles.wrapper__input}>
+          <input placeholder="Фамилия" />
+        </div>
         <div className={styles.wrapper__input}>
           <input type="text" placeholder="Отчество" />
         </div>
