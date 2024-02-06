@@ -6,8 +6,8 @@ import {LayersPanel} from "@/components/Map/LayersPanel/LayersPanel";
 const position:LatLngExpression = [54.84643545576913, 83.05183410644533];
 
 const customIcon = new Icon({
-  iconUrl: require("../../assets/img/icon.png"),
-  iconSize: [38, 38]
+  iconUrl: require("../../assets/img/marker-icon.png"),
+  iconSize: [60, 60]
 });
 
 const Map = () => {
