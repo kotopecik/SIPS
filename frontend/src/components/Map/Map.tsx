@@ -12,14 +12,12 @@ const customIcon = new Icon({
 
 const Map = () => {
   return (
-    <>
       <MapContainer center={position} zoom={13} scrollWheelZoom={true}>
         <LayersPanel/>
         <Marker position={position} icon={customIcon}>
           <Popup>Higher College of Informatics</Popup>
         </Marker>
       </MapContainer>
-    </>
   );
 }
 export default Map
