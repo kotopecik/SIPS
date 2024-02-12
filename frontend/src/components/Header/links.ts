@@ -9,21 +9,16 @@ export const links: ILink[] = [
     {
         id: 1,
         to: "/about",
-        title: "О нас",
+        title: "Главная",
     },
     {
         id: 2,
         to: "/management",
-        title: "Руководство",
+        title: "Руководство пользователя",
     },
     {
         id: 3,
         to: "/authorization",
-        title: "Авторизация",
-    },
-    {
-        id: 4,
-        to: "registration",
-        title: "Регистрация",
+        title: "Вход",
     },
 ]
