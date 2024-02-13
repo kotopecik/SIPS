@@ -1,13 +1,10 @@
-import {ILayer} from "@/components/Map/LayersPanel/ILayer";
+import {ILayer} from "@/interfaces/ILayer";
+
 
 export const layers:ILayer[] = [
     {
         name: 'Standart map',
         url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-    },
-    {
-        name: 'Transport map',
-        url: 'https://tileserver.memomaps.de/tilegen/{z}/{x}/{y}.png',
     },
     {
         name: 'ESRI map',

@@ -16,7 +16,7 @@
     align-items: center;
     justify-content: center;
     top: 9px;
-    right: 63px;
+    right: 9px;
     border-radius: 10px;
     border: 2px solid rgba(0, 98, 255, 0.3);
     &__icon{
@@ -31,11 +31,12 @@
     }
 }
 .sett{
+
     position: fixed;
     top: 70px;
     right: 9px;
-    max-height: 260px;
-    width: 450px;
+    //max-height: 260px;
+    //width: 450px;
     background: white;
     z-index: 1000;
     border-radius: 10px;
@@ -46,18 +47,18 @@
     }
 }
 .sort{
-    position: fixed;
-    top: 325px;
-    right: 9px;
+    //position: fixed;
+    //top: 325px;
+    //right: 9px;
     max-height: 70px;
-    width: 450px;
+    //width: 450px;
     background: white;
-    z-index: 1000;
+    //z-index: 1000;
     border-radius: 10px;
     border: 2px solid rgba(0, 98, 255, 0.3);
-    justify-content: center;
+    //justify-content: center;
     align-items: center;
-    display: none;
+    //display: none;
     &.active{
         display: flex;
     }

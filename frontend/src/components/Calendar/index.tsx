@@ -5,6 +5,7 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { Box } from "@mui/system";
 import { FaCalendarAlt } from "react-icons/fa";
 import styles from "./Calendar.module.scss";
+
 export default function Calendar() {
   const [isOpen, setOpen] = useState(false);
   return (
