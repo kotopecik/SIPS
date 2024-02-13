@@ -7,6 +7,7 @@ const Header = lazy(() => import("@/components/Header"))
 const Authorization = lazy(() => import("@/components/Pages/Authorization"))
 const Registration = lazy(() => import("@/components/Pages/Registration"))
 const Calendar=lazy(()=>import("@/components/Calendar"))
+const Settings=lazy(()=>import("@/components/Settings"))
 const RestoreAccess = lazy(() => import("@/components/Pages/RestoreAccess"))
 const Map = lazy(() => import("@/components/Map/Map"))
 
@@ -18,6 +19,7 @@ function Main (){
                 <Suspense fallback={<Loading/>}>
                     <Suspense fallback={<Loading/>}><Header /></Suspense>
                     <Suspense fallback={<Loading/>}><Calendar /></Suspense>
+                    <Suspense fallback={<Loading/>}><Settings /></Suspense>
                     <Suspense fallback={<Loading/>}><Map /></Suspense>
                 </Suspense>
 
