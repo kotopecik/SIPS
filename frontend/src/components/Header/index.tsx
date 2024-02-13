@@ -33,29 +33,21 @@ const Header = () => {
         className={styles.icons__open}
         onClick={closeMainMenu}
       />
-      {/* <ul className={`${styles.navbar} ${isOpen ? styles.active : ""}`}>
-        {links.map((link) => (
-          <li key={link.id} className={styles.navbar__item}>
-            <Link to={link.to}>{link.title}</Link>
-          </li>
-        ))}
-      </ul> */}
-      <ul className={`${styles.navbar__menu} ${isOpenMenu ? styles.active : ""}`}>
-        <li className={styles.navbar__item}>
-          <Link to="!#">Главная</Link>
-        </li>
-        <li className={styles.navbar__item}>
-          <Link to="!#">Руководство пользователя</Link>
-        </li>
-      </ul>
-      <ul className={`${styles.navbar__profile} ${isOpenProfile ? styles.active : ""}`}>
-        <li className={styles.navbar__item}>
-          <Link to="!#">Профиль</Link>
-        </li>
-        <li className={styles.navbar__item}>
-          <Link to="/authorization">Вход</Link>
-        </li>
-      </ul>
+        <ul className={`${styles.navbar__menu} ${isOpenMenu ? styles.active : ""}`}>
+            {links.mainLinks.map((link) => (
+                <li key={link.id} className={styles.navbar__item}>
+                    <Link to={link.to}>{link.title}</Link>
+                </li>
+            ))}
+        </ul>
+        <ul className={`${styles.navbar__profile} ${isOpenProfile ? styles.active : ""}`}>
+            {links.profileLinks.map((link) => (
+                <li key={link.id} className={styles.navbar__item}>
+                    <Link to={link.to}>{link.title}</Link>
+                </li>
+            ))}
+        </ul>
+
     </header>
   );
 };

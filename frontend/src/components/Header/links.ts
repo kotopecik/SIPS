@@ -5,10 +5,12 @@ interface ILink{
 }
 
 
-export const links: ILink[] = [
+
+
+const profileLinks: ILink[] = [
     {
         id: 1,
-        to: "/about",
+        to: "/",
         title: "Главная",
     },
     {
@@ -16,9 +18,20 @@ export const links: ILink[] = [
         to: "/management",
         title: "Руководство пользователя",
     },
+]
+
+const mainLinks: ILink[] = [
     {
-        id: 3,
+        id: 1,
+        to: "/about",
+        title: "Профиль",
+    },
+    {
+        id: 2,
         to: "/authorization",
         title: "Вход",
     },
 ]
+
+
+export const links = {mainLinks, profileLinks}
