@@ -24,9 +24,10 @@ const LayerSwitch = () => {
 
             <RadioGroup
                 aria-labelledby="demo-radio-buttons-group-label"
-                defaultValue="ESRI Map"
+                defaultValue={layer}
                 name="radio-buttons-group"
                 onChange={handleChange}
+
             >
                 {layers.map((layer, index) => (
                     <FormControlLabel key = {index} value={layer.url} control={<Radio />} label={layer.name} />

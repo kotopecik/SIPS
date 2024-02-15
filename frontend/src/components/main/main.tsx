@@ -1,4 +1,4 @@
-import React, {lazy, Suspense} from "react";
+import React, {lazy, Suspense, useState} from "react";
 import style from "@/components/main/mainStyle.module.scss"
 import {Route, Routes} from "react-router";
 import {Loading} from "@/components/main/Loading/Loading";
@@ -12,6 +12,7 @@ const RestoreAccess = lazy(() => import("@/components/Pages/RestoreAccess"))
 const Map = lazy(() => import("@/components/Map/Map"))
 
 function Main (){
+    const [polygons, setPolygons] = useState([])
     return (<>
 
         <Routes>
