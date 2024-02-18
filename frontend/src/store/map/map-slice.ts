@@ -22,14 +22,11 @@ const mapSlice = createSlice({
     },
     extraReducers:(builder) => {
         builder.addCase(fetchRegions.fulfilled, (state, action) => {
-            console.log("ful")
             state.regions = action.payload
         })
         .addCase(fetchRegions.pending,() => {
-            console.log("pending")
         })
         .addCase(fetchRegions.rejected,() => {
-             console.log("rejected")
         })
     }
 })
