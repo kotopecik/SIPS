@@ -6,11 +6,11 @@ export const borders: IBorder[] = [
         url: `https://raw.githubusercontent.com/DeadEndjke/ru-regions-json/main/regions.json`
     },
     {
-        name: "Заповедники",
+        name: "Заповедники(не нажимать)",
         url: ``
     },
     {
-        name: "Населенные пункты",
+        name: "Населенные пункты(не нажимать)",
         url: ``
     },
 ]
