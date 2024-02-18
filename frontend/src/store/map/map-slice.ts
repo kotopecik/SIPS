@@ -5,7 +5,7 @@ import {fetchRegions} from "@/store/map/map-actions";
 
 const initialState = {
     layer: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-    regions: null
+    regions: []
 }as MapState
 
 
@@ -16,6 +16,9 @@ const mapSlice = createSlice({
         setLayer(state, action){
             state.layer = action.payload
         },
+        refreshRegions(state){
+            state.regions = []
+        }
     },
     extraReducers:(builder) => {
         builder.addCase(fetchRegions.fulfilled, (state, action) => {
@@ -31,5 +34,5 @@ const mapSlice = createSlice({
     }
 })
 
-export const {setLayer} = mapSlice.actions
+export const {setLayer, refreshRegions} = mapSlice.actions
 export default mapSlice.reducer

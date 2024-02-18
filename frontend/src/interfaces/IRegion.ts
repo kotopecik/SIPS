@@ -1,6 +1,6 @@
-import {IPolygons} from "@/interfaces/IPolygons";
+import {LatLngExpression} from "leaflet";
 
 export interface IRegion{
     name: string,
-    polygons: IPolygons[]
+    polygons: LatLngExpression[]
 }

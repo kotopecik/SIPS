@@ -1,10 +1,10 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
-import axios from "axios";
+import MapService from "@/service/map-service";
 
 export const fetchRegions = createAsyncThunk('map/fetchRegions',
     async (url:string) => {
         try {
-            const response = await axios.get(url, {withCredentials: true})
+            const response = await MapService.getRegions(url)
             console.log(response.data)
             return response.data
         }catch (err){

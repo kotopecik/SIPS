@@ -1,7 +1,11 @@
 import './Map.scss'
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import {MapContainer, TileLayer, Marker, Popup, Polygon} from "react-leaflet";
 import {Icon, LatLngExpression} from "leaflet";
 import {useAppSelector} from "@/hooks/hook";
+import {IRegion} from "@/interfaces/IRegion";
+import {ILayer} from "@/interfaces/ILayer";
+import {useEffect, useState} from "react";
+import {ICoords} from "@/interfaces/ICoords";
 
 
 const position:LatLngExpression = [54.84643545576913, 83.05183410644533];
@@ -15,7 +19,13 @@ const customIcon = new Icon({
 
 
 const Map = () => {
-  const layer = useAppSelector(state => state.map).layer
+
+  const purpleOptions = { color: 'red' }
+  const layer:string = useAppSelector(state => state.map).layer
+  const regions:IRegion[] = useAppSelector(state => state.map).regions
+
+
+
 
   return (
       <MapContainer center={position} zoom={13} scrollWheelZoom={true}>
@@ -25,6 +35,13 @@ const Map = () => {
         <Marker position={position} icon={customIcon}>
           <Popup>Higher College of Informatics</Popup>
         </Marker>
+          {regions.map((region, index) => (
+              <Polygon key = {index} pathOptions={purpleOptions} positions={region.polygons}><Popup>{region.name}</Popup></Polygon>
+          ))}
+
+
+
+
       </MapContainer>
   );
 }
