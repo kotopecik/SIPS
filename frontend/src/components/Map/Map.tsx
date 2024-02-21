@@ -7,6 +7,7 @@ import Coords from "@/components/Map/Coords/Coords";
 import Settings from "@/components/Settings";
 import Calendar from "@/components/Calendar";
 
+
 const position:LatLngExpression = [54.84643545576913, 83.05183410644533];
 
 const customIcon = new Icon({

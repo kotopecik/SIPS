@@ -1,9 +1,10 @@
 import React, {useState} from 'react';
 import s from './Coords.module.scss'
 import {useMapEvents} from "react-leaflet";
+import {LatLngLiteral} from "leaflet";
 
 const Coords = () => {
-    const [mousePos, setMousePos] = useState({ lat: 0, lng: 0 });
+    const [mousePos, setMousePos] = useState<LatLngLiteral>({ lat: 0, lng: 0 });
 
     const _coords = useMapEvents({
         mousemove: (event) => {
