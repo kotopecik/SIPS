@@ -1,26 +1,19 @@
-import React, {lazy, Suspense, useState} from "react";
-import style from "@/components/main/mainStyle.module.scss"
+import React, {lazy, Suspense} from "react";
 import {Route, Routes} from "react-router";
 import {Loading} from "@/components/main/Loading/Loading";
-//import Map from "@/components/Map/Map";
 const Header = lazy(() => import("@/components/Header"))
 const Authorization = lazy(() => import("@/components/Pages/Authorization"))
 const Registration = lazy(() => import("@/components/Pages/Registration"))
-const Calendar=lazy(()=>import("@/components/Calendar"))
-const Settings=lazy(()=>import("@/components/Settings"))
 const RestoreAccess = lazy(() => import("@/components/Pages/RestoreAccess"))
 const Map = lazy(() => import("@/components/Map/Map"))
 
 function Main (){
-    const [polygons, setPolygons] = useState([])
     return (<>
 
         <Routes>
             <Route path="/" element={
                 <Suspense fallback={<Loading/>}>
                     <Suspense fallback={<Loading/>}><Header /></Suspense>
-                    <Suspense fallback={<Loading/>}><Calendar /></Suspense>
-                    <Suspense fallback={<Loading/>}><Settings /></Suspense>
                     <Suspense fallback={<Loading/>}><Map /></Suspense>
                 </Suspense>
 

@@ -1,12 +1,11 @@
 import './Map.scss'
-import {MapContainer, TileLayer, Marker, Popup, Polygon} from "react-leaflet";
+import {MapContainer, TileLayer, Marker, Popup, Polygon, GeoJSON} from "react-leaflet";
 import {Icon, LatLngExpression} from "leaflet";
 import {useAppSelector} from "@/hooks/hook";
 import {IRegion} from "@/interfaces/IRegion";
-import {ILayer} from "@/interfaces/ILayer";
-import {useEffect, useState} from "react";
-import {ICoords} from "@/interfaces/ICoords";
-
+import Coords from "@/components/Map/Coords/Coords";
+import Settings from "@/components/Settings";
+import Calendar from "@/components/Calendar";
 
 const position:LatLngExpression = [54.84643545576913, 83.05183410644533];
 
@@ -38,9 +37,9 @@ const Map = () => {
           {regions.map((region, index) => (
               <Polygon key = {index} pathOptions={purpleOptions} positions={region.polygons}><Popup>{region.name}</Popup></Polygon>
           ))}
-
-
-
+          <Coords />
+          <Settings />
+          <Calendar />
 
       </MapContainer>
   );
