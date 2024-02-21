@@ -5,7 +5,6 @@ import {useAppSelector} from "@/hooks/hook";
 import {IRegion} from "@/interfaces/IRegion";
 import {ILayer} from "@/interfaces/ILayer";
 import {useEffect, useState} from "react";
-import {ICoords} from "@/interfaces/ICoords";
 
 
 const position:LatLngExpression = [54.84643545576913, 83.05183410644533];
