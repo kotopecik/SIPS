@@ -5,7 +5,9 @@ import {fetchRegions} from "@/store/map/map-actions";
 
 const initialState = {
     layer: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-    regions: []
+    regions: [],
+    mousePos: { lat: 0, lng: 0 },
+    isRulerActive: false
 }as MapState
 
 
@@ -18,18 +20,21 @@ const mapSlice = createSlice({
         },
         refreshRegions(state){
             state.regions = []
+        },
+        setMousePos(state, action){
+            state.mousePos.lat = action.payload.lat
+            state.mousePos.lng = action.payload.lng
+        },
+        changeIsRulerActive(state){
+            state.isRulerActive = !state.isRulerActive
         }
     },
     extraReducers:(builder) => {
         builder.addCase(fetchRegions.fulfilled, (state, action) => {
             state.regions = action.payload
         })
-        .addCase(fetchRegions.pending,() => {
-        })
-        .addCase(fetchRegions.rejected,() => {
-        })
     }
 })
 
-export const {setLayer, refreshRegions} = mapSlice.actions
+export const {setLayer, refreshRegions, setMousePos, changeIsRulerActive} = mapSlice.actions
 export default mapSlice.reducer

@@ -1,23 +1,27 @@
-import React, {useState} from 'react';
+import React from 'react';
 import s from './Coords.module.scss'
 import {useMapEvents} from "react-leaflet";
+import {useAppDispatch, useAppSelector} from "@/hooks/hook";
+import {setMousePos} from "@/store/map/map-slice";
 import {LatLngLiteral} from "leaflet";
 
 const Coords = () => {
-    const [mousePos, setMousePos] = useState<LatLngLiteral>({ lat: 0, lng: 0 });
+
+    const mousePos: LatLngLiteral = useAppSelector(state => state.map).mousePos
+    const dispatch = useAppDispatch()
+
 
     const _coords = useMapEvents({
+
         mousemove: (event) => {
-            setMousePos(event.latlng);
+            dispatch(setMousePos({lat: event.latlng.lat, lng: event.latlng.lng}));
         },
     });
 
     return (
-        <div>
-            <div className={s.coords}>
-                <div>{mousePos.lat.toFixed(5)} lat</div>
-                <div>{mousePos.lng.toFixed(5)} lng</div>
-            </div>
+        <div className={s.coords}>
+            <div>{mousePos.lat.toFixed(5)} lat</div>
+            <div>{mousePos.lng.toFixed(5)} lng</div>
         </div>
     );
 };
