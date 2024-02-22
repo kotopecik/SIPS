@@ -12,7 +12,7 @@ const Ruler = () => {
             className={s.ruler}
             onClick={() => dispatch(changeIsRulerActive())}
         >
-            {isRulerActive ? "Ruler" : "X"}
+            {!isRulerActive ? "Ruler" : "X"}
         </button>
     );
 };

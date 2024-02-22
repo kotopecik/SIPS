@@ -1,5 +1,5 @@
 import './Map.scss'
-import {MapContainer, TileLayer, Marker, Popup, Polygon, GeoJSON, Polyline} from "react-leaflet";
+import {MapContainer, TileLayer, Marker, Popup, Polygon, GeoJSON, Polyline, Tooltip} from "react-leaflet";
 import {Icon, LatLngExpression, LatLngLiteral} from "leaflet";
 import {useAppDispatch, useAppSelector} from "@/hooks/hook";
 import {IRegion} from "@/interfaces/IRegion";
@@ -7,9 +7,8 @@ import Coords from "@/components/Map/Coords/Coords";
 import Settings from "@/components/Settings";
 import Calendar from "@/components/Calendar";
 import {IMarker} from "@/interfaces/IMarker";
-import {useCallback, useState} from "react";
+import {useState} from "react";
 import Ruler from "@/components/Map/Ruler/Ruler";
-import {changeIsRulerActive} from "@/store/map/map-slice";
 
 
 const position:LatLngExpression = [54.84643545576913, 83.05183410644533];
@@ -18,6 +17,11 @@ const customIcon = new Icon({
   iconUrl: require("../../assets/img/marker-icon.png"),
   iconSize: [60, 60]
 });
+
+const rulerIcon = new Icon({
+    iconUrl: require("../../assets/add-circle-svgrepo-com.svg"),
+    iconSize:[40, 40]
+})
 
 
 
@@ -35,7 +39,6 @@ const Map = () => {
 
     const mousePos:LatLngLiteral = useAppSelector(state => state.map).mousePos
     const dispatch = useAppDispatch()
-
 
     const addMarker = (event) => {
       if((event.clientY < window.window.innerHeight - 200) || (event.clientX > 150))
@@ -69,11 +72,14 @@ const Map = () => {
                   url={layer}
               />
               {markers.map((marker, index) => (
-                  <Marker key = {index} position = {marker.position} icon = {customIcon}>
+                  <Marker key = {index} position = {marker.position} icon = {rulerIcon}>
                       <Popup>{marker.position.lat + "\n" + marker.position.lng}</Popup>
+                      <Tooltip  permanent>Я это пофикшу</Tooltip>
                   </Marker>
               ))}
-              <Polyline pathOptions={purpleOptions} positions={markersPos}></Polyline>
+              <Polyline pathOptions={purpleOptions} positions={markersPos}>
+
+              </Polyline>
               {regions.map((region, index) => (
                   <Polygon key = {index} pathOptions={purpleOptions} positions={region.polygons}><Popup>{region.name}</Popup></Polygon>
               ))}
