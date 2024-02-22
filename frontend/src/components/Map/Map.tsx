@@ -10,23 +10,11 @@ import {IMarker} from "@/interfaces/IMarker";
 import {useState} from "react";
 import Ruler from "@/components/Map/Ruler/Ruler";
 import {RulerCalculations} from "@/utils/RulerCalculations";
+import {icons} from "@/data/Icons";
 
+//спасибо центру за это
+const CENTR:LatLngExpression = [54.84643545576913, 83.05183410644533];
 
-const position:LatLngExpression = [54.84643545576913, 83.05183410644533];
-
-const customIcon = new Icon({
-  iconUrl: require("../../assets/img/marker-icon.png"),
-  iconSize: [60, 60]
-});
-
-const rulerIcon = new Icon({
-    iconUrl: require("../../assets/add-circle-svgrepo-com.svg"),
-    iconSize:[40, 40]
-})
-const emptyIcon = new Icon({
-    iconUrl: require("../../assets/empty.png"),
-    iconSize:[40, 40]
-})
 
 
 
@@ -34,16 +22,15 @@ const emptyIcon = new Icon({
 const Map = () => {
 
   const purpleOptions = { color: 'red' }
+
   const layer:string = useAppSelector(state => state.map).layer
   const regions:IRegion[] = useAppSelector(state => state.map).regions
+  const isRulerActive = useAppSelector(state => state.map).isRulerActive
+  const mousePos:LatLngLiteral = useAppSelector(state => state.map).mousePos
 
   const [markers, setMarkers] = useState<IMarker[]>([])
   const [markersPos, setMarkersPos] = useState<LatLngExpression[]>([])
 
-  const isRulerActive = useAppSelector(state => state.map).isRulerActive
-
-    const mousePos:LatLngLiteral = useAppSelector(state => state.map).mousePos
-    const dispatch = useAppDispatch()
 
     const addMarker = (event) => {
       if((event.clientY < window.window.innerHeight - 200) || (event.clientX > 150))
@@ -71,27 +58,30 @@ const Map = () => {
       <div
         onClick={isRulerActive ? addMarker: null}
       >
-          <MapContainer center={position} zoom={13} scrollWheelZoom={true}>
+          <MapContainer center={CENTR} zoom={13} scrollWheelZoom={true}>
               <TileLayer
                   url={layer}
               />
+
               {markers.map((marker, index) => (
-                  <Marker key = {index} position = {marker.position} icon = {rulerIcon}>
+                  <Marker key = {index} position = {marker.position} icon = {icons().rulerIcon}>
                       <Popup>{marker.position.lat + "\n" + marker.position.lng}</Popup>
-                      {/*<Tooltip  permanent>{marker.position.lat + "\n" + marker.position.lng}</Tooltip>*/}
                   </Marker>
               ))}
+
               {RulerCalculations.itterateLatLng(markersPos).map((marker) => (
-                  <Marker position = {marker.pos} icon = {emptyIcon}>
+                  <Marker position = {marker.pos} icon = {icons().emptyIcon}>
                       <Tooltip permanent>{marker.title}</Tooltip>
                   </Marker>
               ))}
+
               <Polyline pathOptions={purpleOptions} positions={markersPos}>
 
               </Polyline>
               {regions.map((region, index) => (
                   <Polygon key = {index} pathOptions={purpleOptions} positions={region.polygons}><Popup>{region.name}</Popup></Polygon>
               ))}
+
               <Coords />
               <Settings />
               <Calendar />
