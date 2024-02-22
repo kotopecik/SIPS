@@ -9,6 +9,7 @@ import Calendar from "@/components/Calendar";
 import {IMarker} from "@/interfaces/IMarker";
 import {useState} from "react";
 import Ruler from "@/components/Map/Ruler/Ruler";
+import {RulerCalculations} from "@/utils/RulerCalculations";
 
 
 const position:LatLngExpression = [54.84643545576913, 83.05183410644533];
@@ -20,6 +21,10 @@ const customIcon = new Icon({
 
 const rulerIcon = new Icon({
     iconUrl: require("../../assets/add-circle-svgrepo-com.svg"),
+    iconSize:[40, 40]
+})
+const emptyIcon = new Icon({
+    iconUrl: require("../../assets/qwe.svg"),
     iconSize:[40, 40]
 })
 
@@ -62,8 +67,7 @@ const Map = () => {
 
     }
 
-
-  return (
+    return (
       <div
         onClick={isRulerActive ? addMarker: null}
       >
@@ -74,7 +78,12 @@ const Map = () => {
               {markers.map((marker, index) => (
                   <Marker key = {index} position = {marker.position} icon = {rulerIcon}>
                       <Popup>{marker.position.lat + "\n" + marker.position.lng}</Popup>
-                      <Tooltip  permanent>Я это пофикшу</Tooltip>
+                      {/*<Tooltip  permanent>{marker.position.lat + "\n" + marker.position.lng}</Tooltip>*/}
+                  </Marker>
+              ))}
+              {RulerCalculations.itterateLatLng(markersPos).map((marker) => (
+                  <Marker position = {marker.pos} icon = {emptyIcon}>
+                      <Tooltip permanent>{marker.title}</Tooltip>
                   </Marker>
               ))}
               <Polyline pathOptions={purpleOptions} positions={markersPos}>
