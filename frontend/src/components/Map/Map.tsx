@@ -24,7 +24,7 @@ const rulerIcon = new Icon({
     iconSize:[40, 40]
 })
 const emptyIcon = new Icon({
-    iconUrl: require("../../assets/qwe.svg"),
+    iconUrl: require("../../assets/empty.png"),
     iconSize:[40, 40]
 })
 
