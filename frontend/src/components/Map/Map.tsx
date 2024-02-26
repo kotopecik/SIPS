@@ -16,15 +16,14 @@ import {icons} from "@/data/Icons";
 const CENTR:LatLngExpression = [54.84643545576913, 83.05183410644533];
 
 
-
-
-
 const Map = () => {
 
   const purpleOptions = { color: 'red' }
+  const greenOptions = { color: 'green' }
 
   const layer:string = useAppSelector(state => state.map).layer
-  const regions:IRegion[] = useAppSelector(state => state.map).regions
+  const regions:IRegion[] = useAppSelector(state => state.map).polygons.regions
+  const natureReserves:LatLngExpression[][] = useAppSelector(state => state.map).polygons.natureReserves
   const isRulerActive = useAppSelector(state => state.map).isRulerActive
   const mousePos:LatLngLiteral = useAppSelector(state => state.map).mousePos
 
@@ -64,23 +63,25 @@ const Map = () => {
               />
 
               {markers.map((marker, index) => (
-                  <Marker key = {index} position = {marker.position} icon = {icons().rulerIcon}>
-                      <Popup>{marker.position.lat + "\n" + marker.position.lng}</Popup>
-                  </Marker>
+                  <Marker key = {index} position = {marker.position} icon = {icons().rulerIcon} />
               ))}
 
-              {RulerCalculations.itterateLatLng(markersPos).map((marker) => (
+              {RulerCalculations.iterateLatLng(markersPos).map((marker) => (
                   <Marker position = {marker.pos} icon = {icons().emptyIcon}>
                       <Tooltip permanent>{marker.title}</Tooltip>
                   </Marker>
               ))}
 
-              <Polyline pathOptions={purpleOptions} positions={markersPos}>
+              <Polyline pathOptions={purpleOptions} positions={markersPos} />
 
-              </Polyline>
               {regions.map((region, index) => (
                   <Polygon key = {index} pathOptions={purpleOptions} positions={region.polygons}><Popup>{region.name}</Popup></Polygon>
               ))}
+
+              {natureReserves.map((region, index) => (
+                  <Polygon key = {index} pathOptions={greenOptions} positions={region} />
+              ))}
+
 
               <Coords />
               <Settings />

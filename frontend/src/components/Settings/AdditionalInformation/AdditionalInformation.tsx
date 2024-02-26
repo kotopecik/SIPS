@@ -1,20 +1,31 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
 import s from '../Settings.module.scss'
 import {borders} from './borders'
-import axios from "axios";
 import {useAppDispatch, useAppSelector} from "@/hooks/hook";
 import {fetchRegions} from "@/store/map/map-actions";
 import {IRegion} from "@/interfaces/IRegion";
 import {refreshRegions} from "@/store/map/map-slice";
+import {ERegions} from "@/enums/ERegions";
+import {LatLngExpression} from "leaflet";
 const AdditionalInformation = () => {
-    const regions:IRegion[] = useAppSelector(state => state.map).regions
+    const regions:IRegion[] = useAppSelector(state => state.map).polygons.regions
+    const natureReserves:LatLngExpression[][] = useAppSelector(state => state.map).polygons.natureReserves
 
     const dispatch = useAppDispatch()
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        regions.length === 0 ? dispatch(fetchRegions((e.target as HTMLInputElement).value)) :  dispatch(refreshRegions())
+        switch (e.target.value){
+            case ERegions.REGIONS:{
+                regions.length === 0 ? dispatch(fetchRegions((e.target as HTMLInputElement).value)) :  dispatch(refreshRegions(e.target.value))
+                break
+            }
+            case ERegions.NATURE_RESERVES:{
+                natureReserves.length === 0 ? dispatch(fetchRegions((e.target as HTMLInputElement).value)) :  dispatch(refreshRegions(e.target.value))
+            }
+        }
+
     }
 
     return (

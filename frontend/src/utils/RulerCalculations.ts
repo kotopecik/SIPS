@@ -2,7 +2,7 @@ import {LatLng, LatLngExpression} from "leaflet";
 import {IRulerObj} from "@/interfaces/IRulerObj";
 
 export class RulerCalculations{
-    static itterateLatLng = (arr: LatLngExpression[]) => {
+    static iterateLatLng = (arr: LatLngExpression[]) => {
         let rulerArr:IRulerObj[] = []
         for(let i = 1; i < arr.length; ++i){
             rulerArr.push({

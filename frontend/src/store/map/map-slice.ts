@@ -1,11 +1,15 @@
-import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {createSlice} from "@reduxjs/toolkit";
 import {MapState} from "@/store/map/map-state";
 import {fetchRegions} from "@/store/map/map-actions";
+import {ERegions} from "@/enums/ERegions";
 
 
 const initialState = {
     layer: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-    regions: [],
+    polygons:{
+        regions: [],
+        natureReserves: [],
+    },
     mousePos: { lat: 0, lng: 0 },
     isRulerActive: false
 }as MapState
@@ -15,11 +19,22 @@ const mapSlice = createSlice({
     name: 'map',
     initialState,
     reducers:{
+
         setLayer(state, action){
             state.layer = action.payload
         },
-        refreshRegions(state){
-            state.regions = []
+        refreshRegions(state, action){
+            switch (action.payload){
+                case ERegions.REGIONS:{
+                    state.polygons.regions = []
+                    break
+                }
+                case ERegions.NATURE_RESERVES:{
+                    state.polygons.natureReserves = []
+                    break
+                }
+            }
+
         },
         setMousePos(state, action){
             state.mousePos.lat = action.payload.lat
@@ -30,8 +45,18 @@ const mapSlice = createSlice({
         }
     },
     extraReducers:(builder) => {
-        builder.addCase(fetchRegions.fulfilled, (state, action) => {
-            state.regions = action.payload
+        builder.addCase(fetchRegions.fulfilled, (state:MapState, action) => {
+            switch (action.payload.url){
+                case ERegions.REGIONS:{
+                    state.polygons.regions = action.payload.response
+                    break
+                }
+                case ERegions.NATURE_RESERVES:{
+                    state.polygons.natureReserves = action.payload.response
+                    break
+                }
+            }
+
         })
     }
 })

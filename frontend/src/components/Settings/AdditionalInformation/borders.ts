@@ -1,16 +1,17 @@
 import {IBorder} from "@/interfaces/IBorder";
+import {ERegions} from "@/enums/ERegions";
 
 export const borders: IBorder[] = [
     {
         name: "Границы регионов",
-        url: `https://raw.githubusercontent.com/DeadEndjke/ru-regions-json/main/regions.json`
+        url: ERegions.REGIONS
     },
     {
-        name: "Заповедники(не нажимать)",
-        url: ``
+        name: "Заповедники",
+        url: ERegions.NATURE_RESERVES
     },
     {
-        name: "Населенные пункты(не нажимать)",
-        url: ``
+        name: "Населенные пункты",
+        url: ERegions.EMPTY
     },
 ]
