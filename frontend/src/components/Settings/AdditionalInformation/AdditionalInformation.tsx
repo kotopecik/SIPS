@@ -23,6 +23,7 @@ const AdditionalInformation = () => {
             }
             case ERegions.NATURE_RESERVES:{
                 natureReserves.length === 0 ? dispatch(fetchRegions((e.target as HTMLInputElement).value)) :  dispatch(refreshRegions(e.target.value))
+                break
             }
         }
 
