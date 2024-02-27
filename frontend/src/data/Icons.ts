@@ -7,8 +7,8 @@ export const icons = () => {
     });
 
     const rulerIcon = new Icon({
-        iconUrl: require("../assets/add-circle-svgrepo-com.svg"),
-        iconSize:[40, 40]
+        iconUrl: require("../assets/dot-small-svgrepo-com.svg"),
+        iconSize:[50, 50]
     })
     const emptyIcon = new Icon({
         iconUrl: require("../assets/empty.png"),

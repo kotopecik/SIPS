@@ -11,7 +11,9 @@ const initialState = {
         natureReserves: [],
     },
     mousePos: { lat: 0, lng: 0 },
-    isRulerActive: false
+    isRulerActive: false,
+    rulerMarkers: [],
+    rulerMarkersPos: []
 }as MapState
 
 
@@ -19,7 +21,6 @@ const mapSlice = createSlice({
     name: 'map',
     initialState,
     reducers:{
-
         setLayer(state, action){
             state.layer = action.payload
         },
@@ -42,6 +43,16 @@ const mapSlice = createSlice({
         },
         changeIsRulerActive(state){
             state.isRulerActive = !state.isRulerActive
+        },
+        addRulerMarker(state, action){
+            state.rulerMarkers.push(action.payload)
+        },
+        addRulerMarkerPos(state, action){
+            state.rulerMarkersPos.push(action.payload)
+        },
+        removeRulerMarkers(state){
+            state.rulerMarkers = []
+            state.rulerMarkersPos = []
         }
     },
     extraReducers:(builder) => {
@@ -61,5 +72,5 @@ const mapSlice = createSlice({
     }
 })
 
-export const {setLayer, refreshRegions, setMousePos, changeIsRulerActive} = mapSlice.actions
+export const {setLayer, refreshRegions, setMousePos, changeIsRulerActive, addRulerMarker, addRulerMarkerPos, removeRulerMarkers} = mapSlice.actions
 export default mapSlice.reducer
