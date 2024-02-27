@@ -1,5 +1,5 @@
 import './Map.scss'
-import {MapContainer, TileLayer, Marker, Popup, Polygon, GeoJSON, Polyline, Tooltip} from "react-leaflet";
+import {MapContainer, TileLayer, Marker, Popup, Polygon, Polyline, Tooltip} from "react-leaflet";
 import {LatLngExpression, LatLngLiteral} from "leaflet";
 import {useAppDispatch, useAppSelector} from "@/hooks/hook";
 import {IRegion} from "@/interfaces/IRegion";
@@ -10,6 +10,7 @@ import Ruler from "@/components/Map/Ruler/Ruler";
 import {RulerCalculations} from "@/utils/RulerCalculations";
 import {icons} from "@/data/Icons";
 import {addRulerMarker, addRulerMarkerPos} from "@/store/map/map-slice";
+import {IMarker} from "@/interfaces/IMarker";
 
 //спасибо центру за это
 const CENTR:LatLngExpression = [54.84643545576913, 83.05183410644533];
@@ -20,12 +21,12 @@ const Map = () => {
   const purpleOptions = { color: 'red' }
   const greenOptions = { color: 'green' }
 
-  const rulerMarkers = useAppSelector(state => state.map).rulerMarkers
-  const rulerMarkersPos = useAppSelector(state => state.map).rulerMarkersPos
+  const rulerMarkers:IMarker[] = useAppSelector(state => state.map).rulerMarkers
+  const rulerMarkersPos:LatLngExpression[] = useAppSelector(state => state.map).rulerMarkersPos
   const layer:string = useAppSelector(state => state.map).layer
   const regions:IRegion[] = useAppSelector(state => state.map).polygons.regions
   const natureReserves:LatLngExpression[][] = useAppSelector(state => state.map).polygons.natureReserves
-  const isRulerActive = useAppSelector(state => state.map).isRulerActive
+  const isRulerActive:boolean = useAppSelector(state => state.map).isRulerActive
   const mousePos:LatLngLiteral = useAppSelector(state => state.map).mousePos
 
   const dispatch = useAppDispatch()
@@ -42,7 +43,14 @@ const Map = () => {
       <div
         onClick={isRulerActive ? addMarker: null}
       >
-          <MapContainer center={CENTR} maxZoom={15} zoom={4} minZoom={3} scrollWheelZoom={true} maxBounds={[[-110, -170], [100, 200]]}>
+          <MapContainer
+              center={CENTR}
+              maxZoom={15}
+              zoom={4}
+              minZoom={3}
+              scrollWheelZoom={true}
+              maxBounds={[[-110, -170], [100, 200]]}
+          >
               <TileLayer
                   url={layer}
               />
@@ -66,7 +74,6 @@ const Map = () => {
               {natureReserves.map((region, index) => (
                   <Polygon key = {index} pathOptions={greenOptions} positions={region} />
               ))}
-
 
               <Coords />
               <Settings />
