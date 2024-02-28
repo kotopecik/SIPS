@@ -1,6 +1,8 @@
 import React, {lazy, Suspense} from "react";
 import {Route, Routes} from "react-router";
 import {Loading} from "@/components/main/Loading/Loading";
+import {useAppDispatch} from "@/hooks/hook";
+import {setCursorPosition} from "@/store/cursor/cursor-slice";
 
 const Header = lazy(() => import("@/components/Header"))
 const Authorization = lazy(() => import("@/components/Pages/Authorization"))
@@ -9,8 +11,18 @@ const RestoreAccess = lazy(() => import("@/components/Pages/RestoreAccess"))
 const UserGuide = lazy(() => import("@/components/Pages/UserGuide/UserGuide"))
 const Map = lazy(() => import("@/components/Map/Map"))
 
+
+
+
 function Main (){
-    return (<>
+    const dispatch = useAppDispatch()
+    const handleMouseMove = (event) => {
+        dispatch(setCursorPosition({ x: event.clientX, y: event.clientY }));
+    };
+
+
+    return (<div onMouseMove={handleMouseMove}>
+
 
         <Routes>
             <Route path="/" element={
@@ -46,7 +58,7 @@ function Main (){
             />
         </Routes>
 
-    </>)
+    </div>)
 }
 
 export default Main

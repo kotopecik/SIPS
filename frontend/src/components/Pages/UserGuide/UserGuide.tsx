@@ -13,7 +13,7 @@ const UserGuide = () => {
   const [toggleState, setToggleState] = useState(1);
   return (
     <div className={styles.root}>
-      <div className={styles.header}>
+      <header className={styles.header}>
         <Link to="/" className={styles.logo}>
           SIPS
         </Link>
@@ -32,7 +32,7 @@ const UserGuide = () => {
             <Link to="/authorization">Выйти</Link>
           </li>
         </ul>
-      </div>
+      </header>
       {/* <p className={styles.name}>Руководство пользователя</p> */}
       <div className={styles.container}>
         <ul className={styles.modules}>
@@ -68,7 +68,7 @@ const UserGuide = () => {
           <li>
             2. Модуль для измерения расстояния "Линейка". Для его активации
             необходимо нажать на иконку с изображением линейки, после чего
-            вместо линейки появится крестик - значит модуль активен. При певром
+            вместо линейки появится крестик - значит модуль активен. При первом
             клике по карте появится начальная точка, от неё начнётся отсчёт,
             далее необходимо поставить следующую точку, в необходимом месте.
           </li>

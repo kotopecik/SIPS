@@ -2,12 +2,12 @@ import React from 'react';
 import s from './Coords.module.scss'
 import {useMapEvents} from "react-leaflet";
 import {useAppDispatch, useAppSelector} from "@/hooks/hook";
-import {setMousePos} from "@/store/map/map-slice";
+import {setMousePos} from "@/store/cursor/cursor-slice";
 import {LatLngLiteral} from "leaflet";
 
 const Coords = () => {
 
-    const mousePos: LatLngLiteral = useAppSelector(state => state.map).mousePos
+    const mousePos: LatLngLiteral = useAppSelector(state => state.cursor).mousePos
     const dispatch = useAppDispatch()
 
 
