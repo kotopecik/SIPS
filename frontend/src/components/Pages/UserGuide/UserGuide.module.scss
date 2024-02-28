@@ -1,0 +1,206 @@
+@import url("https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700;800;900&family=Poppins&display=swap");
+* {
+  margin: 0;
+  padding: 0;
+  font-family: "Nunito", sans-serif;
+}
+.root {
+  background: url(../../../assets/back1.png) no-repeat;
+  background-size: cover;
+  background-position: center; 
+  height: 100vh;
+  background-size: cover;
+
+}
+.header {
+  position: relative;
+  top: 0;
+  left: 0;
+  padding: 1.3rem 10%;
+  background: rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(50px);
+  z-index: 1000;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 25px;
+  @media (max-width: 992px) {
+    padding: 1.3rem 5%;
+  }
+}
+.logo {
+  font-size: 2rem;
+  text-decoration: none;
+  font-weight: 800;
+}
+.navbar {
+  a {
+    color: rgb(255, 255, 255);
+    text-decoration: none;
+  }
+  @media (max-width: 768px) {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    max-height: 14rem;
+    background: rgb(67, 0, 81);
+    display: none;
+    a {
+      color: white;
+    }
+    &.active {
+      display: flex;
+      flex-direction: column;
+    }
+  }
+  &__item {
+    display: inline-block;
+    font-size: 1.15rem;
+    cursor: pointer;
+    font-weight: 400;
+    list-style: none;
+    margin-right: 60px;
+    border-radius: 0.5rem;
+    &:hover,
+    &:active {
+      opacity: 0.8;
+    }
+    @media (max-width: 768px) {
+      border-radius: 0;
+      margin: 0;
+      text-align: center;
+      height: 50px;
+      line-height: 50px;
+      &:hover {
+        background: rgb(82, 0, 98);
+      }
+    }
+  }
+}
+
+.icons {
+  &__open {
+    position: absolute;
+    font-size: 2.8rem;
+    cursor: pointer;
+    display: none;
+    right: 5%;
+    color: white;
+    @media (max-width: 768px) {
+      display: inline-flex;
+    }
+  }
+}
+.container {
+  position: relative;
+  margin-top: 10px;
+  width: 200px;
+  height: 165px;
+  margin-left: 10%;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.1),
+    rgba(255, 255, 255, 0)
+  );
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  @media (max-width: 768px) {
+    margin-left: 5%;
+    width: 150px;
+    height: 114px;
+  }
+}
+.modules {
+  &__item {
+    list-style: none;
+    display: block;
+    text-align: center;
+    line-height: 55px;
+    font-weight: 300;
+    width: 100%;
+    border-radius: 20px;
+    font-size: 17px;
+    color: white;
+    &:hover {
+      background-color: rgba(182, 0, 172, 0.1);
+    }
+  
+  @media (max-width: 768px) {
+    font-size: 14px;
+    line-height: 38px;
+
+  }
+}
+
+}
+.map {
+  position: absolute;
+  margin-left: 24%;
+  top: 11%;
+  padding: 15px;
+  width: 930px;
+  height: 570px;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.1),
+    rgba(255, 255, 255, 0)
+  );
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0 8px 32px 0 #5a2bb24d;
+  visibility: hidden;
+  &.active {
+    visibility: visible;
+  }
+  @media (max-width: 768px) {
+    width: 495px;
+    height: 585px;
+    margin-left: 26%;
+  }
+}
+.text {
+  color: white;
+  list-style: none;
+  font-weight: 500;
+  font-size: 17px;
+  margin-bottom: 15px;
+  @media (max-width: 768px) {
+    font-weight: 400;
+    font-size: 13px;
+  }
+}
+.settings {
+  position: absolute;
+  margin-top: 27px;
+  margin-left: 80px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 15px 0px;
+  width: 930px;
+  height: 570px;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.1),
+    rgba(255, 255, 255, 0)
+  );
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 10px;
+  text-align: center;
+  justify-content: center;
+  display: none;
+  &.active {
+    display: flex;
+  }
+  @media (max-width: 768px) {
+    width: 440px;
+    height: 570px;
+    margin-left: 110px;
+  }
+}

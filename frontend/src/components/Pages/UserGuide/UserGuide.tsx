@@ -1,0 +1,125 @@
+import styles from "./UserGuide.module.scss";
+import map from "../../../assets/map.png";
+import map1 from "../../../assets/map1.png";
+import sett from "../../../assets/sett.png";
+import sett1 from "../../../assets/sett1.png";
+import calend from "../../../assets/calend.png";
+import calend1 from "../../../assets/calend1.png";
+import { useState } from "react";
+import { MdOutlineMenu } from "react-icons/md";
+import { Link } from "react-router-dom";
+const UserGuide = () => {
+  const [isOpen, setOpen] = useState(false);
+  const [toggleState, setToggleState] = useState(1);
+  return (
+    <div className={styles.root}>
+      <div className={styles.header}>
+        <Link to="/" className={styles.logo}>
+          SIPS
+        </Link>
+        <MdOutlineMenu
+          className={styles.icons__open}
+          onClick={() => setOpen(!isOpen)}
+        />
+        <ul className={`${styles.navbar} ${isOpen ? styles.active : ""}`}>
+          <li className={styles.navbar__item}>
+            <Link to="/">Перейти к карте</Link>
+          </li>
+          <li className={styles.navbar__item}>
+            <Link to="!#">Профиль</Link>
+          </li>
+          <li className={styles.navbar__item}>
+            <Link to="/authorization">Выйти</Link>
+          </li>
+        </ul>
+      </div>
+      {/* <p className={styles.name}>Руководство пользователя</p> */}
+      <div className={styles.container}>
+        <ul className={styles.modules}>
+          <li
+            className={styles.modules__item}
+            onClick={() => setToggleState(1)}
+          >
+            Модуль «Карта»
+          </li>
+          <li
+            className={styles.modules__item}
+            onClick={() => setToggleState(2)}
+          >
+            Модуль «Настройки»
+          </li>
+          <li
+            className={styles.modules__item}
+            onClick={() => setToggleState(3)}
+          >
+            Модуль «Календарь»
+          </li>
+        </ul>
+      </div>
+      <div
+        className={`${styles.map} ${toggleState === 1 ? styles.active : ""}`}
+      >
+        <img src={map} alt="доп. информация" />
+        <ul className={`${toggleState === 1 ? styles.text : ""}`}>
+          <li>
+            1. Модуль, который показывает координаты курсора мыши на карте,
+            относительно положения карты, в формате - градусы,минуты, секунды.
+          </li>
+          <li>
+            2. Модуль для измерения расстояния "Линейка". Для его активации
+            необходимо нажать на иконку с изображением линейки, после чего
+            вместо линейки появится крестик - значит модуль активен. При певром
+            клике по карте появится начальная точка, от неё начнётся отсчёт,
+            далее необходимо поставить следующую точку, в необходимом месте.
+          </li>
+          <img src={map1} alt="доп. информация" />
+          <li>
+            3. Кнопки с иконками "+" и "-" предназначены для изменения масштаба
+            карты. Кнопка "+" увеличивает масштаб, кнопка "-" уменьшает. Также
+            масштабом можно усправлять с помощью колёсика мыши.
+          </li>
+        </ul>
+      </div>n
+      <div
+        className={`${styles.settings} ${
+          toggleState === 2 ? styles.active : ""
+        }`}
+      >
+        <ul className={styles.text}>
+          <li>
+            На Главной станице веб-приложения, в правом, верхнем углу, находится
+            кнопка с иконкой шестерёнки:
+          </li>
+          <img src={sett} alt="настройки" />
+          <li>
+            При нажатии на неё раскроется меню с набором дополнительных
+            инструментов:
+          </li>
+          <img src={sett1} alt="настройки" />
+          <li>
+            Пользователь может менять стиль подстилающей карты, для этого
+            необходимо нажать на Radio button с соответствующим названием стиля:
+            "StandartMap", "ESRI map", "Monochrome map".
+          </li>
+        </ul>
+      </div>
+      <div
+        className={`${styles.settings} ${
+          toggleState === 3 ? styles.active : ""
+        }`}
+      >
+        <ul className={styles.text}>
+          <li>
+            На Главной станице веб-приложения, в правом, верхнем углу, находится
+            кнопка с иконкой календаря:
+          </li>
+          <img src={calend} alt="календарь" />
+          <li>При нажатии на неё раскроется небольшое окно:</li>
+          <img src={calend1} alt="календарь" />
+        </ul>
+      </div>
+    </div>
+  );
+};
+
+export default UserGuide;

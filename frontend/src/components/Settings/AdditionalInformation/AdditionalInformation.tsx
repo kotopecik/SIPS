@@ -25,6 +25,7 @@ const AdditionalInformation = () => {
                         key = {index}
                         control={
                         <Switch
+                            size="small"
                             value={border.url}
                             color="secondary"
                             onChange={handleChange}

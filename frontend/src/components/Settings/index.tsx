@@ -6,6 +6,7 @@ import AdditionalInformation from "@/components/Settings/AdditionalInformation/A
 import Satelite from "@/components/Settings/Satelite";
 import SortPanel from "@/components/Settings/SortPanel";
 import LayerSwitch from "@/components/Settings/LayerSwitch/LayerSwitch";
+import DataCollection from "./DataCollection";
 const Settings = () => {
   const [isOpen, setOpen] = useState(false);
   return (
@@ -18,7 +19,8 @@ const Settings = () => {
           <LayerSwitch />
           <AdditionalInformation />
           <Satelite />
-          <SortPanel isOpen={isOpen}/>
+          <SortPanel/>
+          <DataCollection/>
         </FormGroup>
       </div>
 

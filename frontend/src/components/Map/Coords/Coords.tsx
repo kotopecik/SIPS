@@ -20,8 +20,8 @@ const Coords = () => {
 
     return (
         <div className={s.coords}>
-            <div>{mousePos.lat.toFixed(5)} lat</div>
-            <div>{mousePos.lng.toFixed(5)} lng</div>
+            <div>{mousePos.lat.toFixed(5)} с.ш</div>
+            <div>{mousePos.lng.toFixed(5)} в.д</div>
         </div>
     );
 };
