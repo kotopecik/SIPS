@@ -1,9 +1,13 @@
-import {IRegion} from "@/interfaces/IRegion";
-import {LatLngLiteral} from "leaflet";
+
+import {LatLngExpression, LatLngLiteral} from "leaflet";
+import {IPolygons} from "@/interfaces/IPolygons";
+import {IMarker} from "@/interfaces/IMarker";
 
 export interface MapState{
     layer: string,
-    regions: IRegion[],
+    polygons: IPolygons
     mousePos: LatLngLiteral,
-    isRulerActive: boolean
+    isRulerActive: boolean,
+    rulerMarkers: IMarker[],
+    rulerMarkersPos: LatLngExpression[]
 }

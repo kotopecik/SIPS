@@ -1,11 +1,18 @@
 .ruler{
-  min-width: 80px;
+
   position: absolute;
   z-index: 1000;
   cursor: pointer;
   border-radius: 3px;
-  bottom: 80px;
+  bottom: 130px;
   left: 8px;
-  padding: 5px;
-  border: 1px solid gray;
+
+
+  .btn{
+    border: 1px solid gray;
+    padding: 5px;
+    border-radius: 3px;
+    cursor: pointer;
+    min-width: 85px;
+  }
 }
