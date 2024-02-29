@@ -2,6 +2,7 @@ import {createSlice} from "@reduxjs/toolkit";
 import {MapState} from "@/store/map/map-state";
 import {fetchRegions} from "@/store/map/map-actions";
 import {ERegions} from "@/enums/ERegions";
+import {borders} from "@/data/borders";
 
 
 const initialState = {
@@ -10,7 +11,8 @@ const initialState = {
         regions: [],
         natureReserves: [],
     },
-    dragging: true
+    dragging: true,
+    borders: borders
 }as MapState
 
 
@@ -32,13 +34,15 @@ const mapSlice = createSlice({
                     break
                 }
             }
-
         },
         disableMapDragging(state){
             state.dragging = false
         },
         enableMapDragging(state){
             state.dragging = true
+        },
+        changeChecked(state, action){
+            state.borders[action.payload].checked = !state.borders[action.payload].checked
         }
     },
     extraReducers:(builder) => {
@@ -53,7 +57,6 @@ const mapSlice = createSlice({
                     break
                 }
             }
-
         })
     }
 })
@@ -62,6 +65,7 @@ export const {
     setLayer,
     refreshRegions,
     disableMapDragging,
-    enableMapDragging
+    enableMapDragging,
+    changeChecked
 } = mapSlice.actions
 export default mapSlice.reducer

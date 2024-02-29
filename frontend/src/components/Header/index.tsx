@@ -17,60 +17,43 @@ const Header = () => {
   const closeProfileMenu = () => {
     setOpenProfile(!isOpenProfile);
     if (isOpenMenu) {
-      setOpenMenu(false); 
+      setOpenMenu(false);
     }
   };
 
   const closeMainMenu = () => {
     setOpenMenu(!isOpenMenu);
     if (isOpenProfile) {
-      setOpenProfile(false); 
+      setOpenProfile(false);
     }
   };
 
-  const onMouseDown = () => {
-      dispatch(disableMapDragging())
-      console.log(dragging)
-  }
 
-    const onMouseUp = () => {
-        dispatch(enableMapDragging())
-        console.log(dragging)
-    }
 
   return (
 
-        <header
-            className={styles.root}
-            onMouseUp={onMouseUp} onMouseDown={onMouseDown}
-        >
-          <IoPeopleCircleOutline
-              className={styles.icons__profile}
-              onClick={closeProfileMenu}
+        <header className={styles.root}>
 
-          />
-          <Link to="/" className={styles.logo}>
-            SIPS
-          </Link>
-          <MdOutlineMenu
-              className={styles.icons__open}
-              onClick={closeMainMenu}
+          <IoPeopleCircleOutline className={styles.icons__profile} onClick={closeProfileMenu} />
+          <Link to="/" className={styles.logo}>SIPS</Link>
+          <MdOutlineMenu className={styles.icons__open} onClick={closeMainMenu} />
 
-          />
-          <ul className={`${styles.navbar__menu} ${isOpenMenu ? styles.active : ""}`}>
+          {isOpenMenu && <ul className={`${styles.navbar__menu} ${styles.active}`}>
             {links.mainLinks.map((link) => (
                 <li key={link.id} className={styles.navbar__item}>
                   <Link to={link.to}>{link.title}</Link>
                 </li>
             ))}
-          </ul>
-          <ul className={`${styles.navbar__profile} ${isOpenProfile ? styles.active : ""}`}>
+          </ul>}
+
+          {isOpenProfile && <ul className={`${styles.navbar__profile} ${styles.active}`}>
             {links.profileLinks.map((link) => (
                 <li key={link.id} className={styles.navbar__item}>
                   <Link to={link.to}>{link.title}</Link>
                 </li>
             ))}
-          </ul>
+          </ul>}
+
 
         </header>
 
