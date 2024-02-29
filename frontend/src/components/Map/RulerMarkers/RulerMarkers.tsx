@@ -22,7 +22,7 @@ const RulerMarkers = () => {
                 </Marker>
             ))}
 
-            <Polyline pathOptions={purpleOptions} positions={rulerMarkersPos} />
+            <Polyline dashArray="5 10" pathOptions={purpleOptions} positions={rulerMarkersPos} />
         </>
     );
 };
