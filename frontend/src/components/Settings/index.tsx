@@ -9,20 +9,25 @@ import LayerSwitch from "@/components/Settings/LayerSwitch/LayerSwitch";
 import DataCollection from "./DataCollection";
 const Settings = () => {
   const [isOpen, setOpen] = useState(false);
+  const handleClick = () => {
+      setOpen(!isOpen)
+      console.log(isOpen)
+  }
   return (
     <>
       <div className={styles.block}>
-        <IoSettingsSharp className={styles.block__icon} onClick={() => setOpen(!isOpen)}/>
+        <IoSettingsSharp className={styles.block__icon} onClick={handleClick}/>
       </div>
-      <div className={`${styles.sett} ${isOpen ? styles.active : ""}`}>
-        <FormGroup sx={{ padding: 1 }}>
-          <LayerSwitch />
-          <AdditionalInformation />
-          <Satelite />
-          <SortPanel/>
-          <DataCollection/>
-        </FormGroup>
-      </div>
+        {isOpen && <div className={`${styles.sett} ${styles.active}`}>
+            <FormGroup sx={{ padding: 1 }}>
+                <LayerSwitch />
+                <AdditionalInformation />
+                <Satelite />
+                <SortPanel/>
+                <DataCollection/>
+            </FormGroup>
+        </div>}
+
 
     </>
   );
