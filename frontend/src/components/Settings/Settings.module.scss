@@ -38,20 +38,26 @@
     z-index: 1000;
     border-radius: 10px;
     border: 2px solid rgba(0, 98, 255, 0.3);
-    display: none;
+    padding: 10px;
     &.active{
         display: flex;
     }
 }
+
+
 .sort{
     border-radius: 10px;
     border: 2px solid rgba(0, 98, 255, 0.3);
     line-height: 30px;
     margin-top: 10px;
     padding: 5px;
+    a{
+        color: white;
+    }
 }
 .text{
     font-size: 16px;
     font-weight: 700;
     margin: 3px 0px;
 }
+

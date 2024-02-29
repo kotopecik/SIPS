@@ -35,9 +35,7 @@ const Map = () => {
 
 
     return (
-      <div
-        onClick={isRulerActive ? addMarker: null}
-      >
+      <div onClick={isRulerActive ? addMarker: null}>
           <MapContainer
               center={CENTR}
               maxZoom={15}
@@ -47,6 +45,7 @@ const Map = () => {
               maxBounds={[[-110, -170], [100, 200]]}
               dragging = {dragging}
           >
+
               <TileLayer url={layer} />
 
               <RulerMarkers />
@@ -57,7 +56,6 @@ const Map = () => {
               <Calendar />
               <Ruler/>
               {isCursorActive ? <Cursor /> : ""}
-
           </MapContainer>
       </div>
 

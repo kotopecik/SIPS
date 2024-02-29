@@ -39,10 +39,11 @@ const AdditionalInformation = () => {
                         <Switch
                             size="small"
                             value={border.url}
-                            color="secondary"
+                            color={border.color}
                             onChange={handleChange}
 
-                        />}
+                        />
+                    }
                         label={border.name}
                     />
 
