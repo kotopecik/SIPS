@@ -42,12 +42,12 @@ const Header = () => {
 
         <header
             className={styles.root}
-
+            onMouseUp={onMouseUp} onMouseDown={onMouseDown}
         >
           <IoPeopleCircleOutline
               className={styles.icons__profile}
               onClick={closeProfileMenu}
-              onMouseUp={onMouseUp} onMouseDown={onMouseDown}
+
           />
           <Link to="/" className={styles.logo}>
             SIPS

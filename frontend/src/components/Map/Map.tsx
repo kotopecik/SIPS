@@ -12,6 +12,8 @@ import {icons} from "@/data/Icons";
 import {addRulerMarker, addRulerMarkerPos} from "@/store/ruler/ruler-slice";
 import {IMarker} from "@/interfaces/IMarker";
 import Cursor from "@/components/Cursor/Cursor";
+import Regions from "@/components/Map/Regions/Regions";
+import NatureReserves from "@/components/Map/NatureReserves/NatureReserves";
 
 //спасибо центру за это
 const CENTR:LatLngExpression = [54.84643545576913, 83.05183410644533];
@@ -20,13 +22,11 @@ const CENTR:LatLngExpression = [54.84643545576913, 83.05183410644533];
 const Map = () => {
 
   const purpleOptions = { color: 'red' }
-  const greenOptions = { color: 'green' }
+
 
   const rulerMarkers:IMarker[] = useAppSelector(state => state.ruler).rulerMarkers
   const rulerMarkersPos:LatLngExpression[] = useAppSelector(state => state.ruler).rulerMarkersPos
   const layer:string = useAppSelector(state => state.map).layer
-  const regions:IRegion[] = useAppSelector(state => state.map).polygons.regions
-  const natureReserves:LatLngExpression[][] = useAppSelector(state => state.map).polygons.natureReserves
   const isRulerActive:boolean = useAppSelector(state => state.ruler).isRulerActive
   const mousePos:LatLngLiteral = useAppSelector(state => state.cursor).mousePos
   const dragging:boolean = useAppSelector(state => state.map).dragging
@@ -71,13 +71,8 @@ const Map = () => {
 
               <Polyline pathOptions={purpleOptions} positions={rulerMarkersPos} />
 
-              {regions.map((region, index) => (
-                  <Polygon key = {index} pathOptions={purpleOptions} positions={region.polygons}><Popup>{region.name}</Popup></Polygon>
-              ))}
-
-              {natureReserves.map((region, index) => (
-                  <Polygon key = {index} pathOptions={greenOptions} positions={region} />
-              ))}
+              <Regions />
+              <NatureReserves />
 
               <Coords />
               <Settings />
