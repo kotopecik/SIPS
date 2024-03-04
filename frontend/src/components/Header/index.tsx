@@ -1,7 +1,7 @@
 import { useState } from "react";
 import styles from "./Header.module.scss";
 import { Link } from "react-router-dom";
-import { links } from "@/components/Header/links";
+import {mainLinks, profileLinks} from "@/data/links";
 import { MdOutlineMenu } from "react-icons/md";
 import { IoPeopleCircleOutline } from "react-icons/io5";
 import {useAppDispatch, useAppSelector} from "@/hooks/hook";
@@ -39,7 +39,7 @@ const Header = () => {
           <MdOutlineMenu className={styles.icons__open} onClick={closeMainMenu} />
 
           {isOpenMenu && <ul className={`${styles.navbar__menu} ${styles.active}`}>
-            {links.mainLinks.map((link) => (
+            {mainLinks.map((link) => (
                 <li key={link.id} className={styles.navbar__item}>
                   <Link to={link.to}>{link.title}</Link>
                 </li>
@@ -47,7 +47,7 @@ const Header = () => {
           </ul>}
 
           {isOpenProfile && <ul className={`${styles.navbar__profile} ${styles.active}`}>
-            {links.profileLinks.map((link) => (
+            {profileLinks.map((link) => (
                 <li key={link.id} className={styles.navbar__item}>
                   <Link to={link.to}>{link.title}</Link>
                 </li>

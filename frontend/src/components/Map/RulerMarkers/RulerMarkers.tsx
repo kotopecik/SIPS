@@ -1,6 +1,6 @@
 import React from 'react';
 import {Marker, Polyline, Tooltip} from "react-leaflet";
-import {icons} from "@/data/Icons";
+import {icons} from "@/data/icons";
 import {RulerCalculations} from "@/utils/RulerCalculations";
 import {IMarker} from "@/interfaces/IMarker";
 import {useAppSelector} from "@/hooks/hook";

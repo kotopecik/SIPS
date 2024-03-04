@@ -1,13 +1,7 @@
-interface ILink{
-    id: number,
-    to: string,
-    title: string
-}
+import {ILink} from "@/interfaces/Ilink";
 
 
-
-
-const profileLinks: ILink[] = [
+export const profileLinks: ILink[] = [
     {
         id: 1,
         to: "/",
@@ -20,7 +14,7 @@ const profileLinks: ILink[] = [
     },
 ]
 
-const mainLinks: ILink[] = [
+export const mainLinks: ILink[] = [
     {
         id: 1,
         to: "/about",
@@ -32,6 +26,3 @@ const mainLinks: ILink[] = [
         title: "Вход",
     },
 ]
-
-
-export const links = {mainLinks, profileLinks}

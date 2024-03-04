@@ -9,11 +9,13 @@ import {changeChecked, refreshRegions} from "@/store/map/map-slice";
 import {ERegions} from "@/enums/ERegions";
 import {LatLngExpression} from "leaflet";
 import {IBorder} from "@/interfaces/IBorder";
+import {ICity} from "@/interfaces/ICity";
 
 const AdditionalInformation = () => {
 
     const regions:IRegion[] = useAppSelector(state => state.map).polygons.regions
     const natureReserves:LatLngExpression[][] = useAppSelector(state => state.map).polygons.natureReserves
+    const cities:ICity[] = useAppSelector(state => state.map).polygons.cities
     const borders:IBorder[] = useAppSelector(state => state.map).borders
 
     const dispatch = useAppDispatch()
@@ -28,6 +30,9 @@ const AdditionalInformation = () => {
             case ERegions.NATURE_RESERVES:{
                 natureReserves.length === 0 ? dispatch(fetchRegions((e.target as HTMLInputElement).value)) :  dispatch(refreshRegions(e.target.value))
                 break
+            }
+            case ERegions.CITY:{
+                cities.length === 0 ? dispatch(fetchRegions((e.target as HTMLInputElement).value)) :  dispatch(refreshRegions(e.target.value))
             }
         }
 

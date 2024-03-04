@@ -19,7 +19,7 @@ export const borders: IBorder[] = [
     {
         id: "2",
         name: "Населенные пункты",
-        url: ERegions.EMPTY,
+        url: ERegions.CITY,
         color: "primary",
         checked: false
     },

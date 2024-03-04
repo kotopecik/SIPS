@@ -16,6 +16,7 @@ const Map = lazy(() => import("@/components/Map/Map"))
 
 function Main (){
     const dispatch = useAppDispatch()
+
     const handleMouseMove = (event) => {
         dispatch(setCursorPosition({ x: event.clientX, y: event.clientY }));
     };

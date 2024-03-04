@@ -10,6 +10,7 @@ const initialState = {
     polygons:{
         regions: [],
         natureReserves: [],
+        cities: []
     },
     dragging: true,
     borders: borders
@@ -33,6 +34,9 @@ const mapSlice = createSlice({
                     state.polygons.natureReserves = []
                     break
                 }
+                case ERegions.CITY:{
+                    state.polygons.cities = []
+                }
             }
         },
         disableMapDragging(state){
@@ -54,6 +58,10 @@ const mapSlice = createSlice({
                 }
                 case ERegions.NATURE_RESERVES:{
                     state.polygons.natureReserves = action.payload.response
+                    break
+                }
+                case ERegions.CITY:{
+                    state.polygons.cities = action.payload.response
                     break
                 }
             }

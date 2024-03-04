@@ -1,5 +1,5 @@
 import './Map.scss'
-import {MapContainer, TileLayer} from "react-leaflet";
+import {MapContainer, TileLayer, useMap, useMapEvent} from "react-leaflet";
 import {LatLngExpression, LatLngLiteral} from "leaflet";
 import {useAppDispatch, useAppSelector} from "@/hooks/hook";
 import Coords from "@/components/Map/Coords/Coords";
@@ -11,6 +11,7 @@ import Cursor from "@/components/Cursor/Cursor";
 import Regions from "@/components/Map/Regions/Regions";
 import NatureReserves from "@/components/Map/NatureReserves/NatureReserves";
 import RulerMarkers from "@/components/Map/RulerMarkers/RulerMarkers";
+import Settlements from "@/components/Map/Settlements/Settlements";
 
 //спасибо центру за это
 const CENTR:LatLngExpression = [54.84643545576913, 83.05183410644533];
@@ -34,23 +35,30 @@ const Map = () => {
     }
 
 
+
+
+
     return (
       <div onClick={isRulerActive ? addMarker: null}>
           <MapContainer
               center={CENTR}
-              maxZoom={15}
+              maxZoom={13}
               zoom={4}
               minZoom={3}
               scrollWheelZoom={true}
               maxBounds={[[-110, -170], [100, 200]]}
-              dragging = {dragging}
+              dragging = {!isCursorActive}
           >
 
               <TileLayer url={layer} />
 
-              <RulerMarkers />
+
+
               <Regions />
               <NatureReserves />
+              <Settlements />
+
+              <RulerMarkers />
               <Coords />
               <Settings />
               <Calendar />
@@ -61,4 +69,6 @@ const Map = () => {
 
   );
 }
+
+
 export default Map
