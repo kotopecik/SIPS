@@ -3,6 +3,8 @@ import {MapState} from "@/store/map/map-state";
 import {fetchRegions} from "@/store/map/map-actions";
 import {ERegions} from "@/enums/ERegions";
 import {borders} from "@/data/borders";
+import {EZoom} from "@/enums/EZoom";
+import {LatLngBounds} from "leaflet";
 
 
 const initialState = {
@@ -10,10 +12,12 @@ const initialState = {
     polygons:{
         regions: [],
         natureReserves: [],
-        cities: []
+        settlements: []
     },
     dragging: true,
-    borders: borders
+    borders: borders,
+    zoom: 4,
+    bounds: new LatLngBounds([-110, -170], [100, 200])
 }as MapState
 
 
@@ -34,8 +38,8 @@ const mapSlice = createSlice({
                     state.polygons.natureReserves = []
                     break
                 }
-                case ERegions.CITY:{
-                    state.polygons.cities = []
+                case ERegions.SETTLEMENTS:{
+                    state.polygons.settlements = []
                 }
             }
         },
@@ -47,6 +51,12 @@ const mapSlice = createSlice({
         },
         changeChecked(state, action){
             state.borders[action.payload].checked = !state.borders[action.payload].checked
+        },
+        changeZoom(state, action){
+            state.zoom = action.payload
+        },
+        changeBounds(state, action){
+            state.bounds = action.payload
         }
     },
     extraReducers:(builder) => {
@@ -60,8 +70,8 @@ const mapSlice = createSlice({
                     state.polygons.natureReserves = action.payload.response
                     break
                 }
-                case ERegions.CITY:{
-                    state.polygons.cities = action.payload.response
+                case ERegions.SETTLEMENTS:{
+                    state.polygons.settlements = action.payload.response
                     break
                 }
             }
@@ -74,6 +84,8 @@ export const {
     refreshRegions,
     disableMapDragging,
     enableMapDragging,
-    changeChecked
+    changeChecked,
+    changeZoom,
+    changeBounds
 } = mapSlice.actions
 export default mapSlice.reducer

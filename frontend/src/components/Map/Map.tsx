@@ -38,6 +38,7 @@ const Map = () => {
 
 
 
+
     return (
       <div onClick={isRulerActive ? addMarker: null}>
           <MapContainer

@@ -1,7 +1,7 @@
 import {EType} from "@/enums/EType";
 import {LatLngExpression} from "leaflet";
 
-export interface ICity{
+export interface ISettlement{
     name: string,
     population: number,
     type: EType,

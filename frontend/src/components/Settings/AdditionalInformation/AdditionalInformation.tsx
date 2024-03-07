@@ -9,13 +9,13 @@ import {changeChecked, refreshRegions} from "@/store/map/map-slice";
 import {ERegions} from "@/enums/ERegions";
 import {LatLngExpression} from "leaflet";
 import {IBorder} from "@/interfaces/IBorder";
-import {ICity} from "@/interfaces/ICity";
+import {ISettlement} from "@/interfaces/ISettlement";
 
 const AdditionalInformation = () => {
 
     const regions:IRegion[] = useAppSelector(state => state.map).polygons.regions
     const natureReserves:LatLngExpression[][] = useAppSelector(state => state.map).polygons.natureReserves
-    const cities:ICity[] = useAppSelector(state => state.map).polygons.cities
+    const settlements:ISettlement[] = useAppSelector(state => state.map).polygons.settlements
     const borders:IBorder[] = useAppSelector(state => state.map).borders
 
     const dispatch = useAppDispatch()
@@ -31,8 +31,8 @@ const AdditionalInformation = () => {
                 natureReserves.length === 0 ? dispatch(fetchRegions((e.target as HTMLInputElement).value)) :  dispatch(refreshRegions(e.target.value))
                 break
             }
-            case ERegions.CITY:{
-                cities.length === 0 ? dispatch(fetchRegions((e.target as HTMLInputElement).value)) :  dispatch(refreshRegions(e.target.value))
+            case ERegions.SETTLEMENTS:{
+                settlements.length === 0 ? dispatch(fetchRegions((e.target as HTMLInputElement).value)) :  dispatch(refreshRegions(e.target.value))
             }
         }
 
