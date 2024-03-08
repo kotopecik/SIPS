@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {Marker, Popup, useMap} from "react-leaflet";
+import {Marker, Polygon, Popup, useMap} from "react-leaflet";
 import {useAppDispatch, useAppSelector} from "@/hooks/hook";
 import {changeBounds, changeZoom} from "@/store/map/map-slice";
 import {icons} from "@/data/icons";
@@ -9,6 +9,7 @@ import {ISettlement} from "@/interfaces/ISettlement";
 
 export default React.memo(function Settlements(){
 
+    const blueOptions = { color: 'blue' }
     const bounds = useAppSelector(state => state.map).bounds
     const zoom = useAppSelector(state => state.map).zoom
     const settlements:ISettlement[] = useAppSelector(state => state.map).polygons.settlements
@@ -33,20 +34,20 @@ export default React.memo(function Settlements(){
         };
     }, [map]);
 
- 
+
 
     //cities, towns, villages
 
     return (
         <>
             {settlements.map((settlement:ISettlement, index) => (
-                settlement.type === SettlementsCalculations.getType(zoom)
+                SettlementsCalculations.getTypeArray(zoom).includes(settlement.type)
                 && SettlementsCalculations.isCoordinateInsideBounds([settlement.latitude, settlement.longitude], bounds)
-                && <Marker icon = {icons().customIcon} key = {index} position = {[settlement.latitude, settlement.longitude]}>
-                    <Popup>
-                        {settlement.name}
-                    </Popup>
-                </Marker>
+                && ((zoom > 9 && settlement.poly !== null) ?
+                    <Polygon key = {index} pathOptions={blueOptions} positions={SettlementsCalculations.swapLatAndLng(settlement.poly)}><Popup>{settlement.name}</Popup></Polygon>
+                :
+                    <Marker icon = {icons().settlementIcon} key = {index} position = {[settlement.latitude, settlement.longitude]}><Popup>{settlement.name}</Popup></Marker>
+                )
             ))}
         </>
     );

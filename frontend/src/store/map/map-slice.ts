@@ -3,7 +3,6 @@ import {MapState} from "@/store/map/map-state";
 import {fetchRegions} from "@/store/map/map-actions";
 import {ERegions} from "@/enums/ERegions";
 import {borders} from "@/data/borders";
-import {EZoom} from "@/enums/EZoom";
 import {LatLngBounds} from "leaflet";
 
 
@@ -40,6 +39,7 @@ const mapSlice = createSlice({
                 }
                 case ERegions.SETTLEMENTS:{
                     state.polygons.settlements = []
+                    break
                 }
             }
         },

@@ -1,14 +1,7 @@
 import {LatLngBounds, LatLngExpression} from "leaflet";
-import {EZoom} from "@/enums/EZoom";
 import {EType} from "@/enums/EType";
 
-const zoomToTypeMap = new Map<EZoom, EType>([
-    [EZoom.CITY, EType.CITY],
-    [EZoom.VILLAGE, EType.VILLAGE],
-    [EZoom.EMPTY, EType.EMPTY],
-    [EZoom.TOWN, EType.TOWN],
-    [EZoom.HAMLET, EType.HAMLET]
-]);
+
 
 export class SettlementsCalculations{
     static isCoordinateInsideBounds(coordinate: LatLngExpression, bounds: LatLngBounds): boolean {
@@ -21,31 +14,34 @@ export class SettlementsCalculations{
             lng <= bounds.getNorthEast().lng;
     }
 
-    static getType(zoom: number): EType {
+    static getTypeArray(zoom: number): EType[] {
         // я пытался по умному
-        // return zoomToTypeMap.get(zoom) || EType.EMPTY;
         switch (zoom){
             case 1:
             case 2:
             case 3:
             case 4:
-            case 5:{
-                return EType.CITY
-            }
+            case 5:
             case 6:
-            case 7:
+            case 7:{
+                return [EType.CITY]
+            }
             case 8:
             case 9:{
-                return EType.TOWN
-            }
-
-            case 10:{
-                return EType.VILLAGE
+                return [EType.CITY, EType.TOWN]
             }
             default:{
-                return EType.HAMLET
+                return [EType.CITY, EType.TOWN, EType.VILLAGE]
             }
         }
-
     }
+    static swapLatAndLng(array: LatLngExpression[]): LatLngExpression[] {
+        const newArray: LatLngExpression[] = [];
+        for (let i = 0; i < array.length; i++) {
+            newArray.push([array[i][1], array[i][0]]);
+        }
+        return newArray;
+    }
+
+
 }
