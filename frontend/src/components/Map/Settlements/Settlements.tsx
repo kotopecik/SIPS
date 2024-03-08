@@ -42,7 +42,7 @@ export default React.memo(function Settlements(){
         <>
             {settlements.map((settlement:ISettlement, index) => (
                 SettlementsCalculations.getTypeArray(zoom).includes(settlement.type)
-                && SettlementsCalculations.isCoordinateInsideBounds([settlement.latitude, settlement.longitude], bounds)
+                && SettlementsCalculations.isCoordinateInsideBounds([settlement.latitude, settlement.longitude], bounds, settlement.type)
                 && ((zoom > 9 && settlement.poly !== null) ?
                     <Polygon key = {index} pathOptions={blueOptions} positions={SettlementsCalculations.swapLatAndLng(settlement.poly)}><Popup>{settlement.name}</Popup></Polygon>
                 :

@@ -2,9 +2,11 @@ import {LatLngBounds, LatLngExpression} from "leaflet";
 import {EType} from "@/enums/EType";
 
 
-
 export class SettlementsCalculations{
-    static isCoordinateInsideBounds(coordinate: LatLngExpression, bounds: LatLngBounds): boolean {
+    static isCoordinateInsideBounds(coordinate: LatLngExpression, bounds: LatLngBounds, type:EType): boolean {
+        if (type === EType.CITY){
+            return true
+        }
         const lat = coordinate[0]
         const lng = coordinate[1]
 
