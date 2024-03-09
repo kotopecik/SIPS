@@ -1,10 +1,10 @@
 import styles from "./UserGuide.module.scss";
-import map from "../../../assets/map.png";
-import map1 from "../../../assets/map1.png";
-import sett from "../../../assets/sett.png";
-import sett1 from "../../../assets/sett1.png";
-import calend from "../../../assets/calend.png";
-import calend1 from "../../../assets/calend1.png";
+import map from "../../../assets/png/screenshots/map.png";
+import map1 from "../../../assets/png/screenshots/map1.png";
+import sett from "../../../assets/png/screenshots/sett.png";
+import sett1 from "../../../assets/png/screenshots/sett1.png";
+import calend1 from "../../../assets/png/screenshots/calend1.png";
+import calend from "../../../assets/png/screenshots/calend.png"
 import { useState } from "react";
 import { MdOutlineMenu } from "react-icons/md";
 import { Link } from "react-router-dom";
