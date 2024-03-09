@@ -20,7 +20,7 @@ export default function Calendar() {
       dispatch(setDate(newValue?.format("YYYYMMDD")))
   }
   const handleTimeChange = (newValue) => {
-      dispatch(setTime(newValue?.format("HH:mm")))
+      dispatch(setTime(newValue?.format("HH:mm:ss")))
   }
 
 
