@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import styles from "./Settings.module.scss";
 import { IoSettingsSharp } from "react-icons/io5";
 import FormGroup from "@mui/material/FormGroup";
@@ -9,26 +9,36 @@ import LayerSwitch from "@/components/Settings/LayerSwitch/LayerSwitch";
 import DataCollection from "./DataCollection";
 const Settings = () => {
   const [isOpen, setOpen] = useState(false);
+  const settRef = useRef();
   const handleClick = () => {
-      setOpen(!isOpen)
-      console.log(isOpen)
-  }
+    setOpen(!isOpen);
+  };
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (!event.composedPath().includes(settRef.current)) {
+        setOpen(false);
+      }
+    };
+    document.body.addEventListener("click", handleClickOutside);
+    return () => document.body.removeEventListener("click", handleClickOutside);
+  }, []);
   return (
     <>
-      <div className={styles.block}>
-        <IoSettingsSharp className={styles.block__icon} onClick={handleClick}/>
-      </div>
-        {isOpen && <div className={`${styles.sett} ${styles.active}`}>
+      <div ref={settRef} className={styles.block}>
+        <IoSettingsSharp className={styles.block__icon} onClick={handleClick} />
+
+        {isOpen && (
+          <div className={`${styles.sett} ${styles.active}`}>
             <FormGroup sx={{ padding: 1 }}>
-                <LayerSwitch />
-                <AdditionalInformation />
-                <Satelite />
-                <SortPanel/>
-                <DataCollection/>
+              <LayerSwitch />
+              <AdditionalInformation />
+              <Satelite />
+              <SortPanel />
+              <DataCollection />
             </FormGroup>
-        </div>}
-
-
+          </div>
+        )}
+      </div>
     </>
   );
 };

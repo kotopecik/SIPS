@@ -6,57 +6,18 @@ import sett1 from "../../../assets/png/screenshots/sett1.png";
 import calend1 from "../../../assets/png/screenshots/calend1.png";
 import calend from "../../../assets/png/screenshots/calend.png"
 import { useState } from "react";
-import { MdOutlineMenu } from "react-icons/md";
-import { Link } from "react-router-dom";
+import Navbar from "@/components/navbar/Navbar";
+
 const UserGuide = () => {
-  const [isOpen, setOpen] = useState(false);
+ 
   const [toggleState, setToggleState] = useState(1);
   return (
-    <div className={styles.root}>
-      <header className={styles.header}>
-        <Link to="/" className={styles.logo}>
-          SIPS
-        </Link>
-        <MdOutlineMenu
-          className={styles.icons__open}
-          onClick={() => setOpen(!isOpen)}
-        />
-        <ul className={`${styles.navbar} ${isOpen ? styles.active : ""}`}>
-          <li className={styles.navbar__item}>
-            <Link to="/">Перейти к карте</Link>
-          </li>
-          <li className={styles.navbar__item}>
-            <Link to="!#">Профиль</Link>
-          </li>
-          <li className={styles.navbar__item}>
-            <Link to="/authorization">Выйти</Link>
-          </li>
-        </ul>
-      </header>
-      {/* <p className={styles.name}>Руководство пользователя</p> */}
-      <div className={styles.container}>
-        <ul className={styles.modules}>
-          <li
-            className={styles.modules__item}
-            onClick={() => setToggleState(1)}
-          >
-            Модуль «Карта»
-          </li>
-          <li
-            className={styles.modules__item}
-            onClick={() => setToggleState(2)}
-          >
-            Модуль «Настройки»
-          </li>
-          <li
-            className={styles.modules__item}
-            onClick={() => setToggleState(3)}
-          >
-            Модуль «Календарь»
-          </li>
-        </ul>
-      </div>
-      <div
+    <>
+    
+    <Navbar/>
+    <div className={styles.root}> 
+      <div className={styles.block}>
+      <div 
         className={`${styles.map} ${toggleState === 1 ? styles.active : ""}`}
       >
         <img src={map} alt="доп. информация" />
@@ -79,7 +40,7 @@ const UserGuide = () => {
             масштабом можно усправлять с помощью колёсика мыши.
           </li>
         </ul>
-      </div>n
+      </div>
       <div
         className={`${styles.settings} ${
           toggleState === 2 ? styles.active : ""
@@ -118,7 +79,31 @@ const UserGuide = () => {
           <img src={calend1} alt="календарь" />
         </ul>
       </div>
+       <div className={styles.container}>
+        <ul className={styles.modules}>
+          <li
+            className={styles.modules__item}
+            onClick={() => setToggleState(1)}
+          >
+            Модуль «Карта»
+          </li>
+          <li
+            className={styles.modules__item}
+            onClick={() => setToggleState(2)}
+          >
+            Модуль «Настройки»
+          </li>
+          <li
+            className={styles.modules__item}
+            onClick={() => setToggleState(3)}
+          >
+            Модуль «Календарь»
+          </li>
+        </ul>
+      </div>
+      </div>
     </div>
+    </>
   );
 };
 
