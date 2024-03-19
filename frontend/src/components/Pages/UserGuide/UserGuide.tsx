@@ -20,7 +20,7 @@ const UserGuide = () => {
               toggleState === 1 ? styles.active : ""
             }`}
           >
-            <img src={map} alt="доп. информация" />
+            <img className={styles.img} src={map} alt="доп. информация" />
             <ul className={`${toggleState === 1 ? styles.text : ""}`}>
               <li>
                 1. Модуль, который показывает координаты курсора мыши на карте,
@@ -35,7 +35,7 @@ const UserGuide = () => {
                 отсчёт, далее необходимо поставить следующую точку, в
                 необходимом месте.
               </li>
-              <img src={map1} alt="доп. информация" />
+              <img className={styles.img} src={map1} alt="доп. информация" />
               <li>
                 3. Кнопки с иконками "+" и "-" предназначены для изменения
                 масштаба карты. Кнопка "+" увеличивает масштаб, кнопка "-"
@@ -54,12 +54,12 @@ const UserGuide = () => {
                 На Главной станице веб-приложения, в правом, верхнем углу,
                 находится кнопка с иконкой шестерёнки:
               </li>
-              <img src={sett} alt="настройки" />
+              <img className={styles.img} src={sett} alt="настройки" />
               <li>
                 При нажатии на неё раскроется меню с набором дополнительных
                 инструментов:
               </li>
-              <img src={sett1} alt="настройки" />
+              <img className={styles.img} src={sett1} alt="настройки" />
               <li>
                 Пользователь может менять стиль подстилающей карты, для этого
                 необходимо нажать на Radio button с соответствующим названием
@@ -77,9 +77,9 @@ const UserGuide = () => {
                 На Главной станице веб-приложения, в правом, верхнем углу,
                 находится кнопка с иконкой календаря:
               </li>
-              <img src={calend} alt="календарь" />
+              <img className={styles.img} src={calend} alt="календарь" />
               <li>При нажатии на неё раскроется небольшое окно:</li>
-              <img src={calend1} alt="календарь" />
+              <img className={styles.img} src={calend1} alt="календарь" />
             </ul>
           </div>
           <div className={styles.container}>

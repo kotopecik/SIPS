@@ -64,7 +64,7 @@
   position: absolute;
   left: 54%;
   transform: translateX(-50%);
-  padding: 5px;
+  padding: 10px;
   max-width: 900px;
   max-height: 800px;
   background: linear-gradient(
@@ -75,7 +75,6 @@
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border-radius: 10px;
-  text-align: center;
   box-shadow: 0 8px 32px 0 #5a2bb24d;
   visibility: hidden;
   &.active {
@@ -91,6 +90,12 @@
     font-weight: 400;
     font-size: 13px;
   }
+  text-align: left;
+}
+.img{
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
 }
 .settings {
   position: absolute;
