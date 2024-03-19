@@ -15,6 +15,28 @@ const UserGuide = () => {
       <Navbar />
       <div className={styles.root}>
         <div className={styles.block}>
+          <div className={styles.container}>
+            <ul className={styles.modules}>
+              <li
+                className={styles.modules__item}
+                onClick={() => setToggleState(1)}
+              >
+                Модуль «Карта»
+              </li>
+              <li
+                className={styles.modules__item}
+                onClick={() => setToggleState(2)}
+              >
+                Модуль «Настройки»
+              </li>
+              <li
+                className={styles.modules__item}
+                onClick={() => setToggleState(3)}
+              >
+                Модуль «Календарь»
+              </li>
+            </ul>
+          </div>
           <div
             className={`${styles.map} ${
               toggleState === 1 ? styles.active : ""
@@ -77,31 +99,9 @@ const UserGuide = () => {
                 На Главной станице веб-приложения, в правом, верхнем углу,
                 находится кнопка с иконкой календаря:
               </li>
-              <img className={styles.img} src={calend} alt="календарь" />
+              <img className={styles.img1} src={calend} alt="календарь" />
               <li>При нажатии на неё раскроется небольшое окно:</li>
-              <img className={styles.img} src={calend1} alt="календарь" />
-            </ul>
-          </div>
-          <div className={styles.container}>
-            <ul className={styles.modules}>
-              <li
-                className={styles.modules__item}
-                onClick={() => setToggleState(1)}
-              >
-                Модуль «Карта»
-              </li>
-              <li
-                className={styles.modules__item}
-                onClick={() => setToggleState(2)}
-              >
-                Модуль «Настройки»
-              </li>
-              <li
-                className={styles.modules__item}
-                onClick={() => setToggleState(3)}
-              >
-                Модуль «Календарь»
-              </li>
+              <img className={styles.img1} src={calend1} alt="календарь" />
             </ul>
           </div>
         </div>
