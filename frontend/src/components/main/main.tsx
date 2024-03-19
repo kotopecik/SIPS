@@ -9,6 +9,7 @@ const Authorization = lazy(() => import("@/components/Pages/Authorization"))
 const Registration = lazy(() => import("@/components/Pages/Registration"))
 const RestoreAccess = lazy(() => import("@/components/Pages/RestoreAccess"))
 const UserGuide = lazy(() => import("@/components/Pages/UserGuide/UserGuide"))
+const AboutUs = lazy(() => import("@/components/Pages/AboutUs/AboutUs"))
 const Map = lazy(() => import("@/components/Map/Map"))
 
 
@@ -54,6 +55,12 @@ function Main (){
             <Route path="/management" element={
                     <Suspense fallback={<Loading/>}>
                         <UserGuide />
+                    </Suspense>
+                }
+            />
+            <Route path="/home" element={
+                    <Suspense fallback={<Loading/>}>
+                        <AboutUs />
                     </Suspense>
                 }
             />
