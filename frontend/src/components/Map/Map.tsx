@@ -1,5 +1,5 @@
 import './Map.scss'
-import {MapContainer, TileLayer, useMap, useMapEvent} from "react-leaflet";
+import {MapContainer, TileLayer } from "react-leaflet";
 import {LatLngExpression, LatLngLiteral} from "leaflet";
 import {useAppDispatch, useAppSelector} from "@/hooks/hook";
 import Coords from "@/components/Map/Coords/Coords";
@@ -25,7 +25,11 @@ const Map = () => {
   const dragging:boolean = useAppSelector(state => state.map).dragging
   const isCursorActive:boolean = useAppSelector(state => state.cursor).isActive
 
-  const dispatch = useAppDispatch()
+  //   URL for tile service (NOAA-20? VIIRS JPSS?)
+  const VIIRS_TILE_URL = 'http://192.168.84.96:8082/temp/{z}/{x}/{-y}.png'
+
+
+    const dispatch = useAppDispatch()
 
     const addMarker = (event) => {
       if((event.clientY < window.window.innerHeight - 200) || (event.clientX > 150)) {
@@ -53,8 +57,9 @@ const Map = () => {
 
               <TileLayer url={layer} />
 
+              {/*current params for display*/}
 
-
+              {/*<TileLayer url={VIIRS_TILE_URL} opacity={0.7}/>*/}
               <Regions />
               <NatureReserves />
               <Settlements />
