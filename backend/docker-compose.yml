@@ -1,0 +1,42 @@
+version: "3"
+
+services:
+  yt_postgres:
+    image: postgres:12
+    container_name: yt_postgres
+    volumes:
+      - ~/.pg/pg_data/yt:/var/lib/postgresql/data
+    env_file:
+      - .env
+
+  CRUDAPI:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: yt_docker:latest
+    container_name: yt_docker
+    depends_on:
+      - yt_postgres
+    volumes:
+      - static_volume:/yt/static
+      - media_volume:/yt/media
+    env_file:
+      - .env
+    command: >
+      bash -c "./manage.py collectstatic --noinput && ./manage.py migrate && ./manage.py runserver 0.0.0.0:8000"
+
+  nginx:
+    image: nginx
+    container_name: yt_nginx
+    depends_on:
+      - CRUDAPI
+    ports:
+      - "8000:80"
+    volumes:
+      - static_volume:/yt/static
+      - media_volume:/yt/media
+    command: nginx -g "daemon off;"
+
+volumes:
+  static_volume:
+  media_volume:
