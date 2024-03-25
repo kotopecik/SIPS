@@ -1,0 +1,11 @@
+.ruler{
+  min-width: 80px;
+  position: absolute;
+  z-index: 1000;
+  cursor: pointer;
+  border-radius: 3px;
+  bottom: 130px;
+  left: 8px;
+  padding: 5px;
+  border: 1px solid gray;
+}

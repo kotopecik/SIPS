@@ -1,23 +1,22 @@
 **/.idea
 
-*.sqlite
-*.env
+**/*.sqlite3
+**/*.env
 **/venv/
 
 **/__pycache__/
 *.py[cod]
 
-**/.idea
+**/.pytest_cache
 
 **/migrations/**
 !**/migrations
 !**/migrations/__init__.py
 
-main.py
+backend/main.py
 
 **/locale
 **/media/*
-
 
 **/static/admin
 **/static/debug_toolbar

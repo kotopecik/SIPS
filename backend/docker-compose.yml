@@ -1,80 +1,48 @@
-# инструкция как проект запускать
-# version: "2"
+version: "3"
 
-# services:
+services:
+  yt_postgres:
+    image: postgres:12
+    container_name: yt_postgres
+    volumes:
+      - yt_postgres-volume:/var/lib/postgresql/data
+    env_file:
+      - .env
+    command: -p $POSTGRES_PORT
 
-#   yt_postgres:
-#    image: postgres:12
-#    container_name: yt_postgres
-#    volumes:
-#      - ~/.pg/pg_data/yt:/var/lib/postgresql/data
-#    env_file:
-#      - .env
+  CRUDAPI:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: yt_docker:latest
+    container_name: yt_docker
+    depends_on:
+      - yt_postgres
+    volumes:
+      - $HOME/.cache/pip:/root/.cache/pip
+      - static_volume:/yt/static
+      - media_volume:/yt/media
+    env_file:
+      - .env
+    environment:
+      POSTGRES_HOST: "yt_postgres"
+      DOCKER_START: 1
+    command: >
+      bash -c "./CRUDAPI/manage.py collectstatic --noinput && ./CRUDAPI/manage.py migrate && ./CRUDAPI/manage.py runserver 0.0.0.0:8000"
 
-#   CRUDAPI:
-#     build:
-#       dockerfile: Dockerfile
-#       context: .
-#     image: yt_docker:latest
-#     container_name: yt_docker
-#     depends_on:
-#       - yt_postgres
-#     volumes:
-#       - static_volume:/yt/static
-#       - media_volume:/yt/media
-#     env_file:
-#      - .env
-#     command: >
-#       bash -c "./manage.py collectstatic --noinput && manage.py && manage.py runserver -b 0.0.0.0:8000 CRUDAPI.wsgi:application"
+  nginx:
+    image: nginx
+    container_name: yt_nginx
+    depends_on:
+      - CRUDAPI
+    ports:
+      - "8000:80"
+    volumes:
+      - static_volume:/yt/static
+      - media_volume:/yt/media
 
-#   nginx:
-#     build:
-#       dockerfile: ./Dockerfile
-#       context: ./docker/nginx/
-#     container_name: yt_nginx
-#     image: yt_nginx
-#     volumes:
-#      - static_volume:/yt/static
-#      - media_volume:/yt/media
-#     depends_on:
-#       - CRUDAPI
-#     ports:
-#       - "8000:80"
+volumes:
+  static_volume:
+  media_volume:
+  yt_postgres-volume:
 
-# volumes:
-#   static_volume:
-#   media_volume:
-
-
-#ngnix_config
-#upstream CRUDAPI {
-#    server CRUDAPI:8000;
-#}
-
-#server {
-
-#    listen 80;
-
-#    location / {
-#        include proxy_params;
-#        proxy_pass http://CRUDAPI;
-#    }
-
-#    location /static/ {
-#        alias /yt/static/;
-#    }
-
-#     location /media/ {
-#        alias /yt/static/;
-#    }
-#}
-
-
-#proxy_params
-#proxy_set_header Host $http_host;
-#proxy_set_header X-Real_IP $remote_addr;
-#proxy_set_header X-Forwarded-For $proxy_add_x_forwarder_for;
-#proxy_set_header X-Forwarded-Proto $scheme;
-#proxy_set_header X-NginX-Proxy true;
-#proxy_set_header Upgrade $http_upgrade;
-#proxy_pass_header Set-Cookie;

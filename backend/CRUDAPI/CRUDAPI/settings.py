@@ -12,8 +12,10 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 import os
 from pathlib import Path
 from datetime import timedelta
+from dotenv import load_dotenv
 
 
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -28,7 +30,8 @@ SECRET_KEY = 'django-insecure-t7!6eujn8*z=!_l6n71f6k_&=hqn(7ro4a84j7@b@4hj22*3^o
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+# all hosts can make requests
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -45,11 +48,13 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework_swagger',
     'drf_yasg',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -131,32 +136,15 @@ WSGI_APPLICATION = 'CRUDAPI.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-#DATABASES = {
-#    'default': {
-#        'ENGINE': 'django.db.backends.sqlite3',
-#        'NAME': BASE_DIR / 'db.sqlite3',
-#    }
-#}
-
-#DATABASES = {
-#    'default': {
-#        'ENGINE': 'django.db.backends.postgresql',
-#       'NAME': os.getenv('POSTGRES_DB', 'ivtusers'),
-#       'USER': os.getenv('POSTGRES_USER', 'postgres'),
-#       'PASSWORD': os.getenv('POSTGRES_PASSWORD', '12345'),
-#        'HOST': os.getenv('POSTGRES_HOST', 'localhost'),
-#        'PORT': os.getenv('POSTGRES_PORT', 5433),
-#    }
-#}
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'ivtusers',
-        'USER': 'postgres',
-        'PASSWORD': '12345',
-        'HOST': 'localhost',
-        'PORT': 5433,
+        'NAME': os.getenv('POSTGRES_DB', 'db'),
+        'USER': os.getenv('POSTGRES_USER', 'user'),
+        'PASSWORD': os.getenv('POSTGRES_PASSWORD', '1234'),
+        'HOST': os.getenv('POSTGRES_HOST', '127.0.0.1'),
+        'PORT': os.getenv('POSTGRES_PORT', 5432),
     }
 }
 
@@ -198,11 +186,19 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
-#STATIC_ROOT = 'static'
-#MEDIA_ROOT = 'media'
+MEDIA_URL = '/media/'
+
+if bool(int(os.getenv('DOCKER_START', 0))):
+    STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+    MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+else:
+    STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# разрешаем все домены. Нужно потом поменять for example: CORS_ALLOWED_WHITELIST = ["http://localhost:3000"]
+CORS_ORIGIN_ALLOW_ALL = True

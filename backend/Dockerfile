@@ -1,33 +1,35 @@
-FROM python:3.10.9
 
+# Базовый образ Python
+FROM python:3.10-slim
 
 SHELL ["/bin/bash", "-c"]
 
-#переменные виртуального окружения
-ENV PYTHONDONTWRITEBYTECODE 1 #запрещает внутри контейнера создавать файлы с кэшом
+# Переменные виртуального окружения
+ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
-
 
 RUN pip install --upgrade pip
 
-RUN apt update && apt -qy install gcc libjpeg-dev libxslt-dev \
-    libpq-dev libmariadb-dev libmariadb-dev-compat gettext cron openssh-client flake8 locales vim
+# Установка зависимостей d
+#RUN apt-get update && apt-get -y install gcc libjpeg-dev libxslt-dev \
+#    libpq-dev libmariadb-dev libmariadb-dev-compat gettext cron openssh-client flake8 locales vim && \
+#    rm -rf /var/lib/apt/lists/*
 
-#создаем нового пользователя
-RUN useradd -rms /bin/bash yt && chmod 777 /opt /run  #yt - пользователь
+# Создаем нового пользователя
+RUN useradd -rms /bin/bash yt && chmod 777 /opt /run
 
-#указываем рабочую директорию внутри контейнера
+# Указываем рабочую директорию внутри контейнера
 WORKDIR /yt
 RUN mkdir /yt/static && mkdir /yt/media && chown -R yt:yt /yt && chmod 755 /yt
 
-#копируем внутрь контейнера
+# Копируем requirements.txt и устанавливаем зависимости
+COPY --chown=yt:yt requirements.txt .
+RUN #pip install -r requirements.txt
+RUN --mount=type=cache,target=/root/.cache/pip \
+    python -m pip install -r requirements.txt
+
+# Копируем остальные файлы проекта
 COPY --chown=yt:yt . .
 
-#копируем requirements.txt
-COPY requirements.txt .
-
-RUN pip install -r requirements.txt
-
+# Устанавливаем пользователя по умолчанию
 USER yt
-
-CMD ["manage.py runserver", "-b", "0.0.0.0:8001", "CRUDAPI.wsgi:application"]
