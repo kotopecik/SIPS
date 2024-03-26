@@ -1,4 +1,3 @@
-//import { MdOutlineMenu } from "react-icons/md";
 import { guideLinks } from "@/data/links";
 import styles from "./Navbar.module.scss";
 import { Link } from "react-router-dom";
@@ -9,11 +8,6 @@ const Navbar = () => {
         <Link to="/" className={styles.logo}>
           SIPS
         </Link>
-        {/*  <MdOutlineMenu
-          className={styles.icons__open}
-          onClick={() => setOpen(!isOpen)}
-        /> */}
-
         <ul className={styles.navbar}>
           {guideLinks.map((link) => (
             <li key={link.id} className={styles.navbar__item}>

@@ -4,14 +4,15 @@ import {Loading} from "@/components/main/Loading/Loading";
 import {useAppDispatch} from "@/hooks/hook";
 import {setCursorPosition} from "@/store/cursor/cursor-slice";
 
+
 const Header = lazy(() => import("@/components/Header"))
 const Authorization = lazy(() => import("@/components/Pages/Authorization"))
 const Registration = lazy(() => import("@/components/Pages/Registration"))
 const RestoreAccess = lazy(() => import("@/components/Pages/RestoreAccess"))
 const UserGuide = lazy(() => import("@/components/Pages/UserGuide/UserGuide"))
-const AboutUs = lazy(() => import("@/components/Pages/AboutUs/AboutUs"))
+const AboutUs = lazy(() => import("@/components/Pages/AboutUs"))
 const Map = lazy(() => import("@/components/Map/Map"))
-
+const Profile = lazy(() => import("@/components/Pages/Profile"))
 
 
 
@@ -61,6 +62,12 @@ function Main (){
             <Route path="/home" element={
                     <Suspense fallback={<Loading/>}>
                         <AboutUs />
+                    </Suspense>
+                }
+            />
+            <Route path="/profile" element={
+                    <Suspense fallback={<Loading/>}>
+                        <Profile />
                     </Suspense>
                 }
             />

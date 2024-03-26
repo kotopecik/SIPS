@@ -17,7 +17,7 @@ export const profileLinks: ILink[] = [
 export const mainLinks: ILink[] = [
     {
         id: 1,
-        to: "/about",
+        to: "/profile",
         title: "Профиль",
     },
     {
@@ -35,7 +35,7 @@ export const guideLinks: ILink[] = [
     },
     {
         id: 2,
-        to: "/about",
+        to: "/profile",
         title: "Профиль",
     },
     {
@@ -57,7 +57,7 @@ export const aboutLinks: ILink[] = [
     },
     {
         id: 2,
-        to: "/about",
+        to: "/profile",
         title: "Профиль",
     },
     {
@@ -71,4 +71,25 @@ export const aboutLinks: ILink[] = [
         title: "Выход",
     },
 ]
-
+export const mainProfileLinks: ILink[] = [
+    {
+        id: 1,
+        to: "/",
+        title: "Перейти к карте",
+    },
+    {
+        id: 2,
+        to: "/home",
+        title: "Главная",
+    },
+    {
+        id: 2,
+        to: "/management",
+        title: "Руководство пользователя",
+    },
+    {
+        id: 2,
+        to: "/authorization",
+        title: "Выход",
+    },
+]
