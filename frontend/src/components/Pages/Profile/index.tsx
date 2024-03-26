@@ -18,7 +18,6 @@ const Profile = () => {
           <div className={styles.inf}>
             <div >
               <p className={styles.text}>Ф.И.О</p>
-              <br />
               <p className={styles.legends}>
                 {userInfo.lastName +
                   " " +
