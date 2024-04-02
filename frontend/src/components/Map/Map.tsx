@@ -63,6 +63,7 @@ const Map = () => {
                         minZoom={3}
                         scrollWheelZoom={true}
                         maxBounds={[[-110, -170], [100, 200]]}
+                        doubleClickZoom={false}
                     >
                         <MapInner />
                         <TileLayer url={layer} />
