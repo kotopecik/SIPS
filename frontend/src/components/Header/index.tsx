@@ -4,16 +4,12 @@ import { Link } from "react-router-dom";
 import {mainLinks, profileLinks} from "@/data/links";
 import { MdOutlineMenu } from "react-icons/md";
 import { IoPeopleCircleOutline } from "react-icons/io5";
-import {useAppDispatch, useAppSelector} from "@/hooks/hook";
-import {disableMapDragging, enableMapDragging} from "@/store/map/map-slice";
 
 const Header = () => {
   const headRef= useRef();
   const [isOpenMenu, setOpenMenu] = useState(false);
   const [isOpenProfile, setOpenProfile] = useState(false);
-  const dragging:boolean = useAppSelector(state => state.map).dragging
 
-  const dispatch = useAppDispatch()
 
   const closeProfileMenu = () => {
     setOpenProfile(!isOpenProfile);

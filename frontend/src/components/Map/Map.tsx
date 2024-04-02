@@ -1,5 +1,5 @@
 import './Map.scss'
-import {MapContainer, TileLayer } from "react-leaflet";
+import {MapContainer, TileLayer, useMap} from "react-leaflet";
 import {LatLngExpression, LatLngLiteral} from "leaflet";
 import {useAppDispatch, useAppSelector} from "@/hooks/hook";
 import Coords from "@/components/Map/Coords/Coords";
@@ -12,9 +12,18 @@ import Regions from "@/components/Map/Regions/Regions";
 import NatureReserves from "@/components/Map/NatureReserves/NatureReserves";
 import RulerMarkers from "@/components/Map/RulerMarkers/RulerMarkers";
 import Settlements from "@/components/Map/Settlements/Settlements";
+import {setMap} from "@/store/map/map-slice";
+import {Loading} from "@/components/main/Loading/Loading";
 
 //спасибо центру за это
 const CENTR:LatLngExpression = [54.84643545576913, 83.05183410644533];
+
+const MapInner = () => {
+    const dispatch = useAppDispatch()
+    const map = useMap()
+    dispatch(setMap(map))
+    return null
+}
 
 
 const Map = () => {
@@ -22,8 +31,11 @@ const Map = () => {
   const layer:string = useAppSelector(state => state.map).layer
   const isRulerActive:boolean = useAppSelector(state => state.ruler).isRulerActive
   const mousePos:LatLngLiteral = useAppSelector(state => state.cursor).mousePos
-  const dragging:boolean = useAppSelector(state => state.map).dragging
   const isCursorActive:boolean = useAppSelector(state => state.cursor).isActive
+  const isRegions:boolean = useAppSelector(state => state.map).isRegions
+  const isNatureReserves:boolean = useAppSelector(state => state.map).isNatureReserves
+  const isSettlements:boolean = useAppSelector(state => state.map).isSettlements
+  const isLoading:boolean = useAppSelector(state => state.map).isLoading
 
   //   URL for tile service (NOAA-20? VIIRS JPSS?)
   const VIIRS_TILE_URL = 'http://192.168.84.96:8082/temp/{z}/{x}/{-y}.png'
@@ -39,39 +51,42 @@ const Map = () => {
     }
 
 
-
-
-
-
     return (
-      <div onClick={isRulerActive ? addMarker: null}>
-          <MapContainer
-              center={CENTR}
-              maxZoom={13}
-              zoom={4}
-              minZoom={3}
-              scrollWheelZoom={true}
-              maxBounds={[[-110, -170], [100, 200]]}
-              dragging = {!isCursorActive}
-          >
+        <>
+            {isLoading ?
+                <Loading/>
+            :
+                <div onClick={isRulerActive ? addMarker: null}>
+                    <MapContainer
+                        center={CENTR}
+                        maxZoom={13}
+                        zoom={4}
+                        minZoom={3}
+                        scrollWheelZoom={true}
+                        maxBounds={[[-110, -170], [100, 200]]}
+                    >
+                        <MapInner />
+                        <TileLayer url={layer} />
 
-              <TileLayer url={layer} />
+                        {/*current params for display*/}
 
-              {/*current params for display*/}
+                        {/*<TileLayer url={VIIRS_TILE_URL} opacity={0.7}/>*/}
 
-              {/*<TileLayer url={VIIRS_TILE_URL} opacity={0.7}/>*/}
-              <Regions />
-              <NatureReserves />
-              <Settlements />
+                        {isRegions && <Regions />}
+                        {isNatureReserves && <NatureReserves />}
+                        {isSettlements && <Settlements />}
 
-              <RulerMarkers />
-              <Coords />
-              <Settings />
-              <Calendar />
-              <Ruler/>
-              {isCursorActive ? <Cursor /> : ""}
-          </MapContainer>
-      </div>
+
+                        <RulerMarkers />
+                        <Coords />
+                        <Settings />
+                        <Calendar />
+                        <Ruler/>
+                        {isCursorActive ? <Cursor /> : ""}
+                    </MapContainer>
+                </div>
+            }
+        </>
 
   );
 }

@@ -3,7 +3,7 @@ import { Radio, RadioGroup } from "@mui/material";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import { FormControl } from "@mui/base";
 import s from "@/components/Settings/Settings.module.scss";
-import { layers } from "@/components/Settings/LayerSwitch/layers";
+import { layers } from "@/data/layers";
 import { useAppDispatch, useAppSelector } from "@/hooks/hook";
 import { setLayer } from "@/store/map/map-slice";
 

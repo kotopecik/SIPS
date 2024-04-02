@@ -17,11 +17,14 @@ const Profile = lazy(() => import("@/components/Pages/Profile"))
 
 
 function Main (){
+
     const dispatch = useAppDispatch()
 
     const handleMouseMove = (event) => {
         dispatch(setCursorPosition({ x: event.clientX, y: event.clientY }));
     };
+
+
 
 
     return (<div onMouseMove={handleMouseMove}>
