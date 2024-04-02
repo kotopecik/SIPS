@@ -1,17 +1,18 @@
 import {ILayer} from "@/interfaces/ILayer";
+import {EUrls} from "@/enums/EUrls";
 
 
 export const layers:ILayer[] = [
     {
-        name: 'Standart map',
-        url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+        name: 'Standard map',
+        url: EUrls.STANDARD_TILE_URL,
     },
     {
         name: 'ESRI map',
-        url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+        url: EUrls.ESRI_TILE_URL,
     },
     {
         name: 'Monochrome map',
-        url: 'https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png',
+        url: EUrls.MONOCHROME_TILE_URL,
     },
 ]

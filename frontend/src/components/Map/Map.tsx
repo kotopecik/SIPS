@@ -14,6 +14,7 @@ import RulerMarkers from "@/components/Map/RulerMarkers/RulerMarkers";
 import Settlements from "@/components/Map/Settlements/Settlements";
 import {setMap} from "@/store/map/map-slice";
 import {Loading} from "@/components/main/Loading/Loading";
+import {EUrls} from "@/enums/EUrls";
 
 //спасибо центру за это
 const CENTR:LatLngExpression = [54.84643545576913, 83.05183410644533];
@@ -37,8 +38,6 @@ const Map = () => {
   const isSettlements:boolean = useAppSelector(state => state.map).isSettlements
   const isLoading:boolean = useAppSelector(state => state.map).isLoading
 
-  //   URL for tile service (NOAA-20? VIIRS JPSS?)
-  const VIIRS_TILE_URL = 'http://192.168.84.96:8082/temp/{z}/{x}/{-y}.png'
 
 
     const dispatch = useAppDispatch()
@@ -70,7 +69,7 @@ const Map = () => {
 
                         {/*current params for display*/}
 
-                        {/*<TileLayer url={VIIRS_TILE_URL} opacity={0.7}/>*/}
+                        {/*<TileLayer url={EUrls.VIIRS_TILE_URL} opacity={0.7}/>*/}
 
                         {isRegions && <Regions />}
                         {isNatureReserves && <NatureReserves />}
