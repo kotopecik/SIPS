@@ -1,4 +1,4 @@
-import Navbar from "@/components/navbar/AboutNavbar";
+import Navbar from "@/components/navbar";
 import styles from "./AboutUs.module.scss";
 const AboutUs = () => {
   return (

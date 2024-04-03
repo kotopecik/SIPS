@@ -1,4 +1,4 @@
-import Navbar from "@/components/navbar/ProfileNavbar";
+import Navbar from "@/components/navbar";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import styles from "./Profile.module.scss";
@@ -16,7 +16,7 @@ const Profile = () => {
       <div className={styles.root}>
         <div className={styles.block}>
           <div className={styles.inf}>
-            <div >
+            <div>
               <p className={styles.text}>Ф.И.О</p>
               <p className={styles.legends}>
                 {userInfo.lastName +
@@ -26,12 +26,10 @@ const Profile = () => {
                   userInfo.middleName}
               </p>
               <hr className={styles.hr} />
-            </div> 
+            </div>
             <div>
               <p className={styles.text}>Название организации</p>
-              <p className={styles.legends}>
-                {userInfo.organizationName}
-              </p>
+              <p className={styles.legends}>{userInfo.organizationName}</p>
               <hr className={styles.hr} />
             </div>
             <div>
@@ -39,8 +37,12 @@ const Profile = () => {
               <p className={styles.legends}>{userInfo.email}</p>
               <hr className={styles.hr} />
             </div>
-            <Link to='/restoreaccess'><button className={styles.button}>Изменить пароль</button></Link>
-            <Link to='!#'><button className={styles.button}>Администрирование</button></Link>
+            <Link to="/restoreaccess">
+              <button className={styles.button}>Изменить пароль</button>
+            </Link>
+            <Link to="!#">
+              <button className={styles.button}>Администрирование</button>
+            </Link>
           </div>
         </div>
       </div>

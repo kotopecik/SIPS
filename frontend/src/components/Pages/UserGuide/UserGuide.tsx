@@ -6,7 +6,7 @@ import sett1 from "../../../assets/png/screenshots/sett1.png";
 import calend1 from "../../../assets/png/screenshots/calend1.png";
 import calend from "../../../assets/png/screenshots/calend.png";
 import { useState } from "react";
-import Navbar from "@/components/navbar/GuideNavbar";
+import Navbar from "@/components/navbar";
 
 const UserGuide = () => {
   const [toggleState, setToggleState] = useState(1);
