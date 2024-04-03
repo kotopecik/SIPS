@@ -13,10 +13,14 @@ const initialState = {
         natureReserves: [],
         settlements: []
     },
-    dragging: true,
     borders: borders,
     zoom: 4,
-    bounds: new LatLngBounds([-110, -170], [100, 200])
+    bounds: new LatLngBounds([-110, -170], [100, 200]),
+    map: null,
+    isLoading: false,
+    isRegions: false,
+    isNatureReserves: false,
+    isSettlements: false
 }as MapState
 
 
@@ -24,30 +28,33 @@ const mapSlice = createSlice({
     name: 'map',
     initialState,
     reducers:{
+        setMap(state, action){
+            state.map = action.payload
+        },
         setLayer(state, action){
             state.layer = action.payload
         },
         refreshRegions(state, action){
             switch (action.payload){
                 case ERegions.REGIONS:{
-                    state.polygons.regions = []
+                    state.isRegions = !state.isRegions
                     break
                 }
                 case ERegions.NATURE_RESERVES:{
-                    state.polygons.natureReserves = []
+                    state.isNatureReserves = !state.isNatureReserves
                     break
                 }
                 case ERegions.SETTLEMENTS:{
-                    state.polygons.settlements = []
+                    state.isSettlements = !state.isSettlements
                     break
                 }
             }
         },
         disableMapDragging(state){
-            state.dragging = false
+            state.map.dragging.disable()
         },
         enableMapDragging(state){
-            state.dragging = true
+            state.map.dragging.enable()
         },
         changeChecked(state, action){
             state.borders[action.payload].checked = !state.borders[action.payload].checked
@@ -64,22 +71,32 @@ const mapSlice = createSlice({
             switch (action.payload.url){
                 case ERegions.REGIONS:{
                     state.polygons.regions = action.payload.response
+                    state.isRegions = true
+                    state.isLoading = false
                     break
                 }
                 case ERegions.NATURE_RESERVES:{
                     state.polygons.natureReserves = action.payload.response
+                    state.isNatureReserves = true
+                    state.isLoading = false
                     break
                 }
                 case ERegions.SETTLEMENTS:{
                     state.polygons.settlements = action.payload.response
+                    state.isSettlements = true
+                    state.isLoading = false
                     break
                 }
             }
+        }),
+        builder.addCase(fetchRegions.pending, (state:MapState) => {
+            state.isLoading = true
         })
     }
 })
 
 export const {
+    setMap,
     setLayer,
     refreshRegions,
     disableMapDragging,

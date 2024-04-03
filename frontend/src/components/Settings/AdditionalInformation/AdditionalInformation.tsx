@@ -56,7 +56,6 @@ const AdditionalInformation = () => {
                     }
                         label={border.name}
                     />
-
             ))}
         </>
     );
