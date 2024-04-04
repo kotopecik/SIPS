@@ -1,25 +1,25 @@
 import {IBorder} from "@/interfaces/IBorder";
-import {ERegions} from "@/enums/ERegions";
+import {EUrls} from "@/enums/EUrls";
 
 export const borders: IBorder[] = [
     {
         id: "0",
         name: "Границы регионов",
-        url: ERegions.REGIONS,
+        url: EUrls.REGIONS_URL,
         color: "error",
         checked: false
     },
     {
         id: "1",
         name: "Заповедники",
-        url: ERegions.NATURE_RESERVES,
+        url: EUrls.NATURE_RESERVES_URL,
         color: "success",
         checked: false
     },
     {
         id: "2",
         name: "Населенные пункты",
-        url: ERegions.SETTLEMENTS,
+        url: EUrls.SETTLEMENTS_URL,
         color: "primary",
         checked: false
     },

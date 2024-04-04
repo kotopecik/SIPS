@@ -6,10 +6,10 @@ import {useAppDispatch, useAppSelector} from "@/hooks/hook";
 import {fetchRegions} from "@/store/map/map-actions";
 import {IRegion} from "@/interfaces/IRegion";
 import {changeChecked, refreshRegions} from "@/store/map/map-slice";
-import {ERegions} from "@/enums/ERegions";
 import {LatLngExpression} from "leaflet";
 import {IBorder} from "@/interfaces/IBorder";
 import {ISettlement} from "@/interfaces/ISettlement";
+import {EUrls} from "@/enums/EUrls";
 
 const AdditionalInformation = () => {
 
@@ -23,15 +23,15 @@ const AdditionalInformation = () => {
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         dispatch(changeChecked(Number(e.target.id)))
         switch (e.target.value){
-            case ERegions.REGIONS:{
+            case EUrls.REGIONS_URL:{
                 regions.length === 0 ? dispatch(fetchRegions((e.target as HTMLInputElement).value)) :  dispatch(refreshRegions(e.target.value))
                 break
             }
-            case ERegions.NATURE_RESERVES:{
+            case EUrls.NATURE_RESERVES_URL:{
                 natureReserves.length === 0 ? dispatch(fetchRegions((e.target as HTMLInputElement).value)) :  dispatch(refreshRegions(e.target.value))
                 break
             }
-            case ERegions.SETTLEMENTS:{
+            case EUrls.SETTLEMENTS_URL:{
                 settlements.length === 0 ? dispatch(fetchRegions((e.target as HTMLInputElement).value)) :  dispatch(refreshRegions(e.target.value))
             }
         }

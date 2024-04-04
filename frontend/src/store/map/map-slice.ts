@@ -1,8 +1,8 @@
 import {createSlice} from "@reduxjs/toolkit";
 import {MapState} from "@/store/map/map-state";
 import {fetchRegions} from "@/store/map/map-actions";
-import {ERegions} from "@/enums/ERegions";
 import {borders} from "@/data/borders";
+import {EUrls} from "@/enums/EUrls";
 
 
 const initialState = {
@@ -33,15 +33,15 @@ const mapSlice = createSlice({
         },
         refreshRegions(state, action){
             switch (action.payload){
-                case ERegions.REGIONS:{
+                case EUrls.REGIONS_URL:{
                     state.isRegions = !state.isRegions
                     break
                 }
-                case ERegions.NATURE_RESERVES:{
+                case EUrls.NATURE_RESERVES_URL:{
                     state.isNatureReserves = !state.isNatureReserves
                     break
                 }
-                case ERegions.SETTLEMENTS:{
+                case EUrls.SETTLEMENTS_URL:{
                     state.isSettlements = !state.isSettlements
                     break
                 }
@@ -60,19 +60,19 @@ const mapSlice = createSlice({
     extraReducers:(builder) => {
         builder.addCase(fetchRegions.fulfilled, (state:MapState, action) => {
             switch (action.payload.url){
-                case ERegions.REGIONS:{
+                case EUrls.REGIONS_URL:{
                     state.polygons.regions = action.payload.response
                     state.isRegions = true
                     state.isLoading = false
                     break
                 }
-                case ERegions.NATURE_RESERVES:{
+                case EUrls.NATURE_RESERVES_URL:{
                     state.polygons.natureReserves = action.payload.response
                     state.isNatureReserves = true
                     state.isLoading = false
                     break
                 }
-                case ERegions.SETTLEMENTS:{
+                case EUrls.SETTLEMENTS_URL:{
                     state.polygons.settlements = action.payload.response
                     state.isSettlements = true
                     state.isLoading = false
