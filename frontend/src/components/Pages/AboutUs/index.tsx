@@ -2,8 +2,6 @@ import Navbar from "@/components/navbar";
 import styles from "./AboutUs.module.scss";
 const AboutUs = () => {
   return (
-    <>
-      <Navbar />
       <div className={styles.root}>
         <div className={styles.block}>
           <div className={styles.inf}>
@@ -71,7 +69,6 @@ const AboutUs = () => {
           </div>
         </div>
       </div>
-    </>
   );
 };
 

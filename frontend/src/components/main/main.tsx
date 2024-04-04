@@ -3,6 +3,7 @@ import {Route, Routes} from "react-router";
 import {Loading} from "@/components/main/Loading/Loading";
 import {useAppDispatch} from "@/hooks/hook";
 import {setCursorPosition} from "@/store/cursor/cursor-slice";
+import Navbar from "@/components/navbar";
 
 
 const Header = lazy(() => import("@/components/Header"))
@@ -57,21 +58,24 @@ function Main (){
                 }
             />
             <Route path="/management" element={
-                    <Suspense fallback={<Loading/>}>
-                        <UserGuide />
-                    </Suspense>
+                <Suspense fallback={<Loading/>}>
+                    <Suspense fallback={<Loading/>}><Navbar /></Suspense>
+                    <Suspense fallback={<Loading/>}><UserGuide /></Suspense>
+                </Suspense>
                 }
             />
             <Route path="/home" element={
-                    <Suspense fallback={<Loading/>}>
-                        <AboutUs />
-                    </Suspense>
+                <Suspense fallback={<Loading/>}>
+                    <Suspense fallback={<Loading/>}><Navbar /></Suspense>
+                    <Suspense fallback={<Loading/>}><AboutUs /></Suspense>
+                </Suspense>
                 }
             />
             <Route path="/profile" element={
-                    <Suspense fallback={<Loading/>}>
-                        <Profile />
-                    </Suspense>
+                <Suspense fallback={<Loading/>}>
+                    <Suspense fallback={<Loading/>}><Navbar /></Suspense>
+                    <Suspense fallback={<Loading/>}><Profile /></Suspense>
+                </Suspense>
                 }
             />
         </Routes>

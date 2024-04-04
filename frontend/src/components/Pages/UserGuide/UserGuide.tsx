@@ -11,8 +11,6 @@ import Navbar from "@/components/navbar";
 const UserGuide = () => {
   const [toggleState, setToggleState] = useState(1);
   return (
-    <>
-      <Navbar />
       <div className={styles.root}>
         <div className={styles.block}>
           <div className={styles.container}>
@@ -106,7 +104,6 @@ const UserGuide = () => {
           </div>
         </div>
       </div>
-    </>
   );
 };
 

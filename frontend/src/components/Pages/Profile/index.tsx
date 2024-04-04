@@ -11,8 +11,6 @@ const Profile = () => {
     organizationName: "нет информации",
   });
   return (
-    <>
-      <Navbar />
       <div className={styles.root}>
         <div className={styles.block}>
           <div className={styles.inf}>
@@ -46,7 +44,6 @@ const Profile = () => {
           </div>
         </div>
       </div>
-    </>
   );
 };
 
