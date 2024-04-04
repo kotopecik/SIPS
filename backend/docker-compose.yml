@@ -12,17 +12,18 @@ services:
 
   CRUDAPI:
     build:
-      context: .
+      context: ./AuthService
       dockerfile: Dockerfile
     image: yt_docker:latest
     container_name: yt_docker
     depends_on:
       - yt_postgres
     volumes:
-      - $HOME/.cache/pip:/root/.cache/pip
+      - cache-python:/root/.cache/pip #$HOME/.cache/pip
       - static_volume:/yt/static
       - media_volume:/yt/media
     env_file:
+      - ./AuthService/.env
       - .env
     environment:
       POSTGRES_HOST: "yt_postgres"
@@ -45,4 +46,5 @@ volumes:
   static_volume:
   media_volume:
   yt_postgres-volume:
+  cache-python:
 
