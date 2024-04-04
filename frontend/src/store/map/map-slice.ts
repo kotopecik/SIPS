@@ -3,7 +3,6 @@ import {MapState} from "@/store/map/map-state";
 import {fetchRegions} from "@/store/map/map-actions";
 import {ERegions} from "@/enums/ERegions";
 import {borders} from "@/data/borders";
-import {LatLngBounds} from "leaflet";
 
 
 const initialState = {
@@ -14,8 +13,6 @@ const initialState = {
         settlements: []
     },
     borders: borders,
-    zoom: 4,
-    bounds: new LatLngBounds([-110, -170], [100, 200]),
     map: null,
     isLoading: false,
     isRegions: false,
@@ -59,12 +56,6 @@ const mapSlice = createSlice({
         changeChecked(state, action){
             state.borders[action.payload].checked = !state.borders[action.payload].checked
         },
-        changeZoom(state, action){
-            state.zoom = action.payload
-        },
-        changeBounds(state, action){
-            state.bounds = action.payload
-        }
     },
     extraReducers:(builder) => {
         builder.addCase(fetchRegions.fulfilled, (state:MapState, action) => {
@@ -102,7 +93,5 @@ export const {
     disableMapDragging,
     enableMapDragging,
     changeChecked,
-    changeZoom,
-    changeBounds
 } = mapSlice.actions
 export default mapSlice.reducer
