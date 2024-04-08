@@ -6,4 +6,5 @@ export enum EUrls{
     REGIONS_URL = `https://raw.githubusercontent.com/DeadEndjke/ru-regions-json/main/regions.json`,
     NATURE_RESERVES_URL = `https://raw.githubusercontent.com/DeadEndjke/ru-regions-json/main/natureReserves.json`,
     SETTLEMENTS_URL = 'https://raw.githubusercontent.com/DeadEndjke/ru-regions-json/main/cities.json',
+    DATES_URL = 'https://raw.githubusercontent.com/DeadEndjke/ru-regions-json/main/dates.json'
 }

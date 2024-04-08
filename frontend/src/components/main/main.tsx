@@ -1,9 +1,11 @@
-import React, {lazy, Suspense} from "react";
+import React, {lazy, Suspense, useEffect} from "react";
 import {Route, Routes} from "react-router";
 import {Loading} from "@/components/main/Loading/Loading";
 import {useAppDispatch} from "@/hooks/hook";
 import {setCursorPosition} from "@/store/cursor/cursor-slice";
 import Navbar from "@/components/navbar";
+import {fetchDates} from "@/store/tile/tile-actions";
+import {EUrls} from "@/enums/EUrls";
 
 
 const Header = lazy(() => import("@/components/Header"))
@@ -24,6 +26,10 @@ function Main (){
     const handleMouseMove = (event) => {
         dispatch(setCursorPosition({ x: event.clientX, y: event.clientY }));
     };
+
+    useEffect(() => {
+        dispatch(fetchDates(EUrls.DATES_URL))
+    })
 
 
 

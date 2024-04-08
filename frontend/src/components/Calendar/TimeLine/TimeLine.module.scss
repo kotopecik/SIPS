@@ -1,0 +1,18 @@
+.timeline{
+  position: fixed;
+  z-index: 3000;
+  bottom: 240px;
+  width: 400px;
+  left: 100px;
+  background: white;
+  border: 2px solid rgba(0, 98, 255, 0.3);
+  border-radius: 8px;
+  padding: 10px;
+
+  span:not(:last-child){
+    margin-right: 5px;
+  }
+  .box{
+    margin: 0 auto;
+  }
+}

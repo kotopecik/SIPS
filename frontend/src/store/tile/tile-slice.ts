@@ -1,5 +1,8 @@
 import {createSlice} from "@reduxjs/toolkit";
 import {TileState} from "@/store/tile/tile-state";
+import {generateDate} from "@/utils/calendar";
+import dayjs from "dayjs";
+import {fetchDates} from "@/store/tile/tile-actions";
 
 const initialState = {
     dateTime:{
@@ -9,6 +12,8 @@ const initialState = {
     satellite: null,
     chanelComposition: "",
     expansion: "",
+    calendar: generateDate(dayjs().month(), dayjs().year()),
+    currentDate: dayjs(),
 } as TileState
 
 const tileSlice = createSlice({
@@ -17,21 +22,50 @@ const tileSlice = createSlice({
     reducers:{
         setDate(state, action){
             state.dateTime.date = action.payload
+            console.log(state.dateTime.date)
         },
         setTime(state, action){
             state.dateTime.time = action.payload
+            console.log(state.dateTime.time)
         },
         setSatellite(state, action){
             state.satellite = action.payload
         },
+        setCalendarMonth(state, action){
+            state.calendar = generateDate(action.payload.month, action.payload.year)
+        },
+        incrementCurrentMonth(state){
+            state.currentDate = state.currentDate.add(1, 'months')
+        },
+        decrementCurrentMonth(state){
+            state.currentDate = state.currentDate.subtract(1, 'months')
+        },
+        incrementCurrentYear(state){
+            state.currentDate = state.currentDate.add(1, 'years')
+        },
+        decrementCurrentYear(state){
+            state.currentDate = state.currentDate.subtract(1, 'years')
+        },
 
     },
+    extraReducers:(builder) => {
+        builder.addCase(fetchDates.fulfilled,  (state: TileState, action) => {
+            state.dates = action.payload
+            console.log(state.dates)
+        })
+
+    }
 
 })
 
 export const {
-    setDate,
     setTime,
+    setDate,
+    incrementCurrentMonth,
+    decrementCurrentMonth,
     setSatellite,
+    setCalendarMonth,
+    incrementCurrentYear,
+    decrementCurrentYear
 } = tileSlice.actions
 export default tileSlice.reducer
