@@ -1,10 +1,10 @@
 .coords{
-  position: absolute;
+  position: fixed;
   z-index: 1000;
   border-radius: 3px;
-  bottom: 119px;
-  left: 8px;
+  bottom: 68px;
+  left: 9px;
   background-color: white;
   padding: 5px;
-  box-shadow: 0 0 0 2px rgba(0,0,0,0.25);
+  border: 2px solid rgba(0, 98, 255, 0.3);
 }

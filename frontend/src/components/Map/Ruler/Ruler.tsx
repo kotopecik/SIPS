@@ -4,6 +4,9 @@ import {useAppDispatch, useAppSelector} from "@/hooks/hook";
 import {changeIsRulerActive, removeRulerMarkers} from "@/store/ruler/ruler-slice";
 import {changeCursorActive} from "@/store/cursor/cursor-slice";
 import {disableMapDragging, enableMapDragging} from "@/store/map/map-slice";
+import {FaRulerHorizontal} from "react-icons/fa";
+import {ImCross} from "react-icons/im";
+import {AiOutlineClear} from "react-icons/ai";
 
 
 
@@ -36,18 +39,22 @@ const Ruler = () => {
             onMouseDown={handleMouseDown}
             onMouseUp={handleMouseUp}
         >
-            <button
-                className={s.btn}
-                onClick={changeRulerActive}
-            >
-                {!isRulerActive ? "Ruler" : "X"}
-            </button>
             {rulerMarkers.length !== 0 &&
-                <button
+                <AiOutlineClear
                     className={s.btn}
                     onClick={removeMarkers}
-                >clear
-                </button>}
+                />
+            }
+            {!isRulerActive ?
+                <FaRulerHorizontal
+                    className={s.btn}
+                    onClick={changeRulerActive}
+                />
+                :
+                <ImCross className={s.btn} onClick={changeRulerActive}/>
+            }
+
+
         </div>
     );
 };

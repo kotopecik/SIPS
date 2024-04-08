@@ -43,7 +43,7 @@ const Map = () => {
     const dispatch = useAppDispatch()
 
     const addMarker = (event) => {
-      if((event.clientY < window.window.innerHeight - 200) || (event.clientX > 150)) {
+      if((event.clientY < window.window.innerHeight - 68) || (event.clientX < window.window.innerWidth - 116)) {
           dispatch(addRulerMarker({position: mousePos, title: ""}))
           dispatch(addRulerMarkerPos([mousePos.lat, mousePos.lng]))
       }
