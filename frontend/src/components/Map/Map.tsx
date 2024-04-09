@@ -12,19 +12,19 @@ import Regions from "@/components/Map/Regions/Regions";
 import NatureReserves from "@/components/Map/NatureReserves/NatureReserves";
 import RulerMarkers from "@/components/Map/RulerMarkers/RulerMarkers";
 import Settlements from "@/components/Map/Settlements/Settlements";
-import {setMap} from "@/store/map/map-slice";
+// import {setMap} from "@/store/map/map-slice";
 import {Loading} from "@/components/main/Loading/Loading";
 import {EUrls} from "@/enums/EUrls";
 
 //спасибо центру за это
 const CENTR:LatLngExpression = [54.84643545576913, 83.05183410644533];
 
-const MapInner = () => {
-    const dispatch = useAppDispatch()
-    const map = useMap()
-    dispatch(setMap(map))
-    return null
-}
+// const MapInner = () => {
+//     const dispatch = useAppDispatch()
+//     const map = useMap()
+//     dispatch(setMap(map))
+//     return null
+// }
 
 
 const Map = () => {
@@ -65,7 +65,7 @@ const Map = () => {
                         maxBounds={[[-110, -170], [100, 200]]}
                         doubleClickZoom={false}
                     >
-                        <MapInner />
+                        {/*<MapInner />*/}
                         <TileLayer url={layer} />
 
                         {/*current params for display*/}
@@ -78,10 +78,12 @@ const Map = () => {
 
 
                         <RulerMarkers />
+
                         <Coords />
                         <Settings />
                         <Calendar />
                         <Ruler/>
+
                         {isCursorActive ? <Cursor /> : ""}
                     </MapContainer>
                 </div>

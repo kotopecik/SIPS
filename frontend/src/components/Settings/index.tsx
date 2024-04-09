@@ -7,9 +7,12 @@ import Satelite from "@/components/Settings/Satelite";
 import SortPanel from "@/components/Settings/SortPanel";
 import LayerSwitch from "@/components/Settings/LayerSwitch/LayerSwitch";
 import DataCollection from "./DataCollection";
-import {disableMapDragging, enableMapDragging} from "@/store/map/map-slice";
 import {useAppDispatch} from "@/hooks/hook";
+import {useMap} from "react-leaflet";
+import {disableMapDragging, enableMapDragging} from "@/utils/mapdragging";
+
 const Settings = () => {
+
   const [isOpen, setOpen] = useState(false);
   const settRef = useRef();
 
@@ -17,13 +20,13 @@ const Settings = () => {
     setOpen(!isOpen);
   };
 
-  const dispatch = useAppDispatch()
+  const map = useMap()
 
   const handleMouseDown = () => {
-    dispatch(disableMapDragging())
+    disableMapDragging(map)
   }
   const handleMouseUp = () => {
-    dispatch(enableMapDragging())
+    enableMapDragging(map)
   }
 
   useEffect(() => {

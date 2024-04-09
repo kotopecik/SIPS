@@ -3,16 +3,17 @@ import s from './Ruler.module.scss'
 import {useAppDispatch, useAppSelector} from "@/hooks/hook";
 import {changeIsRulerActive, removeRulerMarkers} from "@/store/ruler/ruler-slice";
 import {changeCursorActive} from "@/store/cursor/cursor-slice";
-import {disableMapDragging, enableMapDragging} from "@/store/map/map-slice";
 import {FaRulerHorizontal} from "react-icons/fa";
 import {ImCross} from "react-icons/im";
 import {AiOutlineClear} from "react-icons/ai";
+import {disableMapDragging, enableMapDragging} from "@/utils/mapdragging";
+import {useMap} from "react-leaflet";
 
 
 
 const Ruler = () => {
     const dispatch = useAppDispatch()
-
+    const map = useMap()
 
     const changeRulerActive = () => {
         dispatch(changeIsRulerActive())
@@ -24,10 +25,10 @@ const Ruler = () => {
     }
 
     const handleMouseDown = () => {
-        dispatch(disableMapDragging())
+        disableMapDragging(map)
     }
     const handleMouseUp = () => {
-        dispatch(enableMapDragging())
+        enableMapDragging(map)
     }
 
     const isRulerActive = useAppSelector(state => state.ruler).isRulerActive

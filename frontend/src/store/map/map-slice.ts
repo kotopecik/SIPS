@@ -13,7 +13,6 @@ const initialState = {
         settlements: []
     },
     borders: borders,
-    map: null,
     isLoading: false,
     isRegions: false,
     isNatureReserves: false,
@@ -25,9 +24,6 @@ const mapSlice = createSlice({
     name: 'map',
     initialState,
     reducers:{
-        setMap(state, action){
-            state.map = action.payload
-        },
         setLayer(state, action){
             state.layer = action.payload
         },
@@ -46,12 +42,6 @@ const mapSlice = createSlice({
                     break
                 }
             }
-        },
-        disableMapDragging(state){
-            state.map.dragging.disable()
-        },
-        enableMapDragging(state){
-            state.map.dragging.enable()
         },
         changeChecked(state, action){
             state.borders[action.payload].checked = !state.borders[action.payload].checked
@@ -87,11 +77,8 @@ const mapSlice = createSlice({
 })
 
 export const {
-    setMap,
     setLayer,
     refreshRegions,
-    disableMapDragging,
-    enableMapDragging,
     changeChecked,
 } = mapSlice.actions
 export default mapSlice.reducer

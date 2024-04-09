@@ -1,15 +1,17 @@
 import React from 'react';
 import s from './Coords.module.scss'
-import {useMapEvents} from "react-leaflet";
+import {useMap, useMapEvents} from "react-leaflet";
 import {useAppDispatch, useAppSelector} from "@/hooks/hook";
 import {setMousePos} from "@/store/cursor/cursor-slice";
 import {LatLngLiteral} from "leaflet";
-import {disableMapDragging, enableMapDragging} from "@/store/map/map-slice";
+import {disableMapDragging, enableMapDragging} from "@/utils/mapdragging";
 
 const Coords = () => {
 
     const mousePos: LatLngLiteral = useAppSelector(state => state.cursor).mousePos
     const dispatch = useAppDispatch()
+
+    const map = useMap()
 
 
     const _coords = useMapEvents({
@@ -20,10 +22,10 @@ const Coords = () => {
     });
 
     const handleMouseDown = () => {
-        dispatch(disableMapDragging())
+        disableMapDragging(map)
     }
     const handleMouseUp = () => {
-        dispatch(enableMapDragging())
+        enableMapDragging(map)
     }
 
     return (

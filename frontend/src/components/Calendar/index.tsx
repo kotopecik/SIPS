@@ -18,8 +18,9 @@ import {AiFillCaretLeft, AiFillCaretRight} from "react-icons/ai";
 import {BsCalendar2MinusFill} from "react-icons/bs";
 import TimeLine from "@/components/Calendar/TimeLine/TimeLine";
 import {Dayjs} from "dayjs";
-import {disableMapDragging, enableMapDragging} from "@/store/map/map-slice";
 import {IDate} from "@/interfaces/IDate";
+import {useMap} from "react-leaflet";
+import {disableMapDragging, enableMapDragging} from "@/utils/mapdragging";
 
 const Calendar = () => {
 
@@ -38,8 +39,7 @@ const Calendar = () => {
   }
 
   const dates: IDate[] = useAppSelector(state => state.tile).dates
-
-  const storedate = useAppSelector(state => state.tile).dateTime.date
+  const map = useMap()
 
   const handleNextMonth = () => {
     dispatch(setCalendarMonth({month: currentDate.month() + 1, year: currentDate.year()}))
@@ -59,10 +59,10 @@ const Calendar = () => {
   }
 
   const handleMouseDown = () => {
-    dispatch(disableMapDragging())
+    disableMapDragging(map)
   }
   const handleMouseUp = () => {
-    dispatch(enableMapDragging())
+    enableMapDragging(map)
   }
   return (
       <div
