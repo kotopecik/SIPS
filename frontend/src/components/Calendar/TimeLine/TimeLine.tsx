@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import s from './TimeLine.module.scss'
 import { Dayjs } from "dayjs";
 import {
@@ -24,10 +24,13 @@ const TimeLine = ({ selectDate }: Props) => {
     const marks: Mark[] = getMarksByDate(getStringDate(selectDate), dates);
     const dispatch = useAppDispatch();
     const time: string = (useAppSelector(state => state.tile).dateTime.time).toString()
+    const [sliderValue, setSliderValue] = useState<string>();
+
 
     const handleSliderChange = (event: Event, newValue: number | number[]) => {
         const newTime: string = (getMarksWithEqualIntervals(marks).find((el: Mark) => el.value === (newValue as number))?.label?.toString() ?? '').replace(":", "");
         dispatch(setTime(newTime))
+        setSliderValue(newTime)
     };
 
     const marksLength = getMarksWithEqualIntervals(marks).length;

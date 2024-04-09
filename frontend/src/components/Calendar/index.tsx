@@ -67,7 +67,8 @@ const Calendar = () => {
   return (
       <div
           onMouseDown={handleMouseDown}
-           onMouseUp={handleMouseUp}
+          onMouseUp={handleMouseUp}
+          className={s.block}
       >
         {isOpenTimeLine && <TimeLine selectDate = {selectDate}/>}
         <BsCalendar2MinusFill className={s.calendarbtn} onClick={handleOpenCalendar}/>
