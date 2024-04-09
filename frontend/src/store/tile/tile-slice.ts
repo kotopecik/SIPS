@@ -22,11 +22,9 @@ const tileSlice = createSlice({
     reducers:{
         setDate(state, action){
             state.dateTime.date = action.payload
-            console.log(state.dateTime.date)
         },
         setTime(state, action){
             state.dateTime.time = action.payload
-            console.log(state.dateTime.time)
         },
         setSatellite(state, action){
             state.satellite = action.payload
@@ -51,7 +49,6 @@ const tileSlice = createSlice({
     extraReducers:(builder) => {
         builder.addCase(fetchDates.fulfilled,  (state: TileState, action) => {
             state.dates = action.payload
-            console.log(state.dates)
         })
 
     }

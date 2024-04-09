@@ -69,7 +69,7 @@ const mapSlice = createSlice({
                     break
                 }
             }
-        }),
+        })
         builder.addCase(fetchRegions.pending, (state:MapState) => {
             state.isLoading = true
         })
