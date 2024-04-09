@@ -30,7 +30,9 @@ const TimeLine = ({ selectDate }: Props) => {
         dispatch(setTime(newTime))
     };
 
+    const marksLength = getMarksWithEqualIntervals(marks).length;
     const timeToDisplay = time.substring(0, time.length - 2) + ":" + time.substring(time.length - 2)
+
 
     return (
         <div className={s.timeline}>
@@ -39,8 +41,9 @@ const TimeLine = ({ selectDate }: Props) => {
             <span>{selectDate.year()}</span>
             <span>{timeToDisplay !== ":" && timeToDisplay}</span>
 
-            <Box className={s.box} sx={{ width: 300 }}>
+            <Box className={s.box} sx={{ width: 370, overflow: marksLength > 8 ? 'auto' : 'hidden', padding: '0 20px 20px 20px'}}>
                 <Slider
+                    style={{width: marksLength > 8 && `${marksLength + 40 * marksLength}px`}}
                     min={getMinValue(marks)}
                     max={getMaxValue(marks)}
                     step={null}

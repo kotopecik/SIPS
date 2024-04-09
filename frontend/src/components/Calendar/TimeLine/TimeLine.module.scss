@@ -9,6 +9,12 @@
   border-radius: 8px;
   padding: 10px;
 
+
+  .slider{
+    overflow-x: scroll;
+    overflow-y: hidden;
+  }
+
   span:not(:last-child){
     margin-right: 5px;
   }
