@@ -42,19 +42,15 @@ const Calendar = () => {
   const map = useMap()
 
   const handleNextMonth = () => {
-    dispatch(setCalendarMonth({month: currentDate.month() + 1, year: currentDate.year()}))
     dispatch(incrementCurrentMonth())
   }
   const handlePrevMonth = () => {
-    dispatch(setCalendarMonth({month: currentDate.month() - 1, year: currentDate.year()}))
     dispatch(decrementCurrentMonth())
   }
   const handleNextYear = () => {
-    dispatch(setCalendarMonth({month: currentDate.month(), year: currentDate.year() + 1}))
     dispatch(incrementCurrentYear())
   }
   const handlePrevYear = () => {
-    dispatch(setCalendarMonth({month: currentDate.month(), year: currentDate.year() - 1}))
     dispatch(decrementCurrentYear())
   }
 

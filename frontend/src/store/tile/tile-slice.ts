@@ -33,15 +33,19 @@ const tileSlice = createSlice({
             state.calendar = generateDate(action.payload.month, action.payload.year)
         },
         incrementCurrentMonth(state){
+            state.calendar = generateDate(state.currentDate.month() + 1, state.currentDate.year())
             state.currentDate = state.currentDate.add(1, 'months')
         },
         decrementCurrentMonth(state){
+            state.calendar = generateDate(state.currentDate.month() - 1, state.currentDate.year())
             state.currentDate = state.currentDate.subtract(1, 'months')
         },
         incrementCurrentYear(state){
+            state.calendar = generateDate(state.currentDate.month(), state.currentDate.year() + 1)
             state.currentDate = state.currentDate.add(1, 'years')
         },
         decrementCurrentYear(state){
+            state.calendar = generateDate(state.currentDate.month(), state.currentDate.year() - 1)
             state.currentDate = state.currentDate.subtract(1, 'years')
         },
 
