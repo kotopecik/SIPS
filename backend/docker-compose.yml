@@ -8,7 +8,9 @@ services:
       - yt_postgres-volume:/var/lib/postgresql/data
     env_file:
       - .env
-    command: -p $POSTGRES_PORT
+    ports:
+      - "5434:5432"
+#    command: -p $POSTGRES_PORT
 
   CRUDAPI:
     expose:
@@ -31,7 +33,7 @@ services:
       POSTGRES_HOST: "yt_postgres"
       DOCKER_START: 1
     command: >
-      bash -c "./CRUDAPI/manage.py collectstatic --noinput && ./CRUDAPI/manage.py migrate && ./CRUDAPI/manage.py runserver 0.0.0.0:8000"
+      bash -c "ls -al && python CRUDAPI/manage.py collectstatic --noinput && python CRUDAPI/manage.py makemigrations CRUDAPI && python CRUDAPI/manage.py migrate && python CRUDAPI/manage.py runserver 0.0.0.0:8000"
 
   nginx:
     image: nginx

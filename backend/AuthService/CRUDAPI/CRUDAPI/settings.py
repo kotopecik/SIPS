@@ -38,8 +38,7 @@ ALLOWED_HOSTS = ["*"]
 
 
 INSTALLED_APPS = [
-    'regauth',
-    'AuthService',
+    'regauth.apps.RegauthAppsConfig',
     'rest_framework',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -112,8 +111,9 @@ SIMPLE_JWT = {
     "SLIDING_TOKEN_REFRESH_SERIALIZER": "rest_framework_simplejwt.serializers.TokenRefreshSlidingSerializer",
 }
 
+AUTH_USER_MODEL = 'regauth.UserModel'
 
-ROOT_URLCONF = 'AuthService.urls'
+ROOT_URLCONF = 'CRUDAPI.urls'
 
 TEMPLATES = [
     {
@@ -131,7 +131,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'AuthService.wsgi.application'
+WSGI_APPLICATION = 'CRUDAPI.wsgi.application'
 
 
 # Database
@@ -142,10 +142,10 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': os.getenv('POSTGRES_DB', 'db'),
-        'USER': os.getenv('POSTGRES_USER', 'user'),
+        'USER': os.getenv('POSTGRES_USER', 'user1'),
         'PASSWORD': os.getenv('POSTGRES_PASSWORD', '1234'),
-        'HOST': os.getenv('POSTGRES_HOST', '127.0.0.1'),
-        'PORT': os.getenv('POSTGRES_PORT', 5432),
+        'HOST': os.getenv('POSTGRES_HOST', '127.0.0d.11'),
+        'PORT': os.getenv('POSTGRES_PORT', 5433),
     }
 }
 
