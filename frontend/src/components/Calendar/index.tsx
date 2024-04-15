@@ -6,7 +6,7 @@ import {
   decrementCurrentMonth,
   decrementCurrentYear, incrementCurrentMonth,
   incrementCurrentYear,
-  setCalendarMonth, setDate, setTime
+  setDate, setTime
 } from "@/store/tile/tile-slice";
 import {
   days, getMarksByDate,

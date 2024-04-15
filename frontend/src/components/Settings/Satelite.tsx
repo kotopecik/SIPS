@@ -10,6 +10,8 @@ import {ESatellite} from "@/enums/ESatellite";
 
 const Satelite = () => {
 
+    const testComposites = ['vlst', 'aot550', 'vscmo', 'vievi', 'clmsk', 'vindvi','clmsk2', 'aotaps', 'frmsk']
+
     const dispatch = useAppDispatch()
     const satelliteState: ESatellite = useAppSelector(state => state.tile).satellite
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -35,6 +37,23 @@ const Satelite = () => {
               label={satellite.label}
           />
       ))}
+        <p className={s.text}>Композиты</p>
+        {testComposites.map((item, index) => (
+            <FormControlLabel
+                key = {index}
+                control={
+                    <Switch
+                        id={'index'}
+                        size="small"
+                        color="secondary"
+                        value={item}
+                        checked = {satelliteState == item}
+                        onChange={handleChange}
+                    />
+                }
+                label={item}
+            />
+        ))}
     </>
   );
 };

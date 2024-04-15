@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import {Marker, Polygon, Popup, useMap} from "react-leaflet";
-import {useAppDispatch, useAppSelector} from "@/hooks/hook";
+import {useAppSelector} from "@/hooks/hook";
 import {icons} from "@/data/icons";
 import {SettlementsCalculations} from "@/utils/SettlementsCalculations";
 import {ISettlement} from "@/interfaces/ISettlement";
-import {LatLngBounds, Map} from "leaflet";
+import {LatLngBounds} from "leaflet";
 
 
 export default React.memo(function Settlements(){
