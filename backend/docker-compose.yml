@@ -14,23 +14,24 @@ services:
     expose:
       - 8000
     build:
-      context: .
+      context: ./AuthService
       dockerfile: Dockerfile
     image: yt_docker:latest
     container_name: yt_docker
     depends_on:
       - yt_postgres
     volumes:
-     # - $HOME/.cache/pip:/root/.cache/pip
+      - cache-python:/root/.cache/pip #$HOME/.cache/pip
       - static_volume:/yt/static
       - media_volume:/yt/media
     env_file:
+      - ./AuthService/.env
       - .env
     environment:
       POSTGRES_HOST: "yt_postgres"
       DOCKER_START: 1
     command: >
-      bash -c "python AuthService/manage.py collectstatic --noinput && python AuthService/manage.py migrate && python AuthService/manage.py runserver 0.0.0.0:8000"
+      bash -c "./CRUDAPI/manage.py collectstatic --noinput && ./CRUDAPI/manage.py migrate && ./CRUDAPI/manage.py runserver 0.0.0.0:8000"
 
   nginx:
     image: nginx
@@ -42,10 +43,11 @@ services:
     volumes:
       - static_volume:/yt/static
       - media_volume:/yt/media
-      - ./nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
 
 volumes:
   static_volume:
   media_volume:
   yt_postgres-volume:
+  cache-python:
 
