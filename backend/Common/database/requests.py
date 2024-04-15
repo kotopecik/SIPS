@@ -22,6 +22,9 @@ class DBRequest:
         base.metadata.create_all(self.engine)
         # base.metadata
 
+    def drop_table(self):
+        base.metadata.drop_all(self.engine)
+
     def create_trigger_to_monitor(self):
         function = """
         create or replace function __function_file_composite_notify__() returns trigger
@@ -52,4 +55,5 @@ db_request = DBRequest(session_local(), engine)
 db_request.get_table_names()
 db_request.create_tables()
 db_request.get_table_names()
+# db_request.drop_table()
 # db_request.create_trigger_to_monitor()
