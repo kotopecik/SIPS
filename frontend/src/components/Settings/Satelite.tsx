@@ -2,20 +2,30 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
 import s from "./Settings.module.scss";
 import {satellites} from "@/data/satellites";
+import {Composites} from "@/data/composites";
 import React from "react";
 import {useAppDispatch, useAppSelector} from "@/hooks/hook";
-import {setSatellite} from "@/store/tile/tile-slice";
+import {setComposite, setSatellite} from "@/store/tile/tile-slice";
 import {ISatellite} from "@/interfaces/ISatellite";
-import {ESatellite} from "@/enums/ESatellite";
+import {ESatellite, EComposite} from "@/enums/ESatellite";
 
 const Satelite = () => {
 
-    const testComposites = ['vlst', 'aot550', 'vscmo', 'vievi', 'clmsk', 'vindvi','clmsk2', 'aotaps', 'frmsk']
-
     const dispatch = useAppDispatch()
     const satelliteState: ESatellite = useAppSelector(state => state.tile).satellite
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        dispatch(setSatellite(e.target.value))
+    const compositeState: EComposite = useAppSelector(state => state.tile).composite
+    const satelliteHandleChange = (value) => {
+        if(value == satelliteState){
+            dispatch(setSatellite(null))
+        }
+        else {
+            dispatch(setSatellite(value))
+        }
+
+    }
+
+    const compositeHandleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        dispatch(setComposite(e.target.value))
     }
 
     return (
@@ -31,29 +41,33 @@ const Satelite = () => {
                   color="secondary"
                   value={satellite.value}
                   checked = {satellite.value == satelliteState}
-                  onChange={handleChange}
+                  onChange={() => satelliteHandleChange(satellite.value)}
               />
           }
               label={satellite.label}
           />
       ))}
-        <p className={s.text}>Композиты</p>
-        {testComposites.map((item, index) => (
-            <FormControlLabel
-                key = {index}
-                control={
-                    <Switch
-                        id={'index'}
-                        size="small"
-                        color="secondary"
-                        value={item}
-                        checked = {satelliteState == item}
-                        onChange={handleChange}
-                    />
-                }
-                label={item}
-            />
-        ))}
+        {satelliteState && <div className={s.composites_block}>
+            <p className={s.text}>Композиты</p>
+            {Composites.sort().map((composite, index) => (
+                <FormControlLabel
+                    className={s.composites}
+                    key = {index}
+                    control={
+                        <Switch
+                            id={'index'}
+                            size="small"
+                            color="secondary"
+                            value={composite}
+                            checked = {compositeState == composite}
+                            onChange={compositeHandleChange}
+                        />
+                    }
+                    label={composite}
+                />
+            ))}
+        </div>
+        }
     </>
   );
 };

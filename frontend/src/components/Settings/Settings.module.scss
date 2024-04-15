@@ -58,6 +58,17 @@
 .text{
     font-size: 16px;
     font-weight: 700;
-    margin: 3px 0px;
+    margin: 3px 0;
+}
+.composites_block {
+    width: 400px;
+    height: auto;
+}
+.composites {
+    margin-top: 3px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    width: 100px;
 }
 

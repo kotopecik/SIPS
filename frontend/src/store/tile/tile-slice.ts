@@ -10,6 +10,7 @@ const initialState = {
         time: null,
     },
     satellite: null,
+    composite: null,
     chanelComposition: "",
     expansion: "",
     calendar: generateDate(dayjs().month(), dayjs().year()),
@@ -28,6 +29,9 @@ const tileSlice = createSlice({
         },
         setSatellite(state, action){
             state.satellite = action.payload
+        },
+        setComposite(state, action){
+          state.composite = action.payload
         },
         setCalendarMonth(state, action){
             state.calendar = generateDate(action.payload.month, action.payload.year)
@@ -65,6 +69,7 @@ export const {
     incrementCurrentMonth,
     decrementCurrentMonth,
     setSatellite,
+    setComposite,
     setCalendarMonth,
     incrementCurrentYear,
     decrementCurrentYear
