@@ -11,6 +11,8 @@ services:
     command: -p $POSTGRES_PORT
 
   CRUDAPI:
+    expose:
+      - 8000
     build:
       context: .
       dockerfile: Dockerfile
@@ -19,7 +21,7 @@ services:
     depends_on:
       - yt_postgres
     volumes:
-      - $HOME/.cache/pip:/root/.cache/pip
+     # - $HOME/.cache/pip:/root/.cache/pip
       - static_volume:/yt/static
       - media_volume:/yt/media
     env_file:
@@ -28,7 +30,7 @@ services:
       POSTGRES_HOST: "yt_postgres"
       DOCKER_START: 1
     command: >
-      bash -c "./CRUDAPI/manage.py collectstatic --noinput && ./CRUDAPI/manage.py migrate && ./CRUDAPI/manage.py runserver 0.0.0.0:8000"
+      bash -c "python AuthService/manage.py collectstatic --noinput && python AuthService/manage.py migrate && python AuthService/manage.py runserver 0.0.0.0:8000"
 
   nginx:
     image: nginx
@@ -40,6 +42,7 @@ services:
     volumes:
       - static_volume:/yt/static
       - media_volume:/yt/media
+      - ./nginx.conf:/etc/nginx/nginx.conf
 
 volumes:
   static_volume:

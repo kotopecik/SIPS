@@ -2,15 +2,22 @@ from django.contrib.auth.models import User
 from rest_framework import serializers
 from .models import Todo
 
+
 class UserSerializer(serializers.ModelSerializer):
+    first_name = serializers.CharField()
+    last_name = serializers.CharField()
+    middle_name = serializers.CharField(write_only=True)
+    organization = serializers.CharField(write_only=True)
+    email = serializers.EmailField()
+    password = serializers.CharField(write_only=True, required=True)  # Добавлен атрибут required=True
+
     class Meta:
         model = User
-        fields = ('username', 'password', 'email')
-        extra_kwargs = {'password': {'write_only': True}}
+        fields = ('username', 'password', 'email', 'first_name', 'last_name', 'middle_name', 'organization')
 
         def create(self, validate_data):
             password = validate_data.pop("password")  # pop удаляет из словаря и возвращает значение элемента
-            user = User(**validate_data) # ** распаковывает словарь и передает значение как именованные аргументы в конструктор класса User
+            user = User(validate_data) #  распаковывает словарь и передает значение как именованные аргументы в конструктор класса User
             user.set_password(password) # метод класса User set_password устанавливает пароль пользователя
             user.save()
             return {
@@ -19,8 +26,9 @@ class UserSerializer(serializers.ModelSerializer):
                 "email": user.email
             }
 
-        #3
 class TodoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Todo
         fields = "__all__"
+
+

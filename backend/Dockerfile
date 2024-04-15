@@ -24,9 +24,9 @@ RUN mkdir /yt/static && mkdir /yt/media && chown -R yt:yt /yt && chmod 755 /yt
 
 # Копируем requirements.txt и устанавливаем зависимости
 COPY --chown=yt:yt requirements.txt .
-RUN #pip install -r requirements.txt
-RUN --mount=type=cache,target=/root/.cache/pip \
-    python -m pip install -r requirements.txt
+RUN pip install -r requirements.txt
+#RUN --mount=type=cache,target=/root/.cache/pip \
+  #  python -m pip install -r requirements.txt
 
 # Копируем остальные файлы проекта
 COPY --chown=yt:yt . .
