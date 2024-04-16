@@ -38,17 +38,19 @@ ALLOWED_HOSTS = ["*"]
 
 
 INSTALLED_APPS = [
-    'regauth.apps.RegauthAppsConfig',
-    'rest_framework',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
     'rest_framework_swagger',
     'drf_yasg',
     'corsheaders',
+    'rest_framework',
+
+    'regauth.apps.RegauthAppConfig',
 ]
 
 MIDDLEWARE = [
@@ -111,7 +113,14 @@ SIMPLE_JWT = {
     "SLIDING_TOKEN_REFRESH_SERIALIZER": "rest_framework_simplejwt.serializers.TokenRefreshSlidingSerializer",
 }
 
+
+# config to use custom users table
 AUTH_USER_MODEL = 'regauth.UserModel'
+
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+USERNAME_FIELD = 'email'
+ACCOUNT_EMAIL_REQUIRED = True
+
 
 ROOT_URLCONF = 'CRUDAPI.urls'
 
@@ -142,10 +151,10 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': os.getenv('POSTGRES_DB', 'db'),
-        'USER': os.getenv('POSTGRES_USER', 'user1'),
+        'USER': os.getenv('POSTGRES_USER', 'user'),
         'PASSWORD': os.getenv('POSTGRES_PASSWORD', '1234'),
-        'HOST': os.getenv('POSTGRES_HOST', '127.0.0d.11'),
-        'PORT': os.getenv('POSTGRES_PORT', 5433),
+        'HOST': os.getenv('POSTGRES_HOST', '127.0.0.1'),
+        'PORT': os.getenv('POSTGRES_PORT', 5432),
     }
 }
 

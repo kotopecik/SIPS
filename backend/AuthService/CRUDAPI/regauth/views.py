@@ -12,10 +12,12 @@ class UserCreate(generics.CreateAPIView):
     serializer_class = UserSerializer
     permission_classes = (AllowAny,)
 
+
 class TodosListCreateView(generics.ListCreateAPIView):
     queryset = Todo.objects.all()
     serializer_class = TodoSerializer
     permission_classes = (IsAuthenticatedOrReadOnly,)
+
 
 class TodosRetrievUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Todo.objects.all()

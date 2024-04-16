@@ -1,5 +1,5 @@
 """
-ASGI config for CRUDAPI1 project.
+ASGI config for CRUDAPI project.
 
 It exposes the ASGI callable as a module-level variable named ``application``.
 

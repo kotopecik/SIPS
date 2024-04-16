@@ -1,5 +1,5 @@
 """
-WSGI config for CRUDAPI1 project.
+WSGI config for CRUDAPI project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 
