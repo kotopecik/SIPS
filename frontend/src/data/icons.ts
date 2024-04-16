@@ -15,8 +15,8 @@ export const icons = () => {
         iconSize:[40, 40]
     })
     const settlementIcon = new Icon({
-        iconUrl: require("../assets/icons/svg/Mediamodifier-Design.svg"),
-        iconSize:[140, 140]
+        iconUrl: require("../assets/icons/svg/method-draw-image (1).svg"),
+        iconSize:[20, 20]
     })
 
     return {customIcon, rulerIcon, emptyIcon, settlementIcon}

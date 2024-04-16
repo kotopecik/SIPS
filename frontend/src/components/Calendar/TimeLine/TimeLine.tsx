@@ -24,13 +24,13 @@ const TimeLine = ({ selectDate }: Props) => {
     const marks: Mark[] = getMarksByDate(getStringDate(selectDate), dates);
     const dispatch = useAppDispatch();
     const time: string = (useAppSelector(state => state.tile).dateTime.time).toString()
-    const [sliderValue, setSliderValue] = useState<string>();
-
+    // const [sliderValue, setSliderValue] = useState<number | number[]>( typeof marks[0].value !== "undefined" ? marks[0].value  : 0);
 
     const handleSliderChange = (event: Event, newValue: number | number[]) => {
         const newTime: string = (getMarksWithEqualIntervals(marks).find((el: Mark) => el.value === (newValue as number))?.label?.toString() ?? '').replace(":", "");
         dispatch(setTime(newTime))
-        setSliderValue(newTime)
+        //need to fix
+        // setSliderValue(newValue)
     };
 
     const marksLength = getMarksWithEqualIntervals(marks).length;
@@ -46,6 +46,7 @@ const TimeLine = ({ selectDate }: Props) => {
 
             <Box className={s.box} sx={{ width: 370, overflow: marksLength > 8 ? 'auto' : 'hidden', padding: '0 20px 20px 20px'}}>
                 <Slider
+                    // value={sliderValue}
                     style={{width: marksLength > 8 && `${marksLength + 40 * marksLength}px`}}
                     min={getMinValue(marks)}
                     max={getMaxValue(marks)}
