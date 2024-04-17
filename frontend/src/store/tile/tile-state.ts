@@ -1,8 +1,9 @@
-import {EComposite, ESatellite} from "@/enums/ESatellite";
+import {ESatellite} from "@/enums/ESatellite";
 import {ICalendar} from "@/interfaces/ICalendar";
 import dayjs from "dayjs";
 import {IDate} from "@/interfaces/IDate";
 import {IDateTime} from "@/interfaces/IDateTime";
+import {EComposite} from "@/enums/EComposite";
 
 export interface TileState {
     dateTime: IDateTime

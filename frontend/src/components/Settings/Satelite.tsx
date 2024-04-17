@@ -7,7 +7,9 @@ import React from "react";
 import {useAppDispatch, useAppSelector} from "@/hooks/hook";
 import {setComposite, setSatellite} from "@/store/tile/tile-slice";
 import {ISatellite} from "@/interfaces/ISatellite";
-import {ESatellite, EComposite} from "@/enums/ESatellite";
+import {ESatellite} from "@/enums/ESatellite";
+import {EComposite} from "@/enums/EComposite";
+import legend from '../../assets/png/legend.png'
 
 const Satelite = () => {
 
@@ -66,7 +68,7 @@ const Satelite = () => {
                     label={composite}
                 />
             ))}
-            <div className={s.legend}>типо легенда</div>
+            {compositeState && <img className={s.legend} src={legend} alt={'legend'}/>}
         </div>
         }
     </>
