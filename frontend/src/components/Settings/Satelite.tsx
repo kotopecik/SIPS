@@ -48,7 +48,7 @@ const Satelite = () => {
           />
       ))}
         {satelliteState && <div className={s.composites_block}>
-            <p className={s.text}>Композиты</p>
+            <div className={s.text}>Композиты</div>
             {Composites.sort().map((composite, index) => (
                 <FormControlLabel
                     className={s.composites}
@@ -66,6 +66,7 @@ const Satelite = () => {
                     label={composite}
                 />
             ))}
+            <div className={s.legend}>типо легенда</div>
         </div>
         }
     </>

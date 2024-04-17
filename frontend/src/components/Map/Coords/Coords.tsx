@@ -5,11 +5,14 @@ import {useAppDispatch, useAppSelector} from "@/hooks/hook";
 import {setMousePos} from "@/store/cursor/cursor-slice";
 import {LatLngLiteral} from "leaflet";
 import {disableMapDragging, enableMapDragging} from "@/utils/mapdragging";
+import {convertCoords} from "@/utils/coords";
 
 const Coords = () => {
 
     const mousePos: LatLngLiteral = useAppSelector(state => state.cursor).mousePos
     const dispatch = useAppDispatch()
+
+
 
     const map = useMap()
 
@@ -34,8 +37,8 @@ const Coords = () => {
             onMouseDown={handleMouseDown}
             onMouseUp={handleMouseUp}
         >
-            <div>{mousePos.lat.toFixed(5)} с.ш</div>
-            <div>{mousePos.lng.toFixed(5)} в.д</div>
+            <div>{convertCoords(mousePos.lat)} {mousePos.lat < 0 ? 'ю': 'с'}.ш</div>
+            <div>{convertCoords(mousePos.lng)} {mousePos.lng < 0 ? 'з': 'в'}.д</div>
         </div>
     );
 };
