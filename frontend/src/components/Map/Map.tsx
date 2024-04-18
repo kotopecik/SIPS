@@ -1,5 +1,5 @@
 import './Map.scss'
-import {MapContainer, TileLayer, useMap} from "react-leaflet";
+import {MapContainer, TileLayer} from "react-leaflet";
 import {LatLngExpression, LatLngLiteral} from "leaflet";
 import {useAppDispatch, useAppSelector} from "@/hooks/hook";
 import Coords from "@/components/Map/Coords/Coords";
@@ -12,19 +12,11 @@ import Regions from "@/components/Map/Regions/Regions";
 import NatureReserves from "@/components/Map/NatureReserves/NatureReserves";
 import RulerMarkers from "@/components/Map/RulerMarkers/RulerMarkers";
 import Settlements from "@/components/Map/Settlements/Settlements";
-// import {setMap} from "@/store/map/map-slice";
 import {Loading} from "@/components/main/Loading/Loading";
-import {EUrls} from "@/enums/EUrls";
 
 //спасибо центру за это
 const CENTR:LatLngExpression = [54.84643545576913, 83.05183410644533];
 
-// const MapInner = () => {
-//     const dispatch = useAppDispatch()
-//     const map = useMap()
-//     dispatch(setMap(map))
-//     return null
-// }
 
 
 const Map = () => {
