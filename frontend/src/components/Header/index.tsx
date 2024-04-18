@@ -44,17 +44,23 @@ const Header = () => {
 
           {isOpenMenu && <ul className={`${styles.navbar__menu} ${styles.active}`}>
             {mainLinks.map((link) => (
-                <li key={link.id} className={styles.navbar__item}>
-                  <Link to={link.to}>{link.title}</Link>
-                </li>
+
+                <Link to={link.to}>
+                  <li key={link.id} className={styles.navbar__item}>
+                    {link.title}
+                  </li>
+                </Link>
+
             ))}
           </ul>}
 
           {isOpenProfile && <ul className={`${styles.navbar__profile} ${styles.active}`}>
             {profileLinks.map((link) => (
-                <li key={link.id} className={styles.navbar__item}>
-                  <Link to={link.to}>{link.title}</Link>
-                </li>
+               <Link to={link.to}>
+                 <li key={link.id} className={styles.navbar__item}>
+                   {link.title}
+                 </li>
+               </Link>
             ))}
           </ul>}
 
