@@ -25,7 +25,7 @@ class DBRequest:
     def drop_table(self):
         base.metadata.drop_all(self.engine)
 
-    def create_trigger_to_monitor(self):
+    def create_function_to_monitor(self):
         function = """
         create or replace function __function_file_composite_notify__() returns trigger
         as $log$
@@ -50,10 +50,38 @@ class DBRequest:
         )
         self.session.commit()
 
+    def create_function_to_monitor_directory(self):
+        function = """
+        create or replace function __function_directory_notify__() returns trigger
+        as $log$
+        declare
+            event json;
+        BEGIN
 
-db_request = DBRequest(session_local(), engine)
-db_request.get_table_names()
-db_request.create_tables()
-db_request.get_table_names()
-# db_request.drop_table()
-# db_request.create_trigger_to_monitor()
+            if (lower(tg_op) = 'insert') then
+                event = json_build_object('id', 1, 'text', 'text', 'header', 'data_header')::varchar;
+            end if;
+
+            perform pg_notify('directory1', event::text);
+
+            return NULL;
+        END;
+        $log$
+        language plpgsql;
+        """  # directory1 = channel
+
+        self.session.execute(
+            text(function)
+        )
+        self.session.commit()
+
+    def create_trigger_to_monitor(self):
+        trigger = """
+        create trigger __trigger_directory_notify__ after insert on directory for each row
+            execute function __function_directory_notify__();
+        """
+
+        self.session.execute(
+            text(trigger)
+        )
+        self.session.commit()

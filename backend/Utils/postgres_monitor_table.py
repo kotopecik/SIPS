@@ -1,3 +1,5 @@
+import logging
+import pprint
 
 import psycopg2.extensions
 import psycopg2
@@ -32,7 +34,7 @@ language plpgsql;
 class PostgresMonitorTable:
     __loop = None
 
-    def __init__(self, table_name, db_setting: DataBaseSetting, callback=None):
+    def __init__(self, channel, db_setting: DataBaseSetting, callback=None):
         """
         Description ...
         :params table_name:
@@ -51,8 +53,8 @@ class PostgresMonitorTable:
             password=db_setting.password
         )
         self.__cursor = self.__connection.cursor()
-        self.__cursor.execute(f"LISTEN {table_name}")
         self.__connection.set_isolation_level(psycopg2.extensions.ISOLATION_LEVEL_AUTOCOMMIT)
+        self.__cursor.execute(f"LISTEN {channel};")
 
     @property
     def callback(self):
@@ -65,8 +67,15 @@ class PostgresMonitorTable:
     def handle(self):
         if not self._callback:
             raise Exception("callback is not None!")
-
-        self._callback()
+        logging.log(logging.INFO, 'Handle start')
+        try:
+            self.__connection.poll()
+            for notify in self.__connection.notifies:
+                print(notify)
+                self._callback()
+            self.__connection.notifies.clear()
+        except psycopg2.OperationalError:
+            self.__loop.stop()
 
     def run(self):
         """
