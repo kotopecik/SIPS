@@ -2,14 +2,15 @@ import pprint
 
 from sqlalchemy import inspect, text
 
-from backend.Common.database.base import session_local, base, engine
 from backend.Common.database.models import *
+from backend.Utils.db_engine import EngineBaseSqlAlchemy
 
 
 class DBRequest:
-    def __init__(self, session, engine):
-        self.session = session
-        self.engine = engine
+    def __init__(self, engine_base: EngineBaseSqlAlchemy):
+        self.session = engine_base.session_local
+        self.engine = engine_base.engine
+        self.base = engine_base.base
 
     def get_table_names(self):
         table_names = inspect(self.engine).get_table_names()
@@ -19,11 +20,11 @@ class DBRequest:
 
     def create_tables(self):
         # if not (FileCompositeModel.__tablename__ in )
-        base.metadata.create_all(self.engine)
+        self.base.metadata.create_all(self.engine)
         # base.metadata
 
     def drop_table(self):
-        base.metadata.drop_all(self.engine)
+        self.base.metadata.drop_all(self.engine)
 
     def create_function_to_monitor(self):
         function = """

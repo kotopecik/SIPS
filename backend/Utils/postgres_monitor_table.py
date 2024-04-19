@@ -4,7 +4,7 @@ import pprint
 import psycopg2.extensions
 import psycopg2
 import asyncio
-
+import json
 
 from backend.Utils.database_setting import DataBaseSetting
 
@@ -36,10 +36,10 @@ class PostgresMonitorTable:
 
     def __init__(self, channel, db_setting: DataBaseSetting, callback=None):
         """
-        Description ...
-        :params table_name:
-        :params db_setting:
-        :params callback:
+        Initializing access to the database and set the required settings of track
+        :params channel: the name of the channel that is used to transmit the inserted data
+        :params db_setting: the object of the class with params to access to the database
+        :params callback: the function is called when inserting the data
         :return None:
         """
 
@@ -64,22 +64,28 @@ class PostgresMonitorTable:
     def callback(self, value):
         self._callback = value
 
-    def handle(self):
+    def handle(self) -> None:
+        """
+        Handle the monitored result from the database
+        :params self:
+        :return None:
+        """
+
         if not self._callback:
             raise Exception("callback is not None!")
-        logging.log(logging.INFO, 'Handle start')
+
         try:
             self.__connection.poll()
             for notify in self.__connection.notifies:
-                print(notify)
-                self._callback()
+                json_data = json.loads(notify.payload)
+                self._callback(**json_data)
             self.__connection.notifies.clear()
         except psycopg2.OperationalError:
             self.__loop.stop()
 
-    def run(self):
+    def run(self) -> None:
         """
-        Description ...
+        Start async event loop to monitoring self.__connection
         :params self:
         :return None:
         """

@@ -1,14 +1,17 @@
-from backend.Common.database.base import session_local, engine
+
 from backend.Utils.postgres_monitor_table import PostgresMonitorTable
 from backend.Utils.database_setting import PostgresDataBaseSetting
 from backend.Common.database.requests import DBRequest
 
 
-def test_fun():
+def test_fun(*args, **kwargs):
+    print(args)
+    print(kwargs)
     print('Callback function')
 
 
 if __name__ == "__main__":
+    # engine_base = EngineBaseSqlAlchemy("postgresql://user_db:1234@127.0.0.1:5434/test_db")
     # db_request = DBRequest(session_local(), engine)
     # db_request.create_function_to_monitor_directory()
     # db_request.create_trigger_to_monitor()
