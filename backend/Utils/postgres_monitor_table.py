@@ -11,7 +11,7 @@ from backend.Utils.database_setting import DataBaseSetting
 
 """ for monitor table :
 
-create or replace function <trigger name>() returns trigger
+create or replace function <function name>() returns trigger
 as $log$
 declare
     event json;

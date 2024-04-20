@@ -20,6 +20,16 @@ if __name__ == "__main__":
     # db_request.get_table_names()
     # # db_request.drop_table()
 
+    #####
+
+    # Input data:
+    #   archive(unpack) -> raw, h5, dir (SVIn, SVMn, GITCO, GTMCO),
+    #   raw(alg unpack) -> (SVIn, SVMn, GITCO, GTMCO),
+    #   h5(alg unpack) -> (SVIn, SVMn, GITCO, GTMCO),
+    #   directory(copy and alg process) -> (SVIn, SVMn1, GITCO, GTMCO).
+
+    #####
+
     pmt = PostgresMonitorTable(
         "directory1",
         PostgresDataBaseSetting(
