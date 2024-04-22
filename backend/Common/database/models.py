@@ -77,7 +77,7 @@ class FileCompositeModel(Base):
     directory_save_id: Mapped[int] = mapped_column(Integer, ForeignKey(f'{DirectoryModel.__tablename__}.id'))
 
 
-class FireValueModel(Base):
+class FireValueModel(Base): # cache
     """
     Stores fire value.
     """

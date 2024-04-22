@@ -9,28 +9,6 @@ import json
 from backend.Utils.database_setting import DataBaseSetting
 
 
-""" for monitor table :
-
-create or replace function <function name>() returns trigger
-as $log$
-declare
-    event json;
-BEGIN
-
-    if (lower(tg_op) = 'insert') then
-        event = json_build_object('id', new.id, 'longitude', new.longitude, 'latitude', new.latitude)::varchar;
-    end if;
-
-    perform pg_notify('<table name>', event::text);
-
-    return NULL;
-END;
-$log$
-language plpgsql;
-
-"""
-
-
 class PostgresMonitorTable:
     __loop = None
 
@@ -38,8 +16,8 @@ class PostgresMonitorTable:
         """
         Initializing access to the database and set the required settings of track
         :params channel: the name of the channel that is used to transmit the inserted data
-        :params db_setting: the object of the class with params to access to the database
-        :params callback: the function is called when inserting the data
+        :params db_setting: the object of the DataBaseSetting with params to access to the database
+        :params callback: the function is called when inserting the data into the handle function
         :return None:
         """
 
@@ -76,9 +54,11 @@ class PostgresMonitorTable:
 
         try:
             self.__connection.poll()
+
             for notify in self.__connection.notifies:
                 json_data = json.loads(notify.payload)
                 self._callback(**json_data)
+
             self.__connection.notifies.clear()
         except psycopg2.OperationalError:
             self.__loop.stop()

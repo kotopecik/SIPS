@@ -10,6 +10,17 @@ def test_fun(*args, **kwargs):
     print('Callback function')
 
 
+def define_file_type() -> str:
+    """
+    archive
+    raw
+    h5
+    directory
+    """
+
+    pass
+
+
 if __name__ == "__main__":
     # engine_base = EngineBaseSqlAlchemy("postgresql://user_db:1234@127.0.0.1:5434/test_db")
     # db_request = DBRequest(session_local(), engine)
@@ -30,15 +41,16 @@ if __name__ == "__main__":
 
     #####
 
+    db_setting = PostgresDataBaseSetting(
+        host="127.0.0.1",
+        port=5434,
+        dbname="test_db",
+        user="user_db",
+        password="1234"
+    )
     pmt = PostgresMonitorTable(
         "directory1",
-        PostgresDataBaseSetting(
-            host="127.0.0.1",
-            port=5434,
-            dbname="test_db",
-            user="user_db",
-            password="1234"
-        )
+        db_setting
     )
     pmt.callback = test_fun
     pmt.run()
