@@ -1,3 +1,6 @@
 
 **/*[.tif, .png]
 **/RastFiles*
+!api
+!common
+!requirements.txt
