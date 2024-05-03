@@ -2,6 +2,7 @@ import json
 
 from flask import Flask
 from flask_restful import Api
+from flask_migrate import Migrate
 from werkzeug.exceptions import HTTPException
 
 from api.resources.composite_resource import CompositeResource
@@ -12,6 +13,8 @@ from api.db.base import db
 
 app = Flask(__name__)
 app.config.from_object('api.conf')
+
+migrate = Migrate(app, db)
 
 api = Api(app)
 
@@ -37,9 +40,9 @@ def handle_exception(e):
 
 
 db.init_app(app)
-import api.db.models
 
 with app.app_context():
+    import api.db.models
     db.create_all()
 
 

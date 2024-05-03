@@ -26,19 +26,6 @@ class CompositeModel(db.Model):
     name: Mapped[str] = mapped_column(String)
 
 
-class DirectoryModel(db.Model):
-    """
-    Saves the path to directories that stores the files.
-    Also table is monitored.
-    """
-
-    __tablename__ = "directory"
-
-    id: Mapped[int] = mapped_column(Integer, primary_key=True, unique=True)
-
-    name: Mapped[str] = mapped_column(String)
-
-
 class SatelliteModel(db.Model):
     """
     Stores the satellite name and tag.
@@ -63,14 +50,11 @@ class FileCompositeModel(db.Model):
     id: Mapped[int] = mapped_column(Integer, primary_key=True, unique=True)
 
     filename: Mapped[str] = mapped_column(String)
-    level: Mapped[int] = mapped_column(Integer)  # level: 0, 1, 2, 3, 4
     datetime_created: Mapped[DateTime] = mapped_column(DateTime(timezone=False))
-    type: Mapped[str] = mapped_column(String(length=1))  # type attr: f, d
 
     datetime_id: Mapped[int] = mapped_column(Integer, ForeignKey(f'{DateTimeModel.__tablename__}.id'))
     composite_id: Mapped[int] = mapped_column(Integer, ForeignKey(f'{CompositeModel.__tablename__}.id'))
     satellite_id: Mapped[int] = mapped_column(Integer, ForeignKey(f'{SatelliteModel.__tablename__}.id'))
-    directory_save_id: Mapped[int] = mapped_column(Integer, ForeignKey(f'{DirectoryModel.__tablename__}.id'))
 
 
 class FireValueModel(db.Model): # cache
@@ -83,7 +67,7 @@ class FireValueModel(db.Model): # cache
     id: Mapped[int] = mapped_column(Integer, primary_key=True, unique=True)
 
     temperature: Mapped[float] = mapped_column(Numeric(5, 2))
-    longitude: Mapped[float] = mapped_column(Numeric(8, 5))
+    longitude: Mapped[float] = mapped_column(Numeric(8, 6))
     latitude: Mapped[float] = mapped_column(Numeric(8, 6))
 
     satellite_id: Mapped[int] = mapped_column(Integer, ForeignKey(f'{SatelliteModel.__tablename__}.id'))

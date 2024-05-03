@@ -1,2 +1,2 @@
 
-SQLALCHEMY_DATABASE_URI = "postgresql://test:1234@172.17.0.4:5432/composite_db"
+SQLALCHEMY_DATABASE_URI = "postgresql://test:1234@0.0.0.0:5434/composite_db"
