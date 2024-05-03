@@ -9,6 +9,7 @@ from api.resources.composite_resource import CompositeResource
 from api.resources.datetime_resource import DatetimeResource
 from api.resources.fire_value_resource import FireValueResource
 from api.db.base import db
+from api.resources.satellite_resource import SatelliteResource
 
 
 app = Flask(__name__)
@@ -24,6 +25,7 @@ main_route = "/api/v1"
 api.add_resource(DatetimeResource, f"{main_route}/datetime")
 api.add_resource(CompositeResource, f"{main_route}/composite")
 api.add_resource(FireValueResource, f"{main_route}/fire/value")
+api.add_resource(SatelliteResource, f"{main_route}/satellites")
 
 
 @app.errorhandler(HTTPException)
