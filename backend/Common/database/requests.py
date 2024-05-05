@@ -2,7 +2,7 @@ import pprint
 
 from sqlalchemy import inspect, text
 
-from backend.Common.database.models import *
+# from backend.Common.database.models import *
 from backend.Utils.db_engine import EngineBaseSqlAlchemy
 
 
