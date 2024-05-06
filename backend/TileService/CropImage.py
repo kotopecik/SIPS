@@ -1,5 +1,6 @@
 from PIL import Image, ImageDraw
 
+
 def crop_image(image_path, points):
     image = Image.open(image_path)
     cropped_images = []
@@ -16,17 +17,17 @@ def crop_image(image_path, points):
 
     return cropped_images
 
-image_path = r'C:\Users\User01\PycharmProjects\VRSDOP-service\backend\TileService\RastFilesInput\JPSS_viirs_vievi_20230807_071711_wgs84_fit.tif'
-points = [
-    [(3000, 1000), (3500, 1300), (4000, 1600), (4500, 1900), (5000, 2200),
-    (5500, 1900), (6000, 1600), (6500, 1300), (7000, 1000), (3000, 1000)],
-    [(3500, 1300), (4000, 1600), (4500, 1900), (5000, 2200), (5500, 1900),
-    (6000, 1600), (6500, 1300), (7000, 1000), (7500, 1300), (3500, 1300)],
-]
 
-cropped_images = crop_image(image_path, points)
+if __name__ == '__main__':
+    image_path = r'C:\Users\User01\PycharmProjects\VRSDOP-service\backend\TileService\RastFilesInput\JPSS_viirs_vievi_20230807_071711_wgs84_fit.tif'
+    points = [
+        [(3000, 1000), (3500, 1300), (4000, 1600), (4500, 1900), (5000, 2200),
+         (5500, 1900), (6000, 1600), (6500, 1300), (7000, 1000), (3000, 1000)],
+        [(3500, 1300), (4000, 1600), (4500, 1900), (5000, 2200), (5500, 1900),
+         (6000, 1600), (6500, 1300), (7000, 1000), (7500, 1300), (3500, 1300)],
+    ]
 
-for i, cropped_image in enumerate(cropped_images):
-    cropped_image.save(f'cropped_image_{i}.tif', format='TIFF')
+    cropped_images = crop_image(image_path, points)
 
-
+    for i, cropped_image in enumerate(cropped_images):
+        cropped_image.save(f'cropped_image_{i}.tif', format='TIFF')
