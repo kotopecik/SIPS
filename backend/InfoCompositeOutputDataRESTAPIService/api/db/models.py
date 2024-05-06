@@ -23,21 +23,20 @@ class CompositeModel(db.Model):
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, unique=True)
 
-    name: Mapped[str] = mapped_column(String)
+    name: Mapped[str] = mapped_column(String(20))
 
 
 class SatelliteModel(db.Model):
     """
     Stores the satellite name and tag.
-    Also table is monitored.
     """
 
     __tablename__ = "satellite"
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, unique=True)
 
-    name: Mapped[str] = mapped_column(String)
-    tag: Mapped[str] = mapped_column(String)
+    name: Mapped[str] = mapped_column(String(30))
+    tag: Mapped[str] = mapped_column(String(20))
 
 
 class FileCompositeModel(db.Model):
@@ -67,8 +66,11 @@ class FireValueModel(db.Model): # cache
     id: Mapped[int] = mapped_column(Integer, primary_key=True, unique=True)
 
     temperature: Mapped[float] = mapped_column(Numeric(5, 2))
-    longitude: Mapped[float] = mapped_column(Numeric(8, 6))
-    latitude: Mapped[float] = mapped_column(Numeric(8, 6))
+    longitude: Mapped[float] = mapped_column(Numeric(8, 5))
+    latitude: Mapped[float] = mapped_column(Numeric(8, 5))
 
     satellite_id: Mapped[int] = mapped_column(Integer, ForeignKey(f'{SatelliteModel.__tablename__}.id'))
     datetime_id: Mapped[int] = mapped_column(Integer, ForeignKey(f'{DateTimeModel.__tablename__}.id'))
+
+    def __repr__(self):
+        return f"<FireValue {self.id}>"

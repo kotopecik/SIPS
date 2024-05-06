@@ -21,9 +21,9 @@ from rest_framework import permissions
 
 schema_view = get_schema_view(
     openapi.Info(
-        title="Snippets API",
-        default_version='v1',
-        description="Test description",
+        title="Authorization and registration REST API",
+        default_version='v1.0',
+        description="Service for providing authorization and registration of users",
         terms_of_service="https://www.google.com/policies/terms/",
         contact=openapi.Contact(email="contact@snippets.local"),
         license=openapi.License(name="BSD License"),
@@ -33,20 +33,21 @@ schema_view = get_schema_view(
     permission_classes=[permissions.AllowAny, ],
 )
 
+main_route = "api/vAUTH/"
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path("", include("regauth.urls")),
-    path("api-auth/", include("rest_framework.urls")),
-    path('api_documentation/', schema_view.as_view()),
+    path(f"{main_route}", include("regauth.urls")),
+    # path("api-auth/", include("rest_framework.urls")),
+    path(f"{main_route}doc", schema_view.as_view()),
 
     path(
-        'swagger/',
+        f"{main_route}swagger",
         schema_view.with_ui('swagger', cache_timeout=0),
         name='schema-swagger-ui'
     ),
     path(
-        'redoc/',
+        f"{main_route}redoc",
         schema_view.with_ui('redoc', cache_timeout=0),
         name='schema-redoc'
     ),
