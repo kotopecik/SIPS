@@ -36,7 +36,7 @@ cors = CORS(app, resources={r'/api/*': {"origins": "*"}})
 # Flask restful
 api = Api(app)
 
-main_route = "/api/vCOD"
+main_route = "/api/vICOD"
 
 #   swagger
 SWAGGER_URL = "/doc"  # URL for exposing Swagger UI (without trailing '/')
@@ -49,8 +49,8 @@ with app.app_context():
         api.open_api_object,
         swagger_prefix_url=SWAGGER_URL,
         swagger_url=API_URL,
-        title="Composite Output Data Service REST API",
-        description="Service for providing output data after processing by the "
+        title="Service REST API Info about Composite Output Data",
+        description="Service for providing info about output data after processing by the "
                     "computing complex for operational data processing of the "
                     "VIIRS radiometer of Suomi-NPP, NOAA-20 satellites",
         version='v1.0',
