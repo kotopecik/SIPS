@@ -22,5 +22,5 @@ CACHE_DEFAULT_TIMEOUT = int(os.getenv("CACHE_DEFAULT_TIMEOUT", 250))
 CACHE_TYPE = os.getenv("CACHE_TYPE", 'RedisCache')
 CACHE_REDIS_URL = os.getenv("CACHE_REDIS_URL", "redis://localhost:6379/0")
 
-URL_PROD = os.getenv("URL_PROD", "http://127.0.0.1:5000")
+URL_PROD = os.getenv("URL_PROD", "http://0.0.0.0:8000")
 URL_DEV = os.getenv("URL_DEV", "http://127.0.0.1:5000")

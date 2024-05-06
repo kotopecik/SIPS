@@ -39,7 +39,7 @@ services:
     volumes:
       - composite-postgres-volume:/var/lib/postgresql/data
     env_file:
-      - ./CompositeDataRESTAPIService/.env
+      - ./InfoCompositeOutputDataRESTAPIService/.env
     environment:
       POSTGRES_HOST: "composite_postgres"
       POSTGRES_PORT: "5432"
@@ -48,12 +48,12 @@ services:
 
   composite-data-restapi:
     build:
-      context: ./CompositeDataRESTAPIService
+      context: ./InfoCompositeOutputDataRESTAPIService
       dockerfile: Dockerfile
     container_name: composite-data-restapi
     restart: unless-stopped
     env_file:
-      - ./CompositeDataRESTAPIService/.env
+      - ./InfoCompositeOutputDataRESTAPIService/.env
     environment:
       POSTGRES_HOST: "composite_postgres"
       POSTGRES_PORT: "5432"
