@@ -22,8 +22,8 @@ services:
       - yt_postgres
     volumes:
       - cache-python:/root/.cache/pip #$HOME/.cache/pip
-      - static_volume:/yt/static
-      - media_volume:/yt/media
+      - static_volume:/yt/backend/static
+      - media_volume:/yt/backend/media
     env_file:
       - ./AuthService/.env
       - .env
@@ -85,8 +85,8 @@ services:
     ports:
       - "8000:80"
     volumes:
-      - static_volume:/yt/static
-      - media_volume:/yt/media
+      - static_volume:/yt/backend/static
+      - media_volume:/yt/backend/media
       - ./nginx.conf:/etc/nginx/conf.d/default.conf
     networks:
       network-composite-data-restapi:
