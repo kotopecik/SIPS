@@ -1,9 +1,10 @@
-from sqlalchemy import Integer, String, DateTime, ForeignKey, Numeric, Boolean, SmallInteger
+from sqlalchemy import DateTime, Integer, String, ForeignKey, Numeric, Boolean
 from sqlalchemy.orm import Mapped, mapped_column
-from api.db.base import db
+
+from db.base import Base
 
 
-class DateTimeModel(db.Model):
+class DateTimeModel(Base):
     """
     Stores date and time of snapshot.
     """
@@ -14,7 +15,7 @@ class DateTimeModel(db.Model):
     datetime: Mapped[DateTime] = mapped_column(DateTime(timezone=False), unique=True)
 
 
-class CompositeModel(db.Model):
+class CompositeModel(Base):
     """
     Stores the tags of composite.
     """
@@ -26,7 +27,7 @@ class CompositeModel(db.Model):
     name: Mapped[str] = mapped_column(String(20))
 
 
-class SatelliteModel(db.Model):
+class SatelliteModel(Base):
     """
     Stores the satellite name and tag.
     """
@@ -39,7 +40,7 @@ class SatelliteModel(db.Model):
     tag: Mapped[str] = mapped_column(String(20))
 
 
-class FileCompositeModel(db.Model):
+class FileCompositeModel(Base):
     """
     Stores snapshots.
     """
@@ -57,7 +58,7 @@ class FileCompositeModel(db.Model):
     satellite_id: Mapped[int] = mapped_column(Integer, ForeignKey(f'{SatelliteModel.__tablename__}.id'))
 
 
-class FireValueModel(db.Model): # cache
+class FireValueModel(Base): # cache
     """
     Stores fire value.
     """
@@ -69,15 +70,9 @@ class FireValueModel(db.Model): # cache
     temperature: Mapped[float] = mapped_column(Numeric(5, 2))
     longitude: Mapped[float] = mapped_column(Numeric(8, 5))
     latitude: Mapped[float] = mapped_column(Numeric(8, 5))
-    resolution: Mapped[int] = mapped_column(SmallInteger, default=1)
 
     satellite_id: Mapped[int] = mapped_column(Integer, ForeignKey(f'{SatelliteModel.__tablename__}.id'))
     datetime_id: Mapped[int] = mapped_column(Integer, ForeignKey(f'{DateTimeModel.__tablename__}.id'))
 
     def __repr__(self):
         return f"<FireValue {self.id}>"
-
-    RESOLUTION_SATELLITE = {
-        "375m": 1,
-        "750m": 2
-    }

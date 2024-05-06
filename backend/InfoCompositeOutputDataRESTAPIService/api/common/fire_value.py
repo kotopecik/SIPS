@@ -7,6 +7,9 @@ from api.db.models import *
 
 
 class FireValue(InputParams):
+    def __init__(self, resolution=None, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.resolution = resolution
 
     def get_fire_values(self):
         if self.time:
