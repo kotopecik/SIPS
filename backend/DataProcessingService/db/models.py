@@ -1,4 +1,4 @@
-from sqlalchemy import DateTime, Integer, String, ForeignKey, Numeric, Boolean
+from sqlalchemy import DateTime, Integer, String, ForeignKey, Numeric, Boolean, SmallInteger
 from sqlalchemy.orm import Mapped, mapped_column
 
 from db.base import Base
@@ -58,7 +58,7 @@ class FileCompositeModel(Base):
     satellite_id: Mapped[int] = mapped_column(Integer, ForeignKey(f'{SatelliteModel.__tablename__}.id'))
 
 
-class FireValueModel(Base): # cache
+class FireValueModel(Base):  # cache
     """
     Stores fire value.
     """
@@ -70,9 +70,15 @@ class FireValueModel(Base): # cache
     temperature: Mapped[float] = mapped_column(Numeric(5, 2))
     longitude: Mapped[float] = mapped_column(Numeric(8, 5))
     latitude: Mapped[float] = mapped_column(Numeric(8, 5))
+    resolution: Mapped[int] = mapped_column(SmallInteger, default=1)
 
     satellite_id: Mapped[int] = mapped_column(Integer, ForeignKey(f'{SatelliteModel.__tablename__}.id'))
     datetime_id: Mapped[int] = mapped_column(Integer, ForeignKey(f'{DateTimeModel.__tablename__}.id'))
 
     def __repr__(self):
         return f"<FireValue {self.id}>"
+
+    RESOLUTION_SATELLITE = {
+        "375m": 1,
+        "750m": 2
+    }

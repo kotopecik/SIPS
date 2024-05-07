@@ -2,6 +2,7 @@ from datetime import timedelta, date as d, datetime
 
 from flask_restful_swagger_3 import swagger, Resource
 from webargs import fields, validate
+from marshmallow import validate as m_validate
 from webargs.flaskparser import use_args
 
 from api.common.fire_value import FireValue
@@ -25,19 +26,14 @@ class FireValueListResource(Resource):
         'name': 'time',
         'schema': {"type": "string"},
         'description': 'time'
-    }, {
-        'in': 'query',
-        'name': 'resolution',
-        'schema': {"type": "string"},
-        'description': '375m or 750n'
     }])
     @use_args({
         "time":       fields.Time(format="%H-%M", required=False),
-        "resolution": fields.Time(format="%H-%M", required=False),
     }, location="query")
     @use_args({
         "satellite":  fields.String(required=True, validate=validate.Regexp(REGEX_PARAMS_SATELLITE)),
         "date":       fields.Date(format="%Y-%m-%d", required=True),
+        "resolution": fields.String(validate=validate.OneOf(["375m", "750m"]), required=True)
     }, location="view_args")
     def get(self, *args, **kwargs):
         date = args[1]['date']
@@ -45,7 +41,7 @@ class FireValueListResource(Resource):
         time = args[0].get('time')
         resolution = kwargs['resolution']
 
-        tmp_key = f"fire_value_{satellite_tag}_{date}"
+        tmp_key = f"fire_value_{satellite_tag}_{date}_{resolution}"
         key = tmp_key if not time else tmp_key + f"_{time}"
 
         cached_fire_value = cache.get(key)

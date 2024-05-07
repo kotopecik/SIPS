@@ -1,11 +1,11 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
 
-from conf import SQLALCHEMY_DATABASE_URI
+from conf import SQLALCHEMY_DATABASE_URI, SQLALCHEMY_ECHO
 
 engine = create_engine(
     SQLALCHEMY_DATABASE_URI,
-    echo=True
+    echo=SQLALCHEMY_ECHO
 )
 
 SessionLocal = sessionmaker(

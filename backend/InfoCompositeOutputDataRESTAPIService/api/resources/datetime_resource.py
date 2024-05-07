@@ -22,7 +22,8 @@ class DateResource(Resource):
         if not cached_dates:
             items = date_s.get_dates()
             cached_dates = date_s.format_dates(items)
-            cache.set("dates", cached_dates, 12 * 60 * 60)
+            if cached_dates:
+                cache.set("dates", cached_dates, 12 * 60 * 60)
 
         return cached_dates
 

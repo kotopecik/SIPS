@@ -22,8 +22,8 @@ services:
       - yt_postgres
     volumes:
       - cache-python:/root/.cache/pip #$HOME/.cache/pip
-      - static_volume:/yt/backend/static
-      - media_volume:/yt/backend/media
+      - static_volume:/yt/backend/CRUDAPI/static
+      - media_volume:/yt/backend/CRUDAPI/media
     env_file:
       - ./AuthService/.env
       - .env
@@ -46,7 +46,7 @@ services:
     networks:
       network-composite-data-restapi:
 
-  composite-data-restapi:
+  info-composite-data-restapi:
     build:
       context: ./InfoCompositeOutputDataRESTAPIService
       dockerfile: Dockerfile
@@ -81,13 +81,14 @@ services:
     container_name: nginx
     depends_on:
       - CRUDAPI
-      - composite-data-restapi
+      - info-composite-data-restapi
     ports:
-      - "8000:80"
+      - "8080:80"
     volumes:
       - static_volume:/yt/backend/static
       - media_volume:/yt/backend/media
       - ./nginx.conf:/etc/nginx/conf.d/default.conf
+      - /mnt/ifs-gis/production/SNPP/tiles/:/src/tiles/
     networks:
       network-composite-data-restapi:
       default:

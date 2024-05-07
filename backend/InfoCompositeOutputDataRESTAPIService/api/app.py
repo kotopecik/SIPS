@@ -55,14 +55,18 @@ with app.app_context():
                     "VIIRS radiometer of Suomi-NPP, NOAA-20 satellites",
         version='v1.0',
         servers=[
-            {
-                "url": app.config["URL_PROD"],
-                "description": "Production server"
-            },
-            {
-                "url": app.config["URL_DEV"],
-                "description": "Development server"
-            }
+            # {
+            #     "url": app.config["URL_PROD"],
+            #     "description": "Production server"
+            # },
+            # {
+            #     "url": app.config["URL_PROD1"],
+            #     "description": "Production server 1"
+            # },
+            # {
+            #     "url": app.config["URL_DEV"],
+            #     "description": "Development server"
+            # }
         ],
         contact={
             "name": "API Support",
@@ -80,7 +84,7 @@ api.add_resource(DateTimeResource, f"{main_route}/dates/<date>/times")
 
 api.add_resource(CompositeResource, f"{main_route}/composites/<satellite>/<date>/<time>")
 
-api.add_resource(FireValueListResource, f"{main_route}/fire/values/<satellite>/<date>")
+api.add_resource(FireValueListResource, f"{main_route}/fire/values/<satellite>/<date>/<resolution>")
 
 api.add_resource(SatelliteListResource, f"{main_route}/satellites")
 api.add_resource(SatelliteResource, f"{main_route}/satellites/<int:id>")

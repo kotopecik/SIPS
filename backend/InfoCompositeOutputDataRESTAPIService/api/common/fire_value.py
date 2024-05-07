@@ -7,7 +7,7 @@ from api.db.models import *
 
 
 class FireValue(InputParams):
-    def __init__(self, resolution=None, *args, **kwargs):
+    def __init__(self, resolution, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.resolution = resolution
 
@@ -35,8 +35,8 @@ class FireValue(InputParams):
                 FireValueModel.datetime_id == DateTimeModel.id
             )
             .where(
-                (SatelliteModel.tag == self.satellite_tag) & datetime_expression
-
+                (SatelliteModel.tag == self.satellite_tag) & datetime_expression &
+                (FireValueModel.resolution == FireValueModel.RESOLUTION_SATELLITE[self.resolution])
             )
         )
         return fire_values

@@ -57,7 +57,7 @@ class FileCompositeModel(db.Model):
     satellite_id: Mapped[int] = mapped_column(Integer, ForeignKey(f'{SatelliteModel.__tablename__}.id'))
 
 
-class FireValueModel(db.Model): # cache
+class FireValueModel(db.Model):  # cache
     """
     Stores fire value.
     """

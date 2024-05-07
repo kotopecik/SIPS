@@ -13,7 +13,7 @@ class Composite(InputParams):
             )
             .join(
                 FileCompositeModel,
-                CompositeModel.id == FileCompositeModel.id
+                CompositeModel.id == FileCompositeModel.composite_id
             )
             .join(
                 SatelliteModel,
