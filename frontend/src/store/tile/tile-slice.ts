@@ -2,11 +2,12 @@ import {createSlice} from "@reduxjs/toolkit";
 import {TileState} from "@/store/tile/tile-state";
 import {generateDate} from "@/utils/calendar";
 import dayjs from "dayjs";
-import {fetchDates} from "@/store/tile/tile-actions";
+import {fetchDates, fetchTimes} from "@/store/tile/tile-actions";
 
 const initialState = {
     dateTime:{
-        date: null,
+        dotdate: null,
+        nondotdate: null,
         time: null,
     },
     satellite: null,
@@ -15,14 +16,18 @@ const initialState = {
     expansion: "",
     calendar: generateDate(dayjs().month(), dayjs().year()),
     currentDate: dayjs(),
+    times: []
 } as TileState
 
 const tileSlice = createSlice({
     name: 'tile',
     initialState,
     reducers:{
-        setDate(state, action){
-            state.dateTime.date = action.payload
+        setDotDate(state, action){
+            state.dateTime.dotdate = action.payload
+        },
+        setNonDotDate(state, action){
+            state.dateTime.nondotdate = action.payload
         },
         setTime(state, action){
             state.dateTime.time = action.payload
@@ -56,7 +61,14 @@ const tileSlice = createSlice({
     },
     extraReducers:(builder) => {
         builder.addCase(fetchDates.fulfilled,  (state: TileState, action) => {
-            state.dates = action.payload
+            state.dotdates = action.payload.dotdates
+            state.nondotdates = action.payload.nondotdates
+        })
+        builder.addCase(fetchTimes.fulfilled, (state:TileState, action) => {
+
+            state.times = action.payload
+            state.dateTime.time = String(state.times[0].label).replace(':','')
+            console.log(state.dateTime.time)
         })
 
     }
@@ -65,7 +77,8 @@ const tileSlice = createSlice({
 
 export const {
     setTime,
-    setDate,
+    setDotDate,
+    setNonDotDate,
     incrementCurrentMonth,
     decrementCurrentMonth,
     setSatellite,

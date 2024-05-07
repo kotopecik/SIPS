@@ -1,4 +1,5 @@
 export interface IDateTime{
-    date: string,
+    dotdate: string,
+    nondotdate: string
     time: string,
 }

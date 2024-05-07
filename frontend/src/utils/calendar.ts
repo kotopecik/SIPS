@@ -53,10 +53,14 @@ export const getStringDate = (date:dayjs.Dayjs):string => {
     return year + month + day
 }
 
+export const convertNumber = (num: string): string => {
+    return Number(num) < 10 ? "0"+ num : num
+}
 
 
-export const isThereDataForThisDay = (day: string, dateArray: IDate[]):boolean => {
-    return dateArray.some((element: IDate) => element.date === day)
+
+export const isThereDataForThisDay = (day: string, dateArray: string[]):boolean => {
+    return dateArray.some((element: string) => element === day)
 }
 
 export const getMarksByDate = (selectedDate: string, dateArray: IDate[]):Mark[] => {

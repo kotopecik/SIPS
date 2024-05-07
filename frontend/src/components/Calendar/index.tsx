@@ -6,9 +6,10 @@ import {
   decrementCurrentMonth,
   decrementCurrentYear, incrementCurrentMonth,
   incrementCurrentYear,
-  setDate, setTime
+  setDotDate, setNonDotDate, setTime
 } from "@/store/tile/tile-slice";
 import {
+  convertNumber,
   days, getMarksByDate,
   getStringDate,
   isThereDataForThisDay,
@@ -21,6 +22,7 @@ import {Dayjs} from "dayjs";
 import {IDate} from "@/interfaces/IDate";
 import {useMap} from "react-leaflet";
 import {disableMapDragging, enableMapDragging} from "@/utils/mapdragging";
+import {fetchTimes} from "@/store/tile/tile-actions";
 
 const Calendar = () => {
 
@@ -38,7 +40,8 @@ const Calendar = () => {
     }
   }
 
-  const dates: IDate[] = useAppSelector(state => state.tile).dates
+  const nondotdates: string[] = useAppSelector(state => state.tile).nondotdates
+  const dotdate: string[] = useAppSelector(state => state.tile).dateTime.dotdate
   const map = useMap()
 
   const handleNextMonth = () => {
@@ -101,17 +104,13 @@ const Calendar = () => {
                       <h3 className={`
                             ${!currentMonth && s.notthatmonth} 
                             ${selectDate.toDate().toDateString() === date.toDate().toDateString() && s.selecteddate}
-                            ${isThereDataForThisDay(getStringDate(date), dates) && s.daygreen}
+                            ${isThereDataForThisDay(getStringDate(date), nondotdates) && s.daygreen}
                             ${s.normalday}`}
                           onClick={() => {
                             setSelectDate(date);
                             setIsOpenTimeLine(true);
-                            dispatch(setDate(getStringDate(date)));
-                            try {
-                              dispatch(setTime(getMarksByDate(getStringDate(date), dates)[0].value))
-                            }catch (ex){
-                              dispatch(setTime(""))
-                            }
+                            dispatch(setNonDotDate(getStringDate(date)));
+                            dispatch(fetchTimes(date.year() + "-" + convertNumber(String(Number(currentDate.month()) + 1)) + "-" + convertNumber(String(date.date()))));
                           }}>
                         {date.date()}
                       </h3>
