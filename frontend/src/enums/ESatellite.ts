@@ -1,5 +1,5 @@
 export enum ESatellite{
-    SUOMI_NPP = 37849,
-    NOAA_20 = 43013
+    SUOMI_NPP = "snpp",
+    NOAA_20 = "noaa20"
 }
 

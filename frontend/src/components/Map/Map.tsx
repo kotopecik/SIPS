@@ -13,6 +13,7 @@ import NatureReserves from "@/components/Map/NatureReserves/NatureReserves";
 import RulerMarkers from "@/components/Map/RulerMarkers/RulerMarkers";
 import Settlements from "@/components/Map/Settlements/Settlements";
 import {Loading} from "@/components/main/Loading/Loading";
+import {TileService} from "@/components/TileService/TileService";
 
 //спасибо центру за это
 const CENTR:LatLngExpression = [54.84643545576913, 83.05183410644533];
@@ -61,7 +62,7 @@ const Map = () => {
                         <TileLayer url={layer} />
 
                         {/*current params for display*/}
-
+                        <TileService />
                         {/*<TileLayer url={EUrls.VIIRS_TILE_URL} opacity={0.7}/>*/}
 
                         {isRegions && <Regions />}
