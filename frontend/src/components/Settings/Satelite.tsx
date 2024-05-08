@@ -10,43 +10,40 @@ import {ISatellite} from "@/interfaces/ISatellite";
 import {ESatellite} from "@/enums/ESatellite";
 import {EComposite} from "@/enums/EComposite";
 import legend from '../../assets/png/legend.png'
+import {ISatelliteResponse} from "@/interfaces/ISatelliteResponse";
 
 const Satelite = () => {
 
     const dispatch = useAppDispatch()
     const satelliteState: ESatellite = useAppSelector(state => state.tile).satellite
     const compositeState: EComposite = useAppSelector(state => state.tile).composite
-    const satelliteHandleChange = (value) => {
-        if(value == satelliteState){
-            dispatch(setSatellite(null))
-        }
-        else {
-            dispatch(setSatellite(value))
-        }
-
-    }
+    const satellites: ISatelliteResponse[] = useAppSelector(state => state.tile).satellites
 
     const compositeHandleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         dispatch(setComposite(e.target.value))
+    }
+    const satelliteHandleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        dispatch(setSatellite(e.target.value))
+
     }
 
     return (
     <>
       <p className={s.text}>Спутниковые снимки</p>
-      {satellites.map((satellite:ISatellite) => (
+      {satellites.map((satellite:ISatelliteResponse) => (
           <FormControlLabel
               key = {satellite.id}
               control={
               <Switch
-                  id={satellite.id}
+                  id={String(satellite.id)}
                   size="small"
                   color="secondary"
-                  value={satellite.value}
-                  checked = {satellite.value == satelliteState}
-                  onChange={() => satelliteHandleChange(satellite.value)}
+                  value={satellite.tag}
+                  checked = {satelliteState == satellite.tag}
+                  onChange={satelliteHandleChange}
               />
           }
-              label={satellite.label}
+              label={satellite.name}
           />
       ))}
         {satelliteState && <div className={s.composites_block}>

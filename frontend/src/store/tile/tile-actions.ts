@@ -1,5 +1,6 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
 import TileService from "@/service/tile-service";
+import {ICompositeResponse} from "@/interfaces/ICompositeResponse";
 
 export const fetchDates = createAsyncThunk('tile/fetchDates',
     async (url:string) => {
@@ -20,5 +21,24 @@ export const fetchTimes = createAsyncThunk('tile/fetchTimes',
             console.log(err)
         }
     }
-
 )
+
+export const fetchSatellites = createAsyncThunk('tile/fetchSatellites',
+    async () => {
+        try {
+            return (await  TileService.getSatellites())
+        }catch (err) {
+            console.log(err)
+        }
+    }
+)
+
+// export const fetchComposites = createAsyncThunk('tile/fetchComposites',
+//     async (satellite: string, date: string, time:string): Promise<ICompositeResponse[]> => {
+//         try {
+//             return (await TileService.getComposites(satellite, date, time))
+//         }catch (err) {
+//             console.log(err)
+//         }
+//     }
+// )

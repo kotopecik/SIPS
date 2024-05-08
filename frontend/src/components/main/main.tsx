@@ -4,7 +4,7 @@ import {Loading} from "@/components/main/Loading/Loading";
 import {useAppDispatch} from "@/hooks/hook";
 import {setCursorPosition} from "@/store/cursor/cursor-slice";
 import Navbar from "@/components/navbar";
-import {fetchDates} from "@/store/tile/tile-actions";
+import {fetchDates, fetchSatellites} from "@/store/tile/tile-actions";
 import {EUrls} from "@/enums/EUrls";
 
 
@@ -29,6 +29,7 @@ function Main (){
 
     useEffect(() => {
         dispatch(fetchDates(EUrls.DATES_URL))
+        dispatch(fetchSatellites())
     })
 
 

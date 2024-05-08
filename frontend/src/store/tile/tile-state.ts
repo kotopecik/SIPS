@@ -5,6 +5,7 @@ import {IDate} from "@/interfaces/IDate";
 import {IDateTime} from "@/interfaces/IDateTime";
 import {EComposite} from "@/enums/EComposite";
 import {Mark} from "@mui/base";
+import {ISatelliteResponse} from "@/interfaces/ISatelliteResponse";
 
 export interface TileState {
     dateTime: IDateTime
@@ -17,4 +18,5 @@ export interface TileState {
     times: Mark[],
     dotdates: string[],
     nondotdates: string[]
+    satellites: ISatelliteResponse[]
 }
