@@ -44,7 +44,7 @@ def generate_tiles(input_file, output_dir, options):
 
 
 if __name__ == '__main__':
-    input_file = r'C:\Users\User01\PycharmProjects\VRSDOP-service\backend\TileService\RastFilesInput\2fit.tif'
+    input_file = r'C:\Users\User01\PycharmProjects\VRSDOP-service\backend\TileService\RastFilesInput\JPSS_viirs_vievi_20230807_071711_wgs84_fit.tif'
     output_dir = r'C:\Users\User01\PycharmProjects\VRSDOP-service\backend\TileService\RastFilesOutput'
 
     options = {

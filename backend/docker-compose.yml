@@ -33,6 +33,31 @@ services:
     command: >
       bash -c "./CRUDAPI/manage.py collectstatic --noinput && ./CRUDAPI/manage.py makemigrations regauth && ./CRUDAPI/manage.py migrate && ./CRUDAPI/manage.py runserver 0.0.0.0:8000"
 
+#  CRUDAPI:
+#    expose:
+#      - 8000
+#    build:
+#      context: ./AuthService
+#      dockerfile: Dockerfile
+#    image: yt_docker:latest
+#    container_name: yt_docker
+#    restart: unless-stopped
+#    depends_on:
+#      - yt_postgres
+#    volumes:
+#      - cache-python:/root/.cache/pip #$HOME/.cache/pip
+#      - static_volume:/yt/backend/CRUDAPI/static
+#      - media_volume:/yt/backend/CRUDAPI/media
+#    env_file:
+#      - ./AuthService/.env
+#      - .env
+#    environment:
+#      POSTGRES_HOST: "yt_postgres"
+#      DOCKER_START: 1
+#    command: >
+#      bash -c "./CRUDAPI/manage.py collectstatic --noinput && ./CRUDAPI/manage.py makemigrations regauth && ./CRUDAPI/manage.py migrate && gunicorn CRUDAPI.wsgi:application --bind 0.0.0.0:8000"
+#
+
   composite_postgres:
     image: postgres:16
     container_name: composite_postgres

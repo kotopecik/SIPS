@@ -20,11 +20,10 @@ RUN mkdir -p /yt/backend/CRUDAPI/static && mkdir /yt/backend/CRUDAPI/media && ch
 # Копируем requirements.txt и устанавливаем зависимости
 COPY --chown=yt:yt requirements.txt .
 
-#RUN #--mount=type=cache,target=/root/.cache/pip \
-#    python -m pip install -r requirements.txt
 RUN python -m pip install -r requirements.txt
 # Копируем остальные файлы проекта
 COPY --chown=yt:yt CRUDAPI CRUDAPI
 
 # Устанавливаем пользователя по умолчанию
 USER yt
+
