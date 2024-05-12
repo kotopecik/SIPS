@@ -5,7 +5,7 @@ import {ICalendar} from "@/interfaces/ICalendar";
 import {
   decrementCurrentMonth,
   decrementCurrentYear, incrementCurrentMonth,
-  incrementCurrentYear,
+  incrementCurrentYear, removeTimes,
   setDotDate, setNonDotDate, setTime
 } from "@/store/tile/tile-slice";
 import {
@@ -110,7 +110,8 @@ const Calendar = () => {
                             setSelectDate(date);
                             setIsOpenTimeLine(true);
                             dispatch(setNonDotDate(getStringDate(date)));
-                            dispatch(fetchTimes(date.year() + "-" + convertNumber(String(Number(currentDate.month()) + 1)) + "-" + convertNumber(String(date.date()))));
+                            dispatch(setDotDate(date.year() + "-" + convertNumber(String(Number(currentDate.month()) + 1)) + "-" + convertNumber(String(date.date()))))
+                            isThereDataForThisDay(getStringDate(date), nondotdates) ? dispatch(fetchTimes(date.year() + "-" + convertNumber(String(Number(currentDate.month()) + 1)) + "-" + convertNumber(String(date.date())))) : removeTimes();
                           }}>
                         {date.date()}
                       </h3>

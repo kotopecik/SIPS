@@ -42,7 +42,6 @@ const TimeLine = ({ selectDate }: Props) => {
 
             <Box className={s.box} sx={{ width: 370, overflow: marksLength > 8 ? 'auto' : 'hidden', padding: '0 20px 20px 20px'}}>
                 <Slider
-                    // value={sliderValue}
                     style={{width: marksLength > 8 && `${marksLength + 40 * marksLength}px`}}
                     min={getMinValue(times)}
                     max={getMaxValue(times)}

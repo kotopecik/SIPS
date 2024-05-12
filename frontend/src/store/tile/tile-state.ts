@@ -18,5 +18,6 @@ export interface TileState {
     times: Mark[],
     dotdates: string[],
     nondotdates: string[]
-    satellites: ISatelliteResponse[]
+    satellites: ISatelliteResponse[],
+    composites: string[]
 }

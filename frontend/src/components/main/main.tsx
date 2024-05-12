@@ -1,11 +1,13 @@
 import React, {lazy, Suspense, useEffect} from "react";
 import {Route, Routes} from "react-router";
 import {Loading} from "@/components/main/Loading/Loading";
-import {useAppDispatch} from "@/hooks/hook";
+import {useAppDispatch, useAppSelector} from "@/hooks/hook";
 import {setCursorPosition} from "@/store/cursor/cursor-slice";
 import Navbar from "@/components/navbar";
-import {fetchDates, fetchSatellites} from "@/store/tile/tile-actions";
+import {fetchComposites, fetchDates, fetchSatellites} from "@/store/tile/tile-actions";
 import {EUrls} from "@/enums/EUrls";
+import axios from "axios";
+import {ESatellite} from "@/enums/ESatellite";
 
 
 const Header = lazy(() => import("@/components/Header"))
@@ -22,6 +24,9 @@ const Profile = lazy(() => import("@/components/Pages/Profile"))
 function Main (){
 
     const dispatch = useAppDispatch()
+    const satellite:ESatellite = useAppSelector(state => state.tile).satellite
+    const dotdate = useAppSelector(state => state.tile).dateTime.dotdate
+    const time:string = useAppSelector(state => state.tile).dateTime.time
 
     const handleMouseMove = (event) => {
         dispatch(setCursorPosition({ x: event.clientX, y: event.clientY }));
@@ -30,7 +35,9 @@ function Main (){
     useEffect(() => {
         dispatch(fetchDates(EUrls.DATES_URL))
         dispatch(fetchSatellites())
-    })
+        satellite != null && dotdate != null && time != null && dispatch(fetchComposites({satellite, dotdate, dottime:time?.substring(0, 2) + "-" + time?.substring(2, time?.length)}))
+    },[satellite, dotdate, time])
+
 
 
 

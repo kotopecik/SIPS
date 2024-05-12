@@ -2,7 +2,7 @@ import {createSlice} from "@reduxjs/toolkit";
 import {TileState} from "@/store/tile/tile-state";
 import {generateDate} from "@/utils/calendar";
 import dayjs from "dayjs";
-import {fetchDates, fetchSatellites, fetchTimes} from "@/store/tile/tile-actions";
+import {fetchComposites, fetchDates, fetchSatellites, fetchTimes} from "@/store/tile/tile-actions";
 
 const initialState = {
     dateTime:{
@@ -57,6 +57,9 @@ const tileSlice = createSlice({
             state.calendar = generateDate(state.currentDate.month(), state.currentDate.year() - 1)
             state.currentDate = state.currentDate.subtract(1, 'years')
         },
+        removeTimes(state){
+            state.times = []
+        }
 
     },
     extraReducers:(builder) => {
@@ -73,7 +76,12 @@ const tileSlice = createSlice({
 
         builder.addCase(fetchSatellites.fulfilled, (state: TileState, action) => {
             state.satellites = action.payload
-            console.log(state.satellites)
+        })
+
+        builder.addCase(fetchComposites.fulfilled, (state: TileState, action) => {
+
+            state.composites = action.payload.composites
+            console.log(state.composites)
         })
 
 
@@ -92,6 +100,7 @@ export const {
     setComposite,
     setCalendarMonth,
     incrementCurrentYear,
-    decrementCurrentYear
+    decrementCurrentYear,
+    removeTimes
 } = tileSlice.actions
 export default tileSlice.reducer

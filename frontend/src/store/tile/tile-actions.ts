@@ -14,7 +14,6 @@ export const fetchDates = createAsyncThunk('tile/fetchDates',
 
 export const fetchTimes = createAsyncThunk('tile/fetchTimes',
     async (date: string) => {
-    console.log(date)
         try {
             return (await TileService.getTimes(date))
         }catch (err){
@@ -33,12 +32,18 @@ export const fetchSatellites = createAsyncThunk('tile/fetchSatellites',
     }
 )
 
-// export const fetchComposites = createAsyncThunk('tile/fetchComposites',
-//     async (satellite: string, date: string, time:string): Promise<ICompositeResponse[]> => {
-//         try {
-//             return (await TileService.getComposites(satellite, date, time))
-//         }catch (err) {
-//             console.log(err)
-//         }
-//     }
-// )
+interface Obj{
+    satellite: string,
+    dotdate:string,
+    dottime:string
+}
+
+export const fetchComposites = createAsyncThunk('tile/fetchComposites',
+    async (obj:Obj) => {
+        try {
+            return (await TileService.getComposites(obj.satellite, obj.dotdate, obj.dottime)).data
+        }catch (err) {
+            console.log(err)
+        }
+    }
+)

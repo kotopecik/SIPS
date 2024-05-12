@@ -20,7 +20,6 @@
     border-radius: 10px;
     border: 2px solid rgba(0, 98, 255, 0.3);
     &__icon{
-        position: relative;
         z-index: 1000;
         position: fixed;
         font-size: 2.2rem;
@@ -66,14 +65,9 @@
 
 }
 .composites {
-    margin-top: 3px;
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    width: 100px;
-    //display: grid;
-    //grid-template-columns: repeat(3, 1fr);
-    //grid-template-rows: repeat(3, 1fr);
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
 }
 
 .legend{

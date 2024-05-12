@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, {AxiosResponse} from "axios";
 import {IDates} from "@/interfaces/IDates";
 import {Mark} from "@mui/base";
 import {ISatelliteResponse} from "@/interfaces/ISatelliteResponse";
@@ -31,8 +31,7 @@ export default class TileService{
         return (await axios.get(`http://84.237.93.16:8080/api/vICOD/satellites`)).data
     }
 
-    static async getComposites(satellite: string, date: string, time:string): Promise<ICompositeResponse[]>{
-        console.log(await axios.get(`http://84.237.93.16:8080/api/vICOD/composites/${satellite}/${date}/${time}`))
+    static async getComposites(satellite: string, date: string, time:string): Promise<AxiosResponse<ICompositeResponse>>{
         return (await axios.get(`http://84.237.93.16:8080/api/vICOD/composites/${satellite}/${date}/${time}`))
     }
 }

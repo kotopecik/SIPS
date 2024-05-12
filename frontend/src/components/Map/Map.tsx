@@ -14,6 +14,8 @@ import RulerMarkers from "@/components/Map/RulerMarkers/RulerMarkers";
 import Settlements from "@/components/Map/Settlements/Settlements";
 import {Loading} from "@/components/main/Loading/Loading";
 import {TileService} from "@/components/TileService/TileService";
+import {ESatellite} from "@/enums/ESatellite";
+import {EComposite} from "@/enums/EComposite";
 
 //спасибо центру за это
 const CENTR:LatLngExpression = [54.84643545576913, 83.05183410644533];
@@ -30,6 +32,11 @@ const Map = () => {
   const isNatureReserves:boolean = useAppSelector(state => state.map).isNatureReserves
   const isSettlements:boolean = useAppSelector(state => state.map).isSettlements
   const isLoading:boolean = useAppSelector(state => state.map).isLoading
+
+  const satelliteState: ESatellite = useAppSelector(state => state.tile).satellite
+  const compositeState: EComposite = useAppSelector(state => state.tile).composite
+  const date = useAppSelector(state => state.tile).dateTime.nondotdate
+  const time = useAppSelector(state => state.tile).dateTime.time
 
 
 
@@ -62,7 +69,8 @@ const Map = () => {
                         <TileLayer url={layer} />
 
                         {/*current params for display*/}
-                        <TileService />
+                        {satelliteState != null && compositeState != null && time != null && date != null && <TileService />}
+
                         {/*<TileLayer url={EUrls.VIIRS_TILE_URL} opacity={0.7}/>*/}
 
                         {isRegions && <Regions />}
