@@ -5,6 +5,7 @@ import {FaSearch} from "react-icons/fa";
 import {IoMdDownload} from "react-icons/io";
 import {catalogitems} from "@/data/catalogitem";
 import {CatalogItem} from "@/components/Pages/Catalog/LeftBar/CatalogItem/CatalogItem";
+import {SetShapes} from "@/components/Pages/Catalog/LeftBar/SetShapes/SetShapes";
 
 export const LeftBar = () => {
     const [selectAllChecked, setSelectAllChecked] = useState<boolean>(false)
@@ -39,6 +40,7 @@ export const LeftBar = () => {
                     setSelectAllChecked={setSelectAllChecked}
                 />
             )))}
+            <SetShapes />
         </div>
     );
 }
