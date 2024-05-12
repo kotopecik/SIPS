@@ -10,6 +10,7 @@ import DataCollection from "./DataCollection";
 import {useAppDispatch} from "@/hooks/hook";
 import {useMap} from "react-leaflet";
 import {disableMapDragging, enableMapDragging} from "@/utils/mapdragging";
+import s from "@/components/Calendar/Calendar.module.scss";
 
 const Settings = () => {
 
@@ -42,7 +43,7 @@ const Settings = () => {
     <>
       <div ref={settRef} className={styles.block}>
         <IoSettingsSharp
-            className={styles.block__icon}
+            className = {`${location.pathname === "/" ? styles.block__icon : styles.block__iconleft}`}
             onClick={handleClick}
             onMouseDown={handleMouseDown}
             onMouseUp={handleMouseUp}

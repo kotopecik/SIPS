@@ -8,6 +8,11 @@ import {fetchComposites, fetchDates, fetchSatellites} from "@/store/tile/tile-ac
 import {EUrls} from "@/enums/EUrls";
 import axios from "axios";
 import {ESatellite} from "@/enums/ESatellite";
+import {Catalog} from "@/components/Pages/Catalog/Catalog";
+import Coords from "@/components/Map/Coords/Coords";
+import Settings from "@/components/Settings";
+import Calendar from "@/components/Calendar";
+import Ruler from "@/components/Map/Ruler/Ruler";
 
 
 const Header = lazy(() => import("@/components/Header"))
@@ -50,6 +55,8 @@ function Main (){
                 <Suspense fallback={<Loading/>}>
                     <Suspense fallback={<Loading/>}><Header /></Suspense>
                     <Suspense fallback={<Loading/>}><Map /></Suspense>
+
+
                 </Suspense>
 
             }/>
@@ -90,6 +97,12 @@ function Main (){
                     <Suspense fallback={<Loading/>}><Navbar /></Suspense>
                     <Suspense fallback={<Loading/>}><Profile /></Suspense>
                 </Suspense>
+                }
+            />
+            <Route path="/catalog" element={
+                    <Suspense fallback={<Loading/>}>
+                        <Catalog />
+                    </Suspense>
                 }
             />
         </Routes>
