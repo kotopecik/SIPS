@@ -1,0 +1,35 @@
+.setshapes{
+
+  position: fixed;
+  z-index: 3000;
+  bottom: 20px;
+  right: 172px;
+  background: lightgray;
+  border-radius: 10px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+
+  .icon{
+    width: 30px;
+    height: 30px;
+    margin: 8px 16px;
+    padding: 5px;
+    &:hover{
+      background: gray;
+      border-radius: 5px;
+    }
+  }
+  .iconchecked{
+    width: 30px;
+    height: 30px;
+    margin: 8px 16px;
+    padding: 5px;
+    background: rgba(147, 112, 219);
+    border-radius: 5px;
+    &:hover{
+      background: gray;
+
+    }
+  }
+}
