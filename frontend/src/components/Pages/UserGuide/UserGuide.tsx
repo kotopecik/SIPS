@@ -1,8 +1,11 @@
 import styles from "./UserGuide.module.scss";
 import map from "../../../assets/png/screenshots/map.png";
-import map1 from "../../../assets/png/screenshots/map1.png";
+import map1 from "../../../assets/png/screenshots/map2.png";
 import sett from "../../../assets/png/screenshots/sett.png";
 import sett1 from "../../../assets/png/screenshots/set.png";
+import sett2 from '../../../assets/png/screenshots/sett3.png'
+import sett3 from '../../../assets/png/screenshots/sett4.png'
+import sett4 from '../../../assets/png/screenshots/sett5.png'
 import calend1 from "../../../assets/png/screenshots/calend1.png";
 import calend from "../../../assets/png/screenshots/calend.png";
 import { useState } from "react";
@@ -46,67 +49,73 @@ const UserGuide = () => {
               toggleState === 1 ? styles.active : ""
             }`}
           >
-            <img className={styles.img} src={map} alt="доп. информация" />
-            <ul className={`${toggleState === 1 ? styles.text : ""}`}>
-              <li>
+            <img className={styles.map__img1} src={map} alt="доп. информация" />
+            <div className={`${toggleState === 1 ? styles.text : ""}`}>
+              
                 1. Модуль, который показывает координаты курсора мыши на карте,
                 относительно положения карты, в формате - градусы,минуты,
                 секунды.
-              </li>
-              <li>
+             
+              
                 2. Модуль для измерения расстояния "Линейка". Для его активации
                 необходимо нажать на иконку с изображением линейки, после чего
                 вместо линейки появится крестик - значит модуль активен. При
                 первом клике по карте появится начальная точка, от неё начнётся
                 отсчёт, далее необходимо поставить следующую точку, в
                 необходимом месте.
-              </li>
-              <img className={styles.img} src={map1} alt="доп. информация" />
-              <li>
+              
+              <img className={styles.map__img2} src={map1} alt="доп. информация" />
+              
                 3. Кнопки с иконками "+" и "-" предназначены для изменения
                 масштаба карты. Кнопка "+" увеличивает масштаб, кнопка "-"
                 уменьшает. Также масштабом можно усправлять с помощью колёсика
                 мыши.
-              </li>
-            </ul>
+              
+            </div>
           </div>
           <div
             className={`${styles.settings} ${
               toggleState === 2 ? styles.active : ""
             }`}
            >
-            <ul className={styles.text}>
-              <li>
+            <div className={styles.text}>
+              
                 На Главной станице веб-приложения, в правом, верхнем углу,
                 находится кнопка с иконкой шестерёнки:
-              </li>
-              <img className={styles.img} src={sett} alt="настройки" />
-              <li>
+              
+              <img className={styles.settings__img3} src={sett} alt="настройки" />
+              
                 При нажатии на неё раскроется меню с набором дополнительных
                 инструментов:
-              </li>
-              <img className={styles.img2} src={sett1} alt="настройки" />
-              <li>
+              
+              <img className={styles.settings__img4} src={sett1} alt="настройки" />
+              
                 Пользователь может менять стиль подстилающей карты, для этого
                 необходимо нажать на Radio button с соответствующим названием
                 стиля: "StandartMap", "ESRI map", "Monochrome map".
-              </li>
-            </ul>
+              <br/><br/>
+                Переключатель "Границы регионов" активирует слой, который отображает, на карте, границы регионов РФ.
+              <img className={styles.settings__img5} src={sett2} alt="настройки" /><br/>
+              Переключатель "Заповедники" активирует слой, отображающий полигоны заповедников.
+              <img className={styles.settings__img5} src={sett3} alt="настройки" /> <br/>
+              Переключатель "Населёные пукнты активирует слой, отображающий населённые пункты.
+              <img className={styles.settings__img5} src={sett4} alt="настройки" />
+            </div>
           </div>
           <div
             className={`${styles.settings} ${
               toggleState === 3 ? styles.active : ""
             }`}
            >
-            <ul className={styles.text}>
-              <li>
+            <div className={styles.text}>
+              
                 На Главной станице веб-приложения, в правом, верхнем углу,
                 находится кнопка с иконкой календаря:
-              </li>
-              <img className={styles.img1} src={calend} alt="календарь" />
-              <li>При нажатии на неё раскроется небольшое окно:</li>
-              <img className={styles.img1} src={calend1} alt="календарь" />
-            </ul>
+              
+              <img className={styles.settings__img3} src={calend} alt="календарь" />
+              При нажатии на неё раскроется небольшое окно: 
+              <img className={styles.settings__img4} src={calend1} alt="календарь" />
+            </div>
           </div>
           <div
             className={`${styles.settings} ${
