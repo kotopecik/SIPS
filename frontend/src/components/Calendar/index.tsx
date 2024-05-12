@@ -67,10 +67,13 @@ const Calendar = () => {
       <div
           onMouseDown={handleMouseDown}
           onMouseUp={handleMouseUp}
-          className={s.block}
+
+          className = {s.block}
       >
         {isOpenTimeLine && <TimeLine selectDate = {selectDate}/>}
-        <BsCalendar2MinusFill className={s.calendarbtn} onClick={handleOpenCalendar}/>
+        <BsCalendar2MinusFill
+            className = {`${location.pathname === "/" ? s.calendarbtnbot : s.calendarbtntop}`}
+            onClick={handleOpenCalendar}/>
         {isOpenCalendar && <div className={s.calendar}>
 
           <div className={s.header}>

@@ -16,6 +16,7 @@ import {Loading} from "@/components/main/Loading/Loading";
 import {TileService} from "@/components/TileService/TileService";
 import {ESatellite} from "@/enums/ESatellite";
 import {EComposite} from "@/enums/EComposite";
+import {Route} from "react-router-dom";
 
 //спасибо центру за это
 const CENTR:LatLngExpression = [54.84643545576913, 83.05183410644533];
@@ -65,13 +66,10 @@ const Map = () => {
                         maxBounds={[[-110, -170], [100, 200]]}
                         doubleClickZoom={false}
                     >
-                        {/*<MapInner />*/}
                         <TileLayer url={layer} />
 
-                        {/*current params for display*/}
                         {satelliteState != null && compositeState != null && time != null && date != null && <TileService />}
 
-                        {/*<TileLayer url={EUrls.VIIRS_TILE_URL} opacity={0.7}/>*/}
 
                         {isRegions && <Regions />}
                         {isNatureReserves && <NatureReserves />}
@@ -82,7 +80,9 @@ const Map = () => {
 
                         <Coords />
                         <Settings />
-                        <Calendar />
+                        <Calendar/>
+
+
                         <Ruler/>
 
                         {isCursorActive ? <Cursor /> : ""}

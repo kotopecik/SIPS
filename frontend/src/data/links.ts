@@ -30,26 +30,31 @@ export const mainLinks: ILink[] = [
 export const navbarLinks: ILink[] = [
     {
         id: 1,
+        to: "/catalog",
+        title: "Каталог"
+    },
+    {
+        id: 2,
         to: "/",
         title: "Перейти к карте",
     },
     {
-        id: 2,
+        id: 3,
         to: "/profile",
         title: "Профиль",
     },
     {
-        id: 3,
+        id: 4,
         to: "/home",
         title: "Главная",
     },
     {
-        id: 4,
+        id: 5,
         to: "/management",
         title: "Руководство пользователя",
     },
     {
-        id: 5,
+        id: 6,
         to: "/authorization",
         title: "Выход",
     },
