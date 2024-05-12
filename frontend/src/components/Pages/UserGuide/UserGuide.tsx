@@ -2,7 +2,7 @@ import styles from "./UserGuide.module.scss";
 import map from "../../../assets/png/screenshots/map.png";
 import map1 from "../../../assets/png/screenshots/map1.png";
 import sett from "../../../assets/png/screenshots/sett.png";
-import sett1 from "../../../assets/png/screenshots/sett1.png";
+import sett1 from "../../../assets/png/screenshots/set.png";
 import calend1 from "../../../assets/png/screenshots/calend1.png";
 import calend from "../../../assets/png/screenshots/calend.png";
 import { useState } from "react";
@@ -32,6 +32,12 @@ const UserGuide = () => {
                 onClick={() => setToggleState(3)}
               >
                 Модуль «Календарь»
+              </li>
+              <li
+                className={styles.modules__item}
+                onClick={() => setToggleState(4)}
+              >
+                Модуль «Каталог»
               </li>
             </ul>
           </div>
@@ -68,7 +74,7 @@ const UserGuide = () => {
             className={`${styles.settings} ${
               toggleState === 2 ? styles.active : ""
             }`}
-          >
+           >
             <ul className={styles.text}>
               <li>
                 На Главной станице веб-приложения, в правом, верхнем углу,
@@ -79,7 +85,7 @@ const UserGuide = () => {
                 При нажатии на неё раскроется меню с набором дополнительных
                 инструментов:
               </li>
-              <img className={styles.img} src={sett1} alt="настройки" />
+              <img className={styles.img2} src={sett1} alt="настройки" />
               <li>
                 Пользователь может менять стиль подстилающей карты, для этого
                 необходимо нажать на Radio button с соответствующим названием
@@ -91,7 +97,7 @@ const UserGuide = () => {
             className={`${styles.settings} ${
               toggleState === 3 ? styles.active : ""
             }`}
-          >
+           >
             <ul className={styles.text}>
               <li>
                 На Главной станице веб-приложения, в правом, верхнем углу,
@@ -100,6 +106,18 @@ const UserGuide = () => {
               <img className={styles.img1} src={calend} alt="календарь" />
               <li>При нажатии на неё раскроется небольшое окно:</li>
               <img className={styles.img1} src={calend1} alt="календарь" />
+            </ul>
+          </div>
+          <div
+            className={`${styles.settings} ${
+              toggleState === 4 ? styles.active : ""
+            }`}
+          >
+            <ul className={styles.text}>
+              <li>
+                ...
+              </li>
+              
             </ul>
           </div>
         </div>
