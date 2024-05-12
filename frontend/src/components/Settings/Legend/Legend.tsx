@@ -1,5 +1,6 @@
 import React from 'react';
 import s from './Legend.module.scss'
+import {getLegendByComposite} from "@/utils/composite";
 
 interface Props{
     composite: string
@@ -7,8 +8,8 @@ interface Props{
 
 export const Legend = ({composite}: Props) => {
     return (
-        <div className={s.legend}>
 
-        </div>
+
+        <img className={s.legend} src={getLegendByComposite(composite)} alt={'legend'}/>
     );
 }
