@@ -15,7 +15,11 @@ RUN useradd -rms /bin/bash yt && chmod 777 /opt /run
 
 # Указываем рабочую директорию внутри контейнера
 WORKDIR /yt/backend
+<<<<<<< HEAD
 RUN mkdir -p /yt/backend/CRUDAPI/static && mkdir /yt/backend/CRUDAPI/media && chown -R yt:yt /yt/backend/CRUDAPI && chmod 755 /yt/backend/CRUDAPI
+=======
+RUN mkdir -p /yt/backend/CRUDAPI/static && mkdir /yt/backend/CRUDAPI/media && chown -R yt:yt /yt/backend && chmod 755 /yt/backend/CRUDAPI
+>>>>>>> e7ec4a1ef6ca645a07ac5f3b2e6f5f42ad29a3e7
 
 # Копируем requirements.txt и устанавливаем зависимости
 COPY --chown=yt:yt requirements.txt .

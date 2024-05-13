@@ -2,6 +2,7 @@
 **/*[.tif, .png]
 **/RastFiles*
 !api
+!app*
 !common
 !requirements.txt
 rabbish.txt

@@ -1,7 +1,6 @@
-import pprint
 from datetime import datetime, timedelta, date as d
 
-from flask_restful_swagger_3 import Resource, swagger
+from flask_restful_swagger_2 import Resource, swagger
 from webargs import fields, validate
 from webargs.flaskparser import use_args
 
@@ -12,13 +11,55 @@ from api.conf import REGEX_PARAMS_SATELLITE
 
 
 class CompositeResource(Resource):
-    @swagger.tags(['Composite'])
-    @swagger.reorder_with(
-        CompositeSchemaSwagger,
-        as_list=True,
-        description="Returns a composite list by date, satellite, time",
-        summary="Get Composites"
-    )
+    @swagger.doc({
+        "tags": ["Composite"],
+        "summary": "Get Composites",
+        "parameters": [
+            {
+                "name": "satellite",
+                "description": "Satellite example: snpp or noaa20",
+                "in": "path",
+                "type": "string",
+                "required": True
+            },
+            {
+                "name": "date",
+                "description": "Date format: YYYY-MM-DD (example: 2023-06-17)",
+                "in": "path",
+                "type": "string",
+                "required": True
+            },
+            {
+                "name": "time",
+                "description": "Time format: HH-MM (example: 07-20)",
+                "in": "path",
+                "type": "string",
+                "required": True
+            }
+        ],
+        "responses": {
+            "200": {
+                "description": "Returns a composite list by date, satellite, time",
+                "schema": CompositeSchemaSwagger,
+                "examples": {
+                    "application/json": {
+                        "composites": [
+                            "aot550",
+                            "aotaps",
+                            "clmsk",
+                            "clmsk2",
+                            "clphs",
+                            "frmsk",
+                            "vievi",
+                            "vindvi",
+                            "vlst",
+                            "vscmo"
+                        ]
+                    }
+                }
+            }
+        }
+     })
     @use_args({
         "satellite": fields.String(required=True, validate=validate.Regexp(REGEX_PARAMS_SATELLITE)),
         "date":      fields.Date(format="%Y-%m-%d", required=True),

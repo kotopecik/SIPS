@@ -12,3 +12,4 @@ drf_yasg
 python-dotenv==1.0.1
 django-cors-headers==4.3.1
 django-rest-swagger==2.2.0
+gunicorn==22.0.0

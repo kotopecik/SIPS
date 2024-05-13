@@ -1,6 +1,6 @@
 from datetime import timedelta, date as d, datetime
 
-from flask_restful_swagger_3 import swagger, Resource
+from flask_restful_swagger_2 import swagger, Resource
 from webargs import fields, validate
 from marshmallow import validate as m_validate
 from webargs.flaskparser import use_args
@@ -13,20 +13,65 @@ from api.conf import REGEX_PARAMS_SATELLITE
 
 
 class FireValueListResource(Resource):
-
-    @swagger.tags(['FireValue'])
-    @swagger.reorder_with(
-        FireValueSchemaSwagger,
-        as_list=True,
-        description="Returns a fire value by date, satellite",
-        summary="Get Fire values"
-    )
-    @swagger.parameters([{
-        'in': 'query',
-        'name': 'time',
-        'schema': {"type": "string"},
-        'description': 'time'
-    }])
+    @swagger.doc({
+        "tags": ["FireValue"],
+        "summary": "Get Fire values",
+        "parameters": [
+            {
+                "name": "satellite",
+                "description": "Satellite example: snpp or noaa20",
+                "in": "path",
+                "type": "string",
+                "required": True
+            },
+            {
+                "name": "date",
+                "description": "Date format: YYYY-MM-DD (example: 2023-06-17)",
+                "in": "path",
+                "type": "string",
+                "required": True
+            },
+            {
+                "name": "resolution",
+                "description": "Resolution of data fixation by the satellite spectrometer. "
+                               "Resolution example: 375m or 750m",
+                "in": "path",
+                "type": "string",
+                "required": True
+            },
+            {
+                "name": "time",
+                "description": "Time format: HH-MM (example: 07-20)",
+                "in": "query",
+                "type": "string",
+                "required": False
+            }
+        ],
+        "responses": {
+            "200": {
+                "description": "Returns a fire value by date, satellite",
+                "schema": FireValueSchemaSwagger,
+                "examples": {
+                    "application/json": [
+                        {
+                            "temperature": "337.00",
+                            "longitude": "74.16107",
+                            "latitude": "32.90946",
+                            "satellite": "snpp",
+                            "datetime": "2023-06-17T07:20:00"
+                        },
+                        {
+                            "temperature": "367.00",
+                            "longitude": "80.83962",
+                            "latitude": "36.96287",
+                            "satellite": "snpp",
+                            "datetime": "2023-06-17T07:20:00"
+                        }
+                    ]
+                }
+            }
+        }
+     })
     @use_args({
         "time":       fields.Time(format="%H-%M", required=False),
     }, location="query")

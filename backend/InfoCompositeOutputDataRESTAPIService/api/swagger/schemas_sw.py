@@ -1,7 +1,7 @@
-from flask_restful_swagger_3 import Schema
+from flask_restful_swagger_2 import Schema
 
 
-# Satellite resource
+# Satellite resource schema
 class SatelliteSchemaSwagger(Schema):
     properties = {
         'id': {
@@ -17,20 +17,30 @@ class SatelliteSchemaSwagger(Schema):
     }
 
 
-# DateTime resource
+# DateTime resource schema
+class TimeSchemaSwagger(Schema):
+    type = 'object'
+    properties = {
+        'time': {
+            'type': 'string'
+        },
+    }
+
+
 class DateTimeSchemaSwagger(Schema):
     properties = {
-        "times": ["time"],
+        "times": TimeSchemaSwagger.array(),
     }
 
 
 class DateSchemaSwagger(Schema):
+    type = "object"
     properties = {
-        "dates": "dict",
+        "dates": {},
     }
 
 
-# Fire value
+# Fire value resource schema
 class FireValueSchemaSwagger(Schema):
     properties = {
         'id': {
@@ -49,8 +59,17 @@ class FireValueSchemaSwagger(Schema):
     }
 
 
-# Composite
+# Composite resource schema
+class CompositeItemSchemaSwagger(Schema):
+    type = 'object'
+    properties = {
+        'composite': {
+            'type': 'string'
+        },
+    }
+
+
 class CompositeSchemaSwagger(Schema):
     properties = {
-        "composites": "list",
+        "composites": CompositeItemSchemaSwagger.array(),
     }

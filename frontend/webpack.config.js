@@ -9,7 +9,7 @@ let target = 'web';
 
 if (process.argv[4] !== 'development') {
     mode = 'production';
-    target = 'browserslist';
+    //target = 'browserslist';
 }
 
 console.log("!!!mode =", process.argv[4]);
@@ -53,7 +53,7 @@ module.exports = {
     entry: './src/index.tsx',
 
     devServer: {
-        port: port ?? 3000,
+        port: port ?? 3001,
         open : true,
         historyApiFallback: true,
         static: './build',

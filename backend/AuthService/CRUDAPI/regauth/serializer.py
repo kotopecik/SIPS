@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import UserModel
+from rest_framework.validators import UniqueValidator
 
 class PasswordValidator:
     def __call__(self, value):
@@ -21,7 +22,7 @@ class UserSerializer(serializers.ModelSerializer):
     last_name = serializers.CharField(max_length=150)
     middle_name = serializers.CharField(max_length=150)
     organization = serializers.CharField(max_length=150)
-    email = serializers.EmailField()
+    email = serializers.EmailField(validators=[UniqueValidator(queryset=UserModel.objects.all())])
     password = serializers.CharField(write_only=True, required=True, validators=[PasswordValidator()])
 
     class Meta:

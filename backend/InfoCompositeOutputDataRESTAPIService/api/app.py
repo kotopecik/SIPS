@@ -1,9 +1,10 @@
 import json
 
 from flask import Flask, jsonify, Blueprint
-from flask_restful_swagger_3 import Api, get_swagger_blueprint, swagger
+from flask_restful_swagger_2 import Api, get_swagger_blueprint, swagger
 from flask_migrate import Migrate
 from flask_cors import CORS
+from flask_swagger_ui import get_swaggerui_blueprint
 from werkzeug.exceptions import HTTPException
 
 from api.common.regex_convertor import RegexConverter
@@ -33,49 +34,41 @@ cors = CORS(app, resources={r'/api/*': {"origins": "*"}})
 # )
 
 
-# Flask restful
-api = Api(app)
-
 main_route = "/api/vICOD"
+api_spec_url = f"{main_route}/swagger"
 
-#   swagger
-SWAGGER_URL = "/doc"  # URL for exposing Swagger UI (without trailing '/')
-API_URL = "swagger.json"  # Our API url (can of course be a local resource)
+# Flask restful swagger 3
+api = Api(
+    app,
+    api_spec_url=api_spec_url,
+    api_version="v1.0",
+    add_api_spec_resource=True,
+    contact={
+        "name": "API Support",
+        "email": "serbinovichgs@ict.nsc.ru"
+    },
+    title='Service REST API Info about Composite Output Data',
+    description="Service for providing info about output data after processing by the "
+                "computing complex for operational data processing of the "
+                "VIIRS radiometer of Suomi-NPP, NOAA-20 satellites",
+    schemes=["http", "https"],
+)
 
-app.config.setdefault("SWAGGER_BLUEPRINT_URL_PREFIX", f"{main_route}/swagger")
+
+# Swagger
+SWAGGER_URL = f"{main_route}/swagger"  # URL for exposing Swagger UI (without trailing '/')
+API_URL = f"{api_spec_url}.json"  # Our API url (can of course be a local resource)
 
 with app.app_context():
-    swagger_blueprint = get_swagger_blueprint(
-        api.open_api_object,
-        swagger_prefix_url=SWAGGER_URL,
-        swagger_url=API_URL,
-        title="Service REST API Info about Composite Output Data",
-        description="Service for providing info about output data after processing by the "
-                    "computing complex for operational data processing of the "
-                    "VIIRS radiometer of Suomi-NPP, NOAA-20 satellites",
-        version='v1.0',
-        servers=[
-            # {
-            #     "url": app.config["URL_PROD"],
-            #     "description": "Production server"
-            # },
-            # {
-            #     "url": app.config["URL_PROD1"],
-            #     "description": "Production server 1"
-            # },
-            # {
-            #     "url": app.config["URL_DEV"],
-            #     "description": "Development server"
-            # }
-        ],
-        contact={
-            "name": "API Support",
-            # "url": "https://www.example.com/support",
-            "email": "serbinovichgs@ict.nsc.ru"
+    swagger_ui_blueprint = get_swaggerui_blueprint(
+        SWAGGER_URL,  # Swagger UI static files will be mapped to '{SWAGGER_URL}/dist/'
+        API_URL,
+        config={  # Swagger UI config overrides
+            'app_name': "Swagger UI",
         }
     )
 
-app.register_blueprint(swagger_blueprint, url_prefix=f"{main_route}/swagger")
+app.register_blueprint(swagger_ui_blueprint)
 
 
 # Resources
