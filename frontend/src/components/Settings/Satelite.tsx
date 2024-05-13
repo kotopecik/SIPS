@@ -9,9 +9,10 @@ import {setComposite, setSatellite} from "@/store/tile/tile-slice";
 import {ISatellite} from "@/interfaces/ISatellite";
 import {ESatellite} from "@/enums/ESatellite";
 import {EComposite} from "@/enums/EComposite";
-import legend from '../../assets/png/legend.png'
+import legend from '../../assets/png/legends/vlst.png'
 import {ISatelliteResponse} from "@/interfaces/ISatelliteResponse";
 import {fetchComposites} from "@/store/tile/tile-actions";
+import {Legend} from "@/components/Settings/Legend/Legend";
 
 const Satelite = () => {
 
@@ -68,7 +69,7 @@ const Satelite = () => {
                     />
                 ))}
             </div>
-            {composites.length !== 0 && <img className={s.legend} src={legend} alt={'legend'}/>}
+            {composites.length !== 0 && <Legend composite={compositeState}/>}
         </div>
         }
     </>
