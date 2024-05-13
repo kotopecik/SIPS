@@ -4,8 +4,8 @@ services:
   yt_postgres:
     image: postgres:11
     container_name: yt_postgres
-    volumes:
-      - yt_postgres-volume:/var/lib/postgresql/data
+#    volumes:
+#      - yt_postgres-volume:/var/lib/postgresql/data
     env_file:
       - .env
 
@@ -29,9 +29,11 @@ services:
       - .env
     environment:
       POSTGRES_HOST: "yt_postgres"
+      POSTGRES_PORT: "5432"
       DOCKER_START: 1
     command: >
-      bash -c "./CRUDAPI/manage.py collectstatic --noinput && ./CRUDAPI/manage.py makemigrations regauth && ./CRUDAPI/manage.py migrate && ./CRUDAPI/manage.py runserver 0.0.0.0:8000"
+      bash -c "./CRUDAPI/manage.py collectstatic --noinput && ./CRUDAPI/manage.py makemigrations regauth && ./CRUDAPI/manage.py migrate && cd CRUDAPI && gunicorn --workers 6 --bind 0.0.0.0:8000 CRUDAPI.wsgi:application"
+#      ./CRUDAPI/manage.py runserver 0.0.0.0:8000"
 
   composite_postgres:
     image: postgres:11
@@ -104,14 +106,23 @@ services:
       network-composite-data-restapi:
       default:
 
+  web-client:
+    build:
+      context: ./
+      dockerfile: ../frontend/Dockerfile
+    restart: unless-stopped
+    container_name: web-client-container
+    expose:
+      - "3000"
+
   nginx:
     image: nginx:1.19
     container_name: nginx
     depends_on:
       - CRUDAPI
-      - info-composite-data-restapi
+#      - info-composite-data-restapi
     ports:
-      - "8080:80"
+      - "8086:80"
     volumes:
       - static_volume:/yt/backend/static
       - media_volume:/yt/backend/media
