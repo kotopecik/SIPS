@@ -23,7 +23,14 @@ routing_key = "algorithm.key"
 
 
 def on_algorithm_message(ch, method, properties, body):
-    print(f"Received from alg: '{body}'")
+    """
+    input_raw_file - path to input raw file
+    body format = {
+        "input_raw_file": input_raw_file
+    }
+    """
+
+    print(f"Received from loader service: '{body}'")
     received_message = json.loads(body.decode())
     output_data_dir = run_process_raw(received_message["input_raw_file"])
     data = {

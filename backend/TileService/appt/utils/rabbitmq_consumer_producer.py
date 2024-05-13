@@ -19,6 +19,14 @@ routing_key = "tiles.key"
 
 
 def on_tiles_message(ch, method, properties, body):
+    """
+    output_data_dir - directory with tiles.
+    body format = {
+        "output_data_dir": output_data_dir
+    }
+    """
+    # your code
+
     print(f"Received: {body}")
 
 
@@ -34,4 +42,5 @@ with pika.BlockingConnection(connection_params) as connection:
 
         channel.basic_consume(queue=queue_name, on_message_callback=on_tiles_message, auto_ack=True)
 
+        print('Waiting for messages. To exit, press Ctrl+C')
         channel.start_consuming()
