@@ -15,7 +15,7 @@ COPY requirements.txt .
 
 RUN python -m pip install -r requirements.txt
 
-COPY appdp appdp
+COPY appl appl
 COPY ./run.sh run.sh
 
 RUN chown -R app-back:app-back /usr/src/app

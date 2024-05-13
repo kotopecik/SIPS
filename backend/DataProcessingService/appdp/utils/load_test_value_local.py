@@ -3,8 +3,8 @@ import datetime
 import pprint
 import re
 
-from db.models import DateTimeModel, CompositeModel, FileCompositeModel, FireValueModel
-from db.requests import DataBase
+from appdp.db.models import DateTimeModel, CompositeModel, FileCompositeModel, FireValueModel
+from appdp.db.requests import DataBase
 
 path_to_file = "/home/grigoriy/ict-psk/paths-to-tiff.txt"
 path_to_file_fire_value = "/home/grigoriy/ict-psk/FL_npp_d20230617_t0720369_e0731589_b60296_c2024.txt"

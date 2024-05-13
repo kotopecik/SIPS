@@ -4,8 +4,8 @@ import re
 import datetime
 from typing import List
 
-from db.models import DateTimeModel, CompositeModel, FileCompositeModel, FireValueModel, SatelliteModel
-from db.requests import DataBase
+from appdp.db.models import DateTimeModel, CompositeModel, FileCompositeModel, FireValueModel, SatelliteModel
+from appdp.db.requests import DataBase
 
 # Paths to files
 path_save_processed_data = "/home/grigoriy/tiles/SNPP/NPP_SOFT/OUTDATA"

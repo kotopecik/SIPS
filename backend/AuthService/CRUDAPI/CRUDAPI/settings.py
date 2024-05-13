@@ -212,3 +212,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # разрешаем все домены. Нужно потом поменять for example: CORS_ALLOWED_WHITELIST = ["http://localhost:3000"]
 CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_METHODS = ['DELETE', 'GET', 'OPTIONS', 'PATCH', 'POST', 'PUT']
+CORS_ALLOW_CREDENTIALS = True
+# CORS_ORIGIN_WHITELIST = []

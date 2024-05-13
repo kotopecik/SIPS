@@ -2,7 +2,7 @@ version: "3"
 
 services:
   yt_postgres:
-    image: postgres:16
+    image: postgres:11
     container_name: yt_postgres
     volumes:
       - yt_postgres-volume:/var/lib/postgresql/data
@@ -34,7 +34,7 @@ services:
       bash -c "./CRUDAPI/manage.py collectstatic --noinput && ./CRUDAPI/manage.py makemigrations regauth && ./CRUDAPI/manage.py migrate && ./CRUDAPI/manage.py runserver 0.0.0.0:8000"
 
   composite_postgres:
-    image: postgres:16
+    image: postgres:11
     container_name: composite_postgres
     volumes:
       - composite-postgres-volume:/var/lib/postgresql/data
@@ -67,8 +67,26 @@ services:
     networks:
       network-composite-data-restapi:
 
+  data-processing:
+    build:
+      context: ./DataProcessingService
+      dockerfile: Dockerfile
+    container_name: data-processing
+    restart: unless-stopped
+    env_file:
+      - ./DataProcessingService/.env
+    environment:
+      POSTGRES_HOST: "composite_postgres"
+      POSTGRES_PORT: "5432"
+      RABBITMQ_HOST: "rabbitmq"
+    depends_on:
+      - composite_postgres
+    command: bash -c "./run.sh"
+    networks:
+      network-composite-data-restapi:
+
   redis:
-    image: redis:7.2
+    image: redis:5
     restart: always
     expose:
       - "6379"
@@ -76,8 +94,18 @@ services:
       network-composite-data-restapi:
       default:
 
+  rabbitmq:
+    image: rabbitmq
+    restart: unless-stopped
+    expose:
+      - "5672"
+      - "15672"
+    networks:
+      network-composite-data-restapi:
+      default:
+
   nginx:
-    image: nginx:1.25
+    image: nginx:1.19
     container_name: nginx
     depends_on:
       - CRUDAPI

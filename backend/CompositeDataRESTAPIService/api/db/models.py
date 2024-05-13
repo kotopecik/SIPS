@@ -1,10 +1,9 @@
-from sqlalchemy import DateTime, Integer, String, ForeignKey, Numeric, Boolean, SmallInteger
+from sqlalchemy import Integer, String, DateTime, ForeignKey, Numeric, Boolean, SmallInteger
 from sqlalchemy.orm import Mapped, mapped_column
+from api.db.base import db
 
-from db.base import Base
 
-
-class DateTimeModel(Base):
+class DateTimeModel(db.Model):
     """
     Stores date and time of snapshot.
     """
@@ -15,7 +14,7 @@ class DateTimeModel(Base):
     datetime: Mapped[DateTime] = mapped_column(DateTime(timezone=False), unique=True)
 
 
-class CompositeModel(Base):
+class CompositeModel(db.Model):
     """
     Stores the tags of composite.
     """
@@ -27,7 +26,7 @@ class CompositeModel(Base):
     name: Mapped[str] = mapped_column(String(20))
 
 
-class SatelliteModel(Base):
+class SatelliteModel(db.Model):
     """
     Stores the satellite name and tag.
     """
@@ -40,7 +39,7 @@ class SatelliteModel(Base):
     tag: Mapped[str] = mapped_column(String(20))
 
 
-class FileCompositeModel(Base):
+class FileCompositeModel(db.Model):
     """
     Stores snapshots.
     """
@@ -58,7 +57,7 @@ class FileCompositeModel(Base):
     satellite_id: Mapped[int] = mapped_column(Integer, ForeignKey(f'{SatelliteModel.__tablename__}.id'))
 
 
-class FireValueModel(Base):  # cache
+class FireValueModel(db.Model):  # cache
     """
     Stores fire value.
     """

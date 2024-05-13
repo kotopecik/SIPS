@@ -1,4 +1,4 @@
-from flask_restful_swagger_3 import Resource, swagger
+from flask_restful_swagger_2 import Resource, swagger
 from webargs import fields
 from webargs.flaskparser import use_args
 
@@ -8,13 +8,29 @@ from api.common.caching import cache
 
 
 class DateResource(Resource):
-
-    @swagger.tags(['DateTime'])
-    @swagger.reorder_with(
-        DateSchemaSwagger,
-        description="Returns a date",
-        summary="Get Date"
-    )
+    @swagger.doc({
+        "tags": ["DateTime"],
+        "summary": "Get Dates",
+        "responses": {
+            "200": {
+                "description": "Returns a dates",
+                "schema": DateSchemaSwagger,
+                "examples": {
+                    "application/json": {
+                        "dates": {
+                            "2023": {
+                                "06": [
+                                    "2023-06-27",
+                                    "2023-06-26",
+                                    "2023-06-23"
+                                ]
+                            }
+                        }
+                    }
+                }
+            }
+        }
+     })
     def get(self):
         date_s = DateService()
 
@@ -29,21 +45,40 @@ class DateResource(Resource):
 
 
 class DateTimeResource(Resource):
-
-    @swagger.tags(['DateTime'])
-    @swagger.reorder_with(
-        DateTimeSchemaSwagger,
-        description="Returns a time by date",
-        summary="Get Times"
-    )
+    @swagger.doc({
+        "tags": ["DateTime"],
+        "summary": "Get Times",
+        "parameters": [
+            {
+                "name": "date",
+                "description": "Date format: YYYY-MM-DD (example: 2023-06-17)",
+                "in": "path",
+                "type": "string",
+                "required": True
+            }
+        ],
+        "responses": {
+            "200": {
+                "description": "Returns a time by date",
+                "schema": DateTimeSchemaSwagger,
+                "examples": {
+                    "application/json": {
+                        "times": [
+                            "07:20"
+                        ]
+                    }
+                }
+            }
+        }
+     })
     @use_args({
         "date": fields.Date(format="%Y-%m-%d", required=True),
     }, location="view_args")
     def get(self, *args, **kwargs):
-        date = kwargs.get('date')
+        date = kwargs.get("date")
 
         date_time = DateTime(date=date)
         datetime_items = date_time.get_datetimes()
         formatted_times = date_time.fetch_times(datetime_items)
 
-        return {'times': formatted_times}
+        return {"times": formatted_times}

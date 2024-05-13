@@ -13,15 +13,14 @@ RUN python -m pip install --upgrade pip
 
 COPY requirements.txt .
 
+COPY ./run.sh .
+
 RUN python -m pip install -r requirements.txt
 
-COPY appdp appdp
-COPY ./run.sh run.sh
+COPY ./api api/
 
 RUN chown -R app-back:app-back /usr/src/app
 
 RUN chmod u+x run.sh
 
 USER app-back
-
-CMD ["./run.sh"]

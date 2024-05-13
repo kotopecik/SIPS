@@ -1,9 +1,7 @@
-import pprint
-
 from sqlalchemy import select, insert
 
-from db.base import SessionLocal
-from db.models import SatelliteModel, DateTimeModel
+from appdp.db.base import SessionLocal
+from appdp.db.models import SatelliteModel, DateTimeModel
 
 
 class DataBase:
