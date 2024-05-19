@@ -3,7 +3,7 @@ import json
 import pika
 
 import appdp.conf as conf
-from appdp.utils.start_algorithm import run_process_raw
+from appdp.utils.start_algorithm import process_raw
 
 
 connection_params = pika.ConnectionParameters(
@@ -32,14 +32,16 @@ def on_algorithm_message(ch, method, properties, body):
 
     print(f"Received from loader service: '{body}'")
     received_message = json.loads(body.decode())
-    output_data_dir = run_process_raw(received_message["input_raw_file"])
-    data = {
-        'output_data_dir': output_data_dir
-    }
-    sending_message = json.dumps(data)
+    output_data_dir = process_raw(received_message["input_raw_file"])
 
-    channel.basic_publish(exchange="tiles_exchange", routing_key="tiles.key",
-                          body=sending_message.encode())
+    if output_data_dir:
+        data = {
+            'output_data_dir': output_data_dir
+        }
+        sending_message = json.dumps(data)
+
+        channel.basic_publish(exchange="tiles_exchange", routing_key="tiles.key",
+                              body=sending_message.encode())
 
 
 # Установка соединения

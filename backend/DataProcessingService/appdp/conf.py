@@ -19,6 +19,10 @@ SQLALCHEMY_DATABASE_URI = (f"postgresql://{POSTGRES_USER}:"
                            f"{POSTGRES_PASSWORD}@172.28.0.2"
                            f":5432/{POSTGRES_DB}")
 
+SQLALCHEMY_DATABASE_URI = (f"postgresql://test:"
+                           f"1234@172.17.0.4"
+                           f":5432/composite_db")
+
 SQLALCHEMY_ECHO = False
 
 # Rabbitmq settings

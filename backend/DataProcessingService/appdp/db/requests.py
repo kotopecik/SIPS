@@ -1,13 +1,26 @@
 from sqlalchemy import select, insert
 
-from appdp.db.base import SessionLocal
-from appdp.db.models import SatelliteModel, DateTimeModel
+from appdp.db.base import SessionLocal, Base, engine
+# from appdp.db.models import SatelliteModel, DateTimeModel
+from appdp.db.models import *
 
 
 class DataBase:
 
     def __init__(self):
         self.session = SessionLocal()
+
+    def create_all(self):
+        Base.metadata.create_all(engine)
+
+    def drop_all(self):
+        Base.metadata.drop_all(bind=engine, tables=[
+            DateTimeModel.__table__,
+            CompositeModel.__table__,
+            SatelliteModel.__table__,
+            FileCompositeModel.__table__,
+            FireValueModel.__table__,
+        ])
 
     def get_or_create(self, model, **kwargs):
 

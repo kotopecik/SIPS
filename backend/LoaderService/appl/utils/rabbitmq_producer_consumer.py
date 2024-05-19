@@ -1,3 +1,5 @@
+import json
+
 import pika
 
 import appl.conf as conf
@@ -26,9 +28,13 @@ with pika.BlockingConnection(connection_params) as connection:
 
         channel.queue_declare(queue=queue_name)
 
+        body = {
+            "input_raw_file": "input filename"
+        }
+        json_body = json.dumps(body)
 
         channel.basic_publish(
             exchange=exchange,
             routing_key=routing_key,
-            body="send the message to the alg".encode()
+            body=json_body.encode()
         )
