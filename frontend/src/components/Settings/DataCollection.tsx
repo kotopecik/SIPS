@@ -7,7 +7,7 @@ import DatePanel from "react-multi-date-picker/plugins/date_panel";
 import { DemoItem } from "@mui/x-date-pickers/internals/demo";
 //import transition from "react-element-popper/animations/transition";
 const DataCollection = () => {
-  const [dateRange, setDateRange] = useState([new DateObject()]);
+  const [dateRange, setDateRange] = useState();
   return (
     <div className={styles.sort}>
       <p className={styles.text}>
