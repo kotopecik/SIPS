@@ -1,0 +1,18 @@
+.cataloogitem{
+
+  display: flex;
+  justify-content: space-between;
+  padding: 9px;
+  &:hover{
+    background: lightgray;
+  }
+  .cataloogitemleft{
+    span{
+      color: gray;
+    }
+    .dates{}
+    .satellite{}
+    .radiometer{}
+  }
+
+}

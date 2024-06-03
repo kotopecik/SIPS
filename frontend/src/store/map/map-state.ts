@@ -1,10 +1,12 @@
-
-import {LatLngLiteral} from "leaflet";
 import {IPolygons} from "@/interfaces/IPolygons";
+import {IBorder} from "@/interfaces/IBorder";
 
 export interface MapState{
     layer: string,
-    polygons: IPolygons
-    mousePos: LatLngLiteral,
-    isRulerActive: boolean
+    polygons: IPolygons,
+    borders: IBorder[],
+    isLoading: boolean,
+    isRegions: boolean,
+    isNatureReserves: boolean,
+    isSettlements: boolean
 }

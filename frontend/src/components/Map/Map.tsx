@@ -1,96 +1,98 @@
 import './Map.scss'
-import {MapContainer, TileLayer, Marker, Popup, Polygon, GeoJSON, Polyline, Tooltip} from "react-leaflet";
-import {Icon, LatLngExpression, LatLngLiteral} from "leaflet";
+import {MapContainer, TileLayer} from "react-leaflet";
+import {LatLngExpression, LatLngLiteral} from "leaflet";
 import {useAppDispatch, useAppSelector} from "@/hooks/hook";
-import {IRegion} from "@/interfaces/IRegion";
 import Coords from "@/components/Map/Coords/Coords";
 import Settings from "@/components/Settings";
 import Calendar from "@/components/Calendar";
-import {IMarker} from "@/interfaces/IMarker";
-import {useState} from "react";
 import Ruler from "@/components/Map/Ruler/Ruler";
-import {RulerCalculations} from "@/utils/RulerCalculations";
-import {icons} from "@/data/Icons";
+import {addRulerMarker, addRulerMarkerPos} from "@/store/ruler/ruler-slice";
+import Cursor from "@/components/Cursor/Cursor";
+import Regions from "@/components/Map/Regions/Regions";
+import NatureReserves from "@/components/Map/NatureReserves/NatureReserves";
+import RulerMarkers from "@/components/Map/RulerMarkers/RulerMarkers";
+import Settlements from "@/components/Map/Settlements/Settlements";
+import {Loading} from "@/components/main/Loading/Loading";
+import {TileService} from "@/components/TileService/TileService";
+import {ESatellite} from "@/enums/ESatellite";
+import {EComposite} from "@/enums/EComposite";
+import {Route} from "react-router-dom";
 
 //спасибо центру за это
 const CENTR:LatLngExpression = [54.84643545576913, 83.05183410644533];
 
 
+
 const Map = () => {
 
-  const purpleOptions = { color: 'red' }
-  const greenOptions = { color: 'green' }
-
   const layer:string = useAppSelector(state => state.map).layer
-  const regions:IRegion[] = useAppSelector(state => state.map).polygons.regions
-  const natureReserves:LatLngExpression[][] = useAppSelector(state => state.map).polygons.natureReserves
-  const isRulerActive = useAppSelector(state => state.map).isRulerActive
-  const mousePos:LatLngLiteral = useAppSelector(state => state.map).mousePos
+  const isRulerActive:boolean = useAppSelector(state => state.ruler).isRulerActive
+  const mousePos:LatLngLiteral = useAppSelector(state => state.cursor).mousePos
+  const isCursorActive:boolean = useAppSelector(state => state.cursor).isActive
+  const isRegions:boolean = useAppSelector(state => state.map).isRegions
+  const isNatureReserves:boolean = useAppSelector(state => state.map).isNatureReserves
+  const isSettlements:boolean = useAppSelector(state => state.map).isSettlements
+  const isLoading:boolean = useAppSelector(state => state.map).isLoading
 
-  const [markers, setMarkers] = useState<IMarker[]>([])
-  const [markersPos, setMarkersPos] = useState<LatLngExpression[]>([])
+  const satelliteState: ESatellite = useAppSelector(state => state.tile).satellite
+  const compositeState: EComposite = useAppSelector(state => state.tile).composite
+  const date = useAppSelector(state => state.tile).dateTime.nondotdate
+  const time = useAppSelector(state => state.tile).dateTime.time
 
+
+
+    const dispatch = useAppDispatch()
 
     const addMarker = (event) => {
-      if((event.clientY < window.window.innerHeight - 200) || (event.clientX > 150))
-      {
-          setMarkers([
-              ...markers,
-              {
-                  position: mousePos,
-                  title: ""
-              }
-          ])
-          setMarkersPos([
-              ...markersPos,
-              [
-                  mousePos.lat,
-                  mousePos.lng,
-              ]
-          ])
-          console.log(markersPos)
+      if((event.clientY < window.window.innerHeight - 68) || (event.clientX < window.window.innerWidth - 116)) {
+          dispatch(addRulerMarker({position: mousePos, title: ""}))
+          dispatch(addRulerMarkerPos([mousePos.lat, mousePos.lng]))
       }
-
     }
 
+
     return (
-      <div
-        onClick={isRulerActive ? addMarker: null}
-      >
-          <MapContainer center={CENTR} zoom={13} scrollWheelZoom={true}>
-              <TileLayer
-                  url={layer}
-              />
+        <>
+            {isLoading ?
+                <Loading/>
+            :
+                <div onClick={isRulerActive ? addMarker: null}>
+                    <MapContainer
+                        center={CENTR}
+                        maxZoom={13}
+                        zoom={4}
+                        minZoom={3}
+                        scrollWheelZoom={true}
+                        maxBounds={[[-110, -170], [100, 200]]}
+                        doubleClickZoom={false}
+                    >
+                        <TileLayer url={layer} />
 
-              {markers.map((marker, index) => (
-                  <Marker key = {index} position = {marker.position} icon = {icons().rulerIcon} />
-              ))}
-
-              {RulerCalculations.iterateLatLng(markersPos).map((marker) => (
-                  <Marker position = {marker.pos} icon = {icons().emptyIcon}>
-                      <Tooltip permanent>{marker.title}</Tooltip>
-                  </Marker>
-              ))}
-
-              <Polyline pathOptions={purpleOptions} positions={markersPos} />
-
-              {regions.map((region, index) => (
-                  <Polygon key = {index} pathOptions={purpleOptions} positions={region.polygons}><Popup>{region.name}</Popup></Polygon>
-              ))}
-
-              {natureReserves.map((region, index) => (
-                  <Polygon key = {index} pathOptions={greenOptions} positions={region} />
-              ))}
+                        {satelliteState != null && compositeState != null && time != null && date != null && <TileService />}
 
 
-              <Coords />
-              <Settings />
-              <Calendar />
-              <Ruler />
+                        {isRegions && <Regions />}
+                        {isNatureReserves && <NatureReserves />}
+                        {isSettlements && <Settlements />}
 
-          </MapContainer>
-      </div>
+
+                        <RulerMarkers />
+
+                        <Coords />
+                        <Settings />
+                        <Calendar/>
+
+
+                        <Ruler/>
+
+                        {isCursorActive ? <Cursor /> : ""}
+                    </MapContainer>
+                </div>
+            }
+        </>
 
   );
 }
+
+
 export default Map

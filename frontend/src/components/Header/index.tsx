@@ -1,54 +1,72 @@
-import { useState } from "react";
+import { useState, useEffect, useRef} from "react";
 import styles from "./Header.module.scss";
 import { Link } from "react-router-dom";
-import { links } from "@/components/Header/links";
+import {mainLinks, profileLinks} from "@/data/links";
 import { MdOutlineMenu } from "react-icons/md";
 import { IoPeopleCircleOutline } from "react-icons/io5";
 
 const Header = () => {
+  const headRef= useRef();
   const [isOpenMenu, setOpenMenu] = useState(false);
   const [isOpenProfile, setOpenProfile] = useState(false);
+
+
   const closeProfileMenu = () => {
     setOpenProfile(!isOpenProfile);
     if (isOpenMenu) {
-      setOpenMenu(false); 
+      setOpenMenu(false);
     }
   };
   const closeMainMenu = () => {
     setOpenMenu(!isOpenMenu);
     if (isOpenProfile) {
-      setOpenProfile(false); 
+      setOpenProfile(false);
     }
   };
-  return (
-    <header className={styles.root}>
-      <IoPeopleCircleOutline
-        className={styles.icons__profile}
-        onClick={closeProfileMenu}
-      />
-      <Link to="/" className={styles.logo}>
-        SIPS
-      </Link>
-      <MdOutlineMenu
-        className={styles.icons__open}
-        onClick={closeMainMenu}
-      />
-        <ul className={`${styles.navbar__menu} ${isOpenMenu ? styles.active : ""}`}>
-            {links.mainLinks.map((link) => (
-                <li key={link.id} className={styles.navbar__item}>
-                    <Link to={link.to}>{link.title}</Link>
-                </li>
-            ))}
-        </ul>
-        <ul className={`${styles.navbar__profile} ${isOpenProfile ? styles.active : ""}`}>
-            {links.profileLinks.map((link) => (
-                <li key={link.id} className={styles.navbar__item}>
-                    <Link to={link.to}>{link.title}</Link>
-                </li>
-            ))}
-        </ul>
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (!event.composedPath().includes(headRef.current)) {
+        setOpenMenu(false);
+        setOpenProfile(false);
+      }
+    };
+    document.body.addEventListener("click", handleClickOutside);
+    return () => document.body.removeEventListener("click", handleClickOutside); 
+  }, []);
 
-    </header>
+  return (
+
+        <header ref={headRef} className={styles.root}>
+
+          <IoPeopleCircleOutline className={styles.icons__profile} onClick={closeProfileMenu} />
+          <Link to="/" className={styles.logo}>SIPS</Link>
+          <MdOutlineMenu className={styles.icons__open} onClick={closeMainMenu} />
+
+          {isOpenMenu && <ul className={`${styles.navbar__menu} ${styles.active}`}>
+            {mainLinks.map((link) => (
+
+                <Link to={link.to}>
+                  <li key={link.id} className={styles.navbar__item}>
+                    {link.title}
+                  </li>
+                </Link>
+
+            ))}
+          </ul>}
+
+          {isOpenProfile && <ul className={`${styles.navbar__profile} ${styles.active}`}>
+            {profileLinks.map((link) => (
+               <Link to={link.to}>
+                 <li key={link.id} className={styles.navbar__item}>
+                   {link.title}
+                 </li>
+               </Link>
+            ))}
+          </ul>}
+
+
+        </header>
+
   );
 };
 

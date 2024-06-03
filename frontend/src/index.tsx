@@ -1,15 +1,17 @@
 import Main from "@/components/main/main";
-import {render} from "react-dom";
 import {BrowserRouter} from "react-router-dom";
 import {Provider} from "react-redux";
 import {store} from "@/store";
+import {createRoot} from "react-dom/client";
 
-const rootElement = document.getElementById("root");
-render(
+const container = document.getElementById("root");
+const root = createRoot(container)
+root.render(
     <BrowserRouter>
         <Provider store={store}>
             <Main/>
         </Provider>
     </BrowserRouter>
+);
 
-    , rootElement);
+
