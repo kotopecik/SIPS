@@ -21,4 +21,5 @@ backend/main.py
 **/static/admin
 **/static/debug_toolbar
 
-**/celerybeat-schedule
+**/celerybeat-schedule*
+trash.txt

@@ -25,10 +25,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-t7!6eujn8*z=!_l6n71f6k_&=hqn(7ro4a84j7@b@4hj22*3^o'
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = bool(int(os.getenv('DEBUG')))
 
 # all hosts can make requests
 ALLOWED_HOSTS = ["*"]
@@ -211,11 +211,9 @@ else:
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # разрешаем все домены. Нужно потом поменять for example: CORS_ALLOWED_WHITELIST = ["http://localhost:3000"]
-<<<<<<< HEAD
-CORS_ORIGIN_ALLOW_ALL = True
-=======
+
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_METHODS = ['DELETE', 'GET', 'OPTIONS', 'PATCH', 'POST', 'PUT']
 CORS_ALLOW_CREDENTIALS = True
 # CORS_ORIGIN_WHITELIST = []
->>>>>>> e7ec4a1ef6ca645a07ac5f3b2e6f5f42ad29a3e7
+

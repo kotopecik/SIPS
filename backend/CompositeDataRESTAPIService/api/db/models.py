@@ -1,6 +1,6 @@
 from sqlalchemy import Integer, String, DateTime, ForeignKey, Numeric, Boolean, SmallInteger
 from sqlalchemy.orm import Mapped, mapped_column
-from api.db.base import db
+from ..db.base import db
 
 
 class DateTimeModel(db.Model):
@@ -81,3 +81,27 @@ class FireValueModel(db.Model):  # cache
         "375m": 1,
         "750m": 2
     }
+
+
+class FileDownloadModel(db.Model):
+    __tablename__ = "file_download"
+
+    uid: Mapped[str] = mapped_column(String, primary_key=True, unique=True)
+    user_id: Mapped[int] = mapped_column(Integer)
+    filename: Mapped[str] = mapped_column(String)
+    datetime_created: Mapped[DateTime] = mapped_column(DateTime(timezone=False))
+
+    def __repr__(self):
+        return f"<FileDownload {self.uid}>"
+
+
+class UserFileDownloadModel(db.Model):
+    __tablename__ = "user_file_download"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, unique=True)
+    user_id: Mapped[int] = mapped_column(Integer)
+    file_download_id: Mapped[str] = mapped_column(String, ForeignKey(f'{FileDownloadModel.__tablename__}.uid'))
+    datetime_created: Mapped[DateTime] = mapped_column(DateTime(timezone=False))
+
+    def __repr__(self):
+        return f"<UserFileDownload {self.user_id} {self.file_download_id}>"

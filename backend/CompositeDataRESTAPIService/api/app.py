@@ -11,7 +11,8 @@ from werkzeug.exceptions import HTTPException
 from api.common.regex_convertor import RegexConverter
 from api.db.base import db
 from api.common.caching import cache
-from api.resources.composite_resource import CompositeDownloadResource
+from api.resources.composite_resource import CompositePreparingUrlResource, CompositeDownloadResource, \
+    CompositeSearchResource
 
 
 # Flask app
@@ -76,7 +77,9 @@ app.register_blueprint(swagger_ui_blueprint)
 
 
 # Resources
-api.add_resource(CompositeDownloadResource, f"{main_route}/composites/download")
+api.add_resource(CompositeSearchResource, f"{main_route}/composites/search")
+api.add_resource(CompositePreparingUrlResource, f"{main_route}/composites/urls")
+api.add_resource(CompositeDownloadResource, f"{main_route}/composites/download/<uid>")
 
 
 # Error handler

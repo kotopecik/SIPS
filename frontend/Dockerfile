@@ -1,4 +1,4 @@
-FROM node:18.16.1
+FROM node:17
 
 RUN useradd -ms /bin/bash web-client-user
 

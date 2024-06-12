@@ -1,6 +1,5 @@
 import os
 import datetime
-import pprint
 import re
 
 from appdp.db.models import DateTimeModel, CompositeModel, FileCompositeModel, FireValueModel
@@ -47,8 +46,8 @@ def read_fire_values():
     return fire_values
 
 
-def main():
-    db = DataBase()
+def main(db):
+
     # output_satellites = db.get_satellites()
 
     # pprint.pprint(satellites)
@@ -125,4 +124,7 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    db = DataBase()
+    db.drop_all()
+    db.create_all()
+    main(db)

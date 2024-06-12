@@ -3,7 +3,7 @@ FROM python:3.9-slim
 ENV PYDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
-RUN useradd -ms /bin/bash app-back
+RUN useradd -ms /bin/bash app-vrsdop
 
 RUN mkdir -p /usr/src/app
 
@@ -15,13 +15,13 @@ COPY requirements.txt .
 
 RUN python -m pip install -r requirements.txt
 
-COPY appdp appdp
 COPY ./run.sh run.sh
-
-RUN chown -R app-back:app-back /usr/src/app
-
 RUN chmod u+x run.sh
 
-USER app-back
+COPY appdp appdp
+
+RUN chown -R app-vrsdop:app-vrsdop /usr/src/app
+
+USER app-vrsdop
 
 CMD ["./run.sh"]

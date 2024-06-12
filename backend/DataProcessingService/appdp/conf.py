@@ -11,16 +11,12 @@ POSTGRES_DB = os.getenv("POSTGRES_DB", "composite_db")
 POSTGRES_USER = os.getenv("POSTGRES_USER", "test")
 POSTGRES_PASSWORD = os.getenv("POSTGRES_PASSWORD", "1234")
 
-SQLALCHEMY_DATABASE_URI1 = (f"postgresql://{POSTGRES_USER}:"
+SQLALCHEMY_DATABASE_URI = (f"postgresql://{POSTGRES_USER}:"
                            f"{POSTGRES_PASSWORD}@{POSTGRES_HOST}"
                            f":{POSTGRES_PORT}/{POSTGRES_DB}")
 
-SQLALCHEMY_DATABASE_URI = (f"postgresql://{POSTGRES_USER}:"
-                           f"{POSTGRES_PASSWORD}@172.28.0.2"
-                           f":5432/{POSTGRES_DB}")
-
 SQLALCHEMY_DATABASE_URI = (f"postgresql://test:"
-                           f"1234@172.17.0.4"
+                           f"1234@172.25.0.2"
                            f":5432/composite_db")
 
 SQLALCHEMY_ECHO = False
@@ -38,3 +34,12 @@ STARTUP_ALGORITHM_SCRIPT_FILENAME = os.getenv("STARTUP_ALGORITHM_SCRIPT_FILENAME
 STARTUP_VIEWER_SCRIPT_FILENAME = os.getenv("STARTUP_VIEWER_SCRIPT_FILENAME")
 
 PATH_TIFF_IMAGE = os.getenv("PATH_TIFF_IMAGE")
+
+
+unique_composites = [
+    "aot550", "aotaps", "clmsk", "clmsk2", "clphs",
+    "frmsk", "vievi", "vindvi", "vlst", "vscmo",
+]
+
+PATTERN_FILENAME_750M = "FL*.txt"
+PATTERN_FILENAME_375M = "VF375*.txt"

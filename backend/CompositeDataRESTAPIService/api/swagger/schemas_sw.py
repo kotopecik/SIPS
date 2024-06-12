@@ -2,7 +2,7 @@ from flask_restful_swagger_2 import Schema
 
 
 # Composite download
-class PointModel(Schema):
+class CuttingPointSchemaSwagger(Schema):
     type = "object"
     properties = {
         "id": {
@@ -17,25 +17,35 @@ class PointModel(Schema):
     }
 
 
-class DateTimeModel(Schema):
-    type = "datetime"
-
-
-class CompositeModel(Schema):
-    type = "string"
-
-
-class SatelliteModel(Schema):
-    type = "string"
-
-
-class CompositeDownloadSchemaSwagger(Schema):
+class CompositeImageSchemaSwagger(Schema):
+    type = "object"
     properties = {
-        "points": PointModel.array(),
-        "datetimes": DateTimeModel.array(),
-        "composites": CompositeModel.array(),
-        "satellites": SatelliteModel.array(),
-        "preview": {
-            "type": "boolean"
+        "datetime": {
+            "type": "string"
+        },
+        "satellite": {
+            "type": "string"
+        },
+        "composite": {
+            "type": "string"
+        },
+    }
+
+
+class CompositePreparingUrlSchemaSwagger(Schema):
+    properties = {
+        "points": CuttingPointSchemaSwagger.array(),
+        "images": CompositeImageSchemaSwagger.array(),
+    }
+
+
+class CompositeSearchSchemaSwagger(Schema):
+    properties = {
+        "points": CuttingPointSchemaSwagger.array(),
+        "datetime_start": {
+            "type": "string"
+        },
+        "datetime_end": {
+            "type": "string"
         }
     }

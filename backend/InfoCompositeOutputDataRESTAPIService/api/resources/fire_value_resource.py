@@ -1,6 +1,6 @@
 from datetime import timedelta, date as d, datetime
 
-from flask_restful_swagger_2 import swagger, Resource
+from flask_restful_swagger_2 import swagger, Resource, abort
 from webargs import fields, validate
 from marshmallow import validate as m_validate
 from webargs.flaskparser import use_args
@@ -95,6 +95,10 @@ class FireValueListResource(Resource):
             fire_values = FireValue(
                 satellite_tag=satellite_tag, date=date, time=time, resolution=resolution
             ).get_fire_values()
+
+            if not fire_values:
+                abort(404, description="Fire values not found!")
+
             cached_fire_value = FireValueSchema(many=True).dump(fire_values)
 
             if datetime.utcnow().date() - timedelta(days=10) < date and cached_fire_value:

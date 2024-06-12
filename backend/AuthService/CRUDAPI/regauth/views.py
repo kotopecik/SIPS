@@ -10,15 +10,14 @@ from rest_framework.permissions import IsAuthenticated
 class UserCreate(generics.CreateAPIView):
     queryset = UserModel.objects.all()
     serializer_class = UserSerializer
-    permission_classes = (AllowAny,)
+    permission_classes = (AllowAny, )
+
 
 class UserDetail(generics.RetrieveAPIView):
-        queryset = UserModel.objects.all()
-        serializer_class = UserSerializer
-        permission_classes = (IsAuthenticated,)
+    queryset = UserModel.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = (IsAuthenticated,)
 
-        def get_object(self):
-            # Возвращаем текущего авторизованного пользователя
-            return self.request.user
-
-
+    def get_object(self):
+        # Возвращаем текущего авторизованного пользователя
+        return self.request.user

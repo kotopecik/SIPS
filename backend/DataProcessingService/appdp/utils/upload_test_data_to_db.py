@@ -34,9 +34,7 @@ def format_date_time(date_time: str, format: str):
     return datetime_fixed
 
 
-def main():
-
-    db = DataBase()
+def main(db):
 
     unique_date_times = set()
     file_composites: List[dict] = []
@@ -157,4 +155,8 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    db = DataBase()
+    db.drop_all()
+    db.create_all()
+    main(db)
+

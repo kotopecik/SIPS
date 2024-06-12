@@ -38,5 +38,5 @@ class FireValue(InputParams):
                 (SatelliteModel.tag == self.satellite_tag) & datetime_expression &
                 (FireValueModel.resolution == FireValueModel.RESOLUTION_SATELLITE[self.resolution])
             )
-        )
+        ).all()
         return fire_values

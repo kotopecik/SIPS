@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta, date as d
 
-from flask_restful_swagger_2 import Resource, swagger
+from flask_restful_swagger_2 import Resource, swagger, abort
 from webargs import fields, validate
 from webargs.flaskparser import use_args
 
@@ -76,6 +76,10 @@ class CompositeResource(Resource):
         if not cached_composites:
             composites = Composite(satellite_tag=satellite_tag, date=date, time=time).get_composites()
             composite_list = [item.name for item in composites]
+
+            if not composite_list:
+                abort(404, description="Composite names not found!")
+
             cached_composites = {"composites": composite_list}
 
             if datetime.utcnow().date() - timedelta(days=15) < date and composite_list:

@@ -2,6 +2,7 @@ from rest_framework import serializers
 from .models import UserModel
 from rest_framework.validators import UniqueValidator
 
+
 class PasswordValidator:
     def __call__(self, value):
         if len(value) < 8:

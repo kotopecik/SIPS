@@ -8,5 +8,3 @@ pattern_composite = re.compile(regex_composite)
 
 regex_path_output = r"(\/mnt\/ifs-gis\/production\/SNPP\/NPP_SOFT\/OUTDATA\/[\w-]+)\/?"
 pattern_path_output = re.compile(regex_path_output)
-regex_path_output = r"(\/home\/app-vrsdop\/OUTDATA\/[\w-]+)\/?"
-pattern_path_output = re.compile(regex_path_output)

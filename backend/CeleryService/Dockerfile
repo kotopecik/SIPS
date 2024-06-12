@@ -11,16 +11,19 @@ WORKDIR /usr/src/app/
 
 RUN python -m pip install --upgrade pip
 
-COPY requirements.txt .
+COPY CompositeDataRESTAPIService/requirements.txt .
 
-COPY ./run.sh .
+#COPY CeleryService/run.sh .
 
 RUN python -m pip install -r requirements.txt
 
-COPY ./api api/
+COPY CeleryService/ CeleryService/.
+COPY CompositeDataRESTAPIService CompositeDataRESTAPIService/.
 
 RUN chown -R app-vrsdop:app-vrsdop /usr/src/app
 
-RUN chmod u+x run.sh
+RUN chmod u+x CeleryService/run.sh
 
 USER app-vrsdop
+
+CMD ["./CeleryService/run.sh"]
