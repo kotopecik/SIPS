@@ -1,0 +1,13 @@
+**/.idea
+**/venv
+**/.env
+**/main.py
+
+**/__pycache__/
+*.py[cod]
+
+**/.pytest_cache
+
+**/migrations/**
+!**/migrations
+!**/migrations/__init__.py
