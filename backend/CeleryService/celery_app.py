@@ -8,6 +8,7 @@ sys.path.append(os.path.join(os.getcwd(), ".."))
 from .celery_init import init_celery_app
 from CompositeDataRESTAPIService.api.db.base import db
 
+
 app = Flask(__name__)
 app.config.from_object("CompositeDataRESTAPIService.api.conf")
 # app.config.from_envvar("APPLICATION_SETTINGS_COMPOSITE_DATA_SERVICE")

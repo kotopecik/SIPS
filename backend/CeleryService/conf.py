@@ -11,3 +11,5 @@ task_ignore_result = True
 imports = (
     'CompositeDataRESTAPIService.api.celery.tasks',
 )
+
+CLEAR_FILE_DOWNLOAD_TIME_SCHEDULE = 10 * 60 * 4

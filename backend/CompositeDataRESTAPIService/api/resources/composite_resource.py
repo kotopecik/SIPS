@@ -70,12 +70,12 @@ class CompositePreparingUrlResource(Resource):
         file_download_db = FileDownloadDB()
         file_composite_db = FileCompositeDB()
 
-        count = file_download_db.get_count_files_to_download_by_user(user_id)
-        if count > conf.COUNT_FILE_DOWNLOAD:
-            abort(
-                403,
-                message=f"File download limit exceeded ( > {conf.COUNT_FILE_DOWNLOAD})"
-            )
+        # count = file_download_db.get_count_files_to_download_by_user(user_id)
+        # if count > conf.COUNT_FILE_DOWNLOAD:
+        #     abort(
+        #         403,
+        #         message=f"File download limit exceeded ( > {conf.COUNT_FILE_DOWNLOAD})"
+        #     )
 
         file_composite_items = file_composite_db.get(composite_preparing.images)
         composite_images = [

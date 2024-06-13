@@ -1,4 +1,4 @@
-from flask_restful_swagger_2 import Resource, swagger
+from flask_restful_swagger_2 import Resource, swagger, abort
 from webargs import fields
 from webargs.flaskparser import use_args
 
@@ -80,5 +80,8 @@ class DateTimeResource(Resource):
         date_time = DateTime(date=date)
         datetime_items = date_time.get_datetimes()
         formatted_times = date_time.fetch_times(datetime_items)
+
+        if not formatted_times:
+            abort(404, description="Times not found!")
 
         return {"times": formatted_times}

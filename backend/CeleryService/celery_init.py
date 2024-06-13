@@ -18,7 +18,7 @@ def init_celery_app(app: Flask) -> Celery:
     celery_app.conf.beat_schedule = {
         "clear-downloaded-file": {
             "task": "CompositeDataRESTAPIService.api.celery.tasks.clear_download_files",
-            "schedule": 10.0 * 60 * 40
+            "schedule": celery_app.conf.get("CLEAR_FILE_DOWNLOAD_TIME_SCHEDULE")
         }
     }
 

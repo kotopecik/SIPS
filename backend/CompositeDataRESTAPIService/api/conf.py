@@ -8,7 +8,7 @@ load_dotenv(dotenv_path='.env')
 DEBUG = (bool(int(os.getenv("DEBUG", 1))))
 SECRET_KEY = os.getenv('SECRET_KEY')
 
-COUNT_FILE_DOWNLOAD = 10
+COUNT_FILE_DOWNLOAD = int(os.getenv("COUNT_FILE_DOWNLOAD", 30))
 EXPANSIONS_ARCHIVE = ["zip", "tar", "rar", "7z"]
 # regular expression for only symbols a-z, A-Z, 0-9 limited to 20 symbols
 REGEX_PARAMS_SATELLITE = r"^[a-zA-Z0-9]{0,20}$"
@@ -23,7 +23,9 @@ else:
 
 URL_FILE_DOWNLOAD = f"{SCHEMA}://{DOMAIN}{PORT}/api/vCD/composites/download"
 
+# task celery conf
 CLEAR_FILE_DOWNLOAD_TIME = "00:00"
+CLEAR_FILE_DOWNLOAD_TIME_SCHEDULE = 10 * 60 * 4
 
 # conf database
 POSTGRES_HOST = os.getenv("POSTGRES_HOST", '127.0.0.1')
