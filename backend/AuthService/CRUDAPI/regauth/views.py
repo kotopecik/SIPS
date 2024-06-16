@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
 from rest_framework import generics
 from .serializer import UserSerializer
@@ -18,6 +18,6 @@ class UserDetail(generics.RetrieveAPIView):
     serializer_class = UserSerializer
     permission_classes = (IsAuthenticated,)
 
-    def get_object(self):
-        # Возвращаем текущего авторизованного пользователя
-        return self.request.user
+    def get_object(self, *args, **kwargs):
+        user_id = self.kwargs["id"]
+        return get_object_or_404(UserModel, id=user_id)

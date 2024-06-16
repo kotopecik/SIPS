@@ -14,7 +14,7 @@ RUN python -m pip install --upgrade pip
 COPY requirements.txt .
 
 COPY ./run.sh .
-COPY ./__init__.py .
+#COPY ./__init__.py .
 
 RUN python -m pip install -r requirements.txt
 
