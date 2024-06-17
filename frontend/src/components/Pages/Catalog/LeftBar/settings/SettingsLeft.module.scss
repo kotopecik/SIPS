@@ -1,0 +1,17 @@
+.settingsleft{
+    position: absolute;
+    top: 70px;
+    left: 9px;
+    // width: 400px;
+    // height: 400px;
+    background-color: white;
+    border: 1px solid black;
+    .setting{
+        padding: 9px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+
+    }
+}

@@ -2,6 +2,7 @@ import dayjs from "dayjs"
 import {ICalendar} from "@/interfaces/ICalendar";
 import {IDate} from "@/interfaces/IDate";
 import {Mark} from "@mui/base";
+import { ISettingDates } from "@/interfaces/ISettingDates";
 
 export const generateDate = (month:number = dayjs().month(), year:number = dayjs().year()):ICalendar[] => {
     const firstDateOfMonth = dayjs().year(year).month(month).startOf("month")
@@ -122,3 +123,20 @@ export const months = [
     "Ноябрь",
     "Декабрь",
 ];
+
+
+export const convertDates = (arr : string[]) : ISettingDates[] => {
+    let strs : ISettingDates [] = [];
+
+    const convert = ((el : string) => {
+        let day = el.substring(8, 10)
+        let month = el.substring(5, 7)
+        let year = el.substring(0, 4)
+        return day + "-" + month + "-" + year
+    })
+    arr.forEach((el) => {
+        strs.push({reverse: el, normal : convert(el)})
+    })
+
+    return strs.reverse()
+}

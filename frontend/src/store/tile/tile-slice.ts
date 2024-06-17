@@ -1,6 +1,6 @@
 import {createSlice} from "@reduxjs/toolkit";
 import {TileState} from "@/store/tile/tile-state";
-import {generateDate} from "@/utils/calendar";
+import {convertDates, generateDate} from "@/utils/calendar";
 import dayjs from "dayjs";
 import {fetchComposites, fetchDates, fetchSatellites, fetchTimes} from "@/store/tile/tile-actions";
 
@@ -66,6 +66,7 @@ const tileSlice = createSlice({
         builder.addCase(fetchDates.fulfilled,  (state: TileState, action) => {
             state.dotdates = action.payload.dotdates
             state.nondotdates = action.payload.nondotdates
+            console.log(convertDates(state.dotdates))
         })
         builder.addCase(fetchTimes.fulfilled, (state:TileState, action) => {
 
