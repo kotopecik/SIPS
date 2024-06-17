@@ -6,7 +6,8 @@ const initialState = {
     sattelite : '',
     composite : '',
     start_day : '',
-    end_day : ''
+    end_day : '',
+    catalogItems : []
 } as CatalogState
 
 
