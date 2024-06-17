@@ -3,6 +3,7 @@ import mapReducer from './map/map-slice'
 import cursorReducer from './cursor/cursor-slice'
 import rulerReducer from './ruler/ruler-slice'
 import tileReducer from './tile/tile-slice'
+import userSlice from './user/user-slice'
 import {GetDefaultMiddleware} from "@reduxjs/toolkit/dist/getDefaultMiddleware";
 
 
@@ -11,7 +12,8 @@ export const store = configureStore({
         map: mapReducer,
         cursor: cursorReducer,
         ruler: rulerReducer,
-        tile: tileReducer
+        tile: tileReducer,
+        user: userSlice
     },
     middleware: (getDefaultMiddleware:GetDefaultMiddleware) => {
         return getDefaultMiddleware({

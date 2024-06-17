@@ -1,17 +1,50 @@
-import React from 'react';
+import React, {useRef} from 'react';
 import s from './Catalog.module.scss'
 import Map from "@/components/Map/Map";
 import {LeftBar} from "@/components/Pages/Catalog/LeftBar/LeftBar";
 import Header from "@/components/Header";
+import { MapContainer, TileLayer, FeatureGroup, Circle  } from 'react-leaflet';
+import { LatLngExpression } from 'leaflet';
+import { EditControl } from 'react-leaflet-draw';
+
+
+
+const CENTR:LatLngExpression = [54.84643545576913, 83.05183410644533];
+
+
 
 export const Catalog = () => {
     return (
         <>
             <Header/>
         <div className={s.catalog}>
-
             <LeftBar/>
-            <Map/>
+            <MapContainer
+                        center={CENTR}
+                        maxZoom={13}
+                        zoom={4}
+                        minZoom={3}
+                        scrollWheelZoom={true}
+                        maxBounds={[[-110, -170], [100, 200]]}
+                        doubleClickZoom={false}
+                    >
+                        <TileLayer 
+                            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors' 
+                            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" 
+                        />
+                    <FeatureGroup>
+                        <EditControl
+                        position='topright'
+                        draw={{
+                            marker:false,
+                            circlemarker: false,
+                            polyline: false
+                        }}
+                        />
+                        <Circle center={[51.51, -0.06]} radius={200} />
+                    </FeatureGroup>
+               
+            </MapContainer>
         </div>
         </>
     );

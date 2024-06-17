@@ -1,7 +1,21 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import styles from "./Profile.module.scss";
+import { useAppDispatch, useAppSelector } from "@/hooks/hook";
+import { checkAuth } from "@/store/user/user-actions";
+
+
+
 const Profile = () => {
+
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    if (localStorage.getItem('token')){
+        dispatch(checkAuth())
+    }
+  }, [])
+
   const [userInfo, setUserInfo] = useState({
     email: "нет информации",
     firstName: "нет информации",
@@ -9,6 +23,7 @@ const Profile = () => {
     lastName: "нет информации",
     organizationName: "нет информации",
   });
+  const access = useAppSelector(state => state.user).access;
   return (
       <div className={styles.root}>
         <div className={styles.block}>
@@ -17,7 +32,7 @@ const Profile = () => {
             <div>
               <p className={styles.text}>Ф.И.О</p>
               <p className={styles.legends}>
-                {userInfo.lastName +
+                {access ? access : 'no' +
                   " " +
                   userInfo.firstName +
                   " " +

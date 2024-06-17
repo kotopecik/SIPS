@@ -13,6 +13,7 @@ import Coords from "@/components/Map/Coords/Coords";
 import Settings from "@/components/Settings";
 import Calendar from "@/components/Calendar";
 import Ruler from "@/components/Map/Ruler/Ruler";
+import { checkAuth } from "@/store/user/user-actions";
 
 
 const Header = lazy(() => import("@/components/Header"))
