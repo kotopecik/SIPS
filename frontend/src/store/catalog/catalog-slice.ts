@@ -7,7 +7,8 @@ const initialState = {
     composite : '',
     start_day : '',
     end_day : '',
-    catalogItems : []
+    catalogItems : [],
+    images : []
 } as CatalogState
 
 
@@ -17,11 +18,11 @@ const catalogSlice = createSlice({
     reducers : {
         setSatelliteS(state, action){
             state.sattelite = action.payload
-            console.log(state.sattelite)
+            console.log()
         },
         setCompositeS(state, action){
             state.composite = action.payload
-            console.log(state.composite)
+            console.log()
         },
         setStartDayS(state, action){
             state.start_day = action.payload
@@ -30,6 +31,10 @@ const catalogSlice = createSlice({
         setEndDayS(state, action){
             state.end_day = action.payload
             console.log(state.end_day)
+        },
+        setImages(state, action){
+            state.images = action.payload
+            console.log(state.images)
         }
     }
 })
@@ -38,6 +43,7 @@ export const {
     setSatelliteS,
     setCompositeS,
     setStartDayS,
-    setEndDayS
+    setEndDayS,
+    setImages
 } = catalogSlice.actions
 export default catalogSlice.reducer

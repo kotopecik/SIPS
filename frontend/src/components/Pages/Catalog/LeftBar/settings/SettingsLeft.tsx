@@ -16,7 +16,6 @@ export const SettingsLeft = () => {
 
 
     const handleChange = (e) => {
-        console.log(e.target.name)
         if(e.target.name === '1'){
             dispatch(setCompositeS(e.target.value))
         }else if(e.target.name === '0'){

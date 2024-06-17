@@ -66,7 +66,6 @@ const tileSlice = createSlice({
         builder.addCase(fetchDates.fulfilled,  (state: TileState, action) => {
             state.dotdates = action.payload.dotdates
             state.nondotdates = action.payload.nondotdates
-            console.log(convertDates(state.dotdates))
         })
         builder.addCase(fetchTimes.fulfilled, (state:TileState, action) => {
 

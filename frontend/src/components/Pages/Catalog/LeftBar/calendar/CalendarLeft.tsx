@@ -1,28 +1,31 @@
 import s from './CalendarLeft.module.scss'
 import Box from '@mui/material/Box';
-import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
-import { convertDates } from '@/utils/calendar';
+import Select from '@mui/material/Select';
+import { convert, convertDates } from '@/utils/calendar';
 import { useAppDispatch, useAppSelector } from '@/hooks/hook';
-import { elGR } from '@mui/x-date-pickers';
 import { setEndDayS, setStartDayS } from '@/store/catalog/catalog-slice';
+import { useState } from 'react';
 
 
 
 export const CalendarLeft = () => {
 
     const dates : string[] = useAppSelector(state => state.tile).dotdates
-    const dispatch = useAppDispatch();
+    const [start, setStart] = useState<string>(convertDates(dates)[0].normal);
+    const [end, setEnd] = useState<string>(convertDates(dates)[convertDates(dates).length - 1].normal);
 
+    const dispatch = useAppDispatch();
     const handleStart = (e) => {
         dispatch(setStartDayS(e.target.value))
+        setStart(e.target.value)
     }
 
 
     const handleEnd = (e) => {
         dispatch(setEndDayS(e.target.value))
+        setEnd(e.target.value)
     }
 
     return(
@@ -35,11 +38,13 @@ export const CalendarLeft = () => {
                                 labelId="demo-simple-select-label"
                                 id="demo-simple-select"
                                 onChange={handleStart}
+                                value={start}
                             >
                                 {convertDates(dates).map((el) => (
+                                    
+                                   
                                     <MenuItem value={el.reverse}>{el.normal}</MenuItem>
                                 ))}
-                                    
                             </Select>
                         </FormControl>
                     </Box>
@@ -54,9 +59,9 @@ export const CalendarLeft = () => {
                                 onChange={handleEnd}
                             >
                                 {convertDates(dates).map((el) => (
+                                   
                                     <MenuItem value={el.reverse}>{el.normal}</MenuItem>
                                 ))}
-                                    
                             </Select>
                         </FormControl>
                     </Box>

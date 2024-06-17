@@ -11,7 +11,6 @@ export default class TileService{
         for(let i = 0; i < dotDates.length; ++i){
             nonDotDates.push(dotDates[i].replace(/-/g, ''))
         }
-        console.log(dotDates)
         return {dotdates: dotDates, nondotdates: nonDotDates}
     }
 
