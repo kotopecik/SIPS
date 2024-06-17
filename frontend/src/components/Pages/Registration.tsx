@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styles from "./Page.module.scss";
 import { BackArrow } from "@/components/BackArrow/BackArrow";
 import axios from "axios";
@@ -11,18 +11,19 @@ import { loginUser, registerUser } from "@/store/user/user-actions";
 const Registration = () => {
   const [user, setUser] = useState<IUser> (
     {
-      username: '', 
-      password: '', 
-      email:'', 
-      first_name:'', 
-      last_name:'', 
-      middle_name:'', 
-      organization:''
+      username: 'username1706', 
+      password: 'Password1706!', 
+      email:'email1706@mail.ru', 
+      first_name:'first1706', 
+      last_name:'last1706', 
+      middle_name:'middle1706', 
+      organization:'organization1706'
     }
   )
 
-  const dispatch = useAppDispatch();
+  const [isReg, setIsReg] = useState<boolean> (false);
 
+  const dispatch = useAppDispatch();
 
   const handleChange: React.ChangeEventHandler<HTMLInputElement> = (e: ChangeEvent<HTMLInputElement>) => {
     setUser({
@@ -33,17 +34,16 @@ const Registration = () => {
 
   const handleClick = (e) => {
     user.username = user.first_name + user.last_name;
-
     dispatch(registerUser(user))
-
-    console.log(user)
     e.preventDefault()
+    setIsReg(true);
   }
+
+
   return (
     <div className={styles.root}>
       <BackArrow />
-
-      <form onSubmit={(e) => {
+      {!isReg ? <form onSubmit={(e) => {
         handleClick(e)
         
       }} className={styles.wrapper}>
@@ -118,7 +118,19 @@ const Registration = () => {
             Забыли пароль? <Link to="/restoreaccess">Восстановить доступ</Link>
           </p>
         </div>
-      </form>
+      </form> 
+      : 
+      <div className={styles.wrapper}>
+        <h1>Регистрация прошла успешно</h1>
+        <Link to="/authorization">
+          <button className={styles.wrapper__btn}>
+            Перейти к авторизации
+          </button>
+        </Link>
+      </div>
+      
+      }
+      
     </div>
   );
 };

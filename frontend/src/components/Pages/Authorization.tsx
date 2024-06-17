@@ -35,11 +35,14 @@ const Authorization = () => {
 const dispatch = useAppDispatch();
 
 const onSubmit = (e) => {
-  dispatch(loginUser(user))
-
-  console.log(user)
-  e.preventDefault()
-  navigate('/');
+  try{
+    dispatch(loginUser(user))
+    navigate('/');
+    e.preventDefault()
+  } catch(err){
+    console.log(err)
+  }
+  
 }
 
   return (

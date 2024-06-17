@@ -10,16 +10,15 @@ export interface refresh{
 
 export default class AuthService{
     static async login(email: string, password: string): Promise<AxiosResponse<AuthorizationResponse>>{
-        return api.post<AuthorizationResponse>('/token', {email, password})
+        return api.api.post<AuthorizationResponse>('/token', {email, password})
     }
     static async registration(user : IUser): Promise<AxiosResponse<RegistrationResponse>>{
-        return api.post<RegistrationResponse>('/users', user)
+        return api.apireg.post<RegistrationResponse>('/users', user)
     }
     static async logout(): Promise<void>{
-        return api.post('/logout')
+        return api.api.post('/logout')
     }
     static async refresh(refresh: string):Promise<AxiosResponse<AuthorizationResponse>>{
-        console.log({refresh})
-        return api.post<AuthorizationResponse>('/token/refresh', {refresh})
+        return api.api.post<AuthorizationResponse>('/token/refresh', {refresh})
     }
 }

@@ -13,9 +13,9 @@ export const loginUser = createAsyncThunk('user/loginUser',
             const response = await AuthService.login(user.email, user.password)
             localStorage.setItem('token', response.data.access)
             localStorage.setItem('refresh', response.data.refresh)
-            console.log(response.data)
             return response.data
         }catch (err){
+            console.log('login failed')
             console.log(err)
         }
 
@@ -28,6 +28,7 @@ export const registerUser = createAsyncThunk('user/registerUser',
         try{
             const response = await AuthService.registration(user)
         }catch (err){
+            console.log("register failed")
             console.log(err)
         }
     },
@@ -39,6 +40,7 @@ export const logoutUser = createAsyncThunk('user/logoutUser',
             const response = await AuthService.logout()
             localStorage.removeItem('token')
         }catch (err){
+            console.log("logout failed")
             console.log(err)
         }
 
@@ -50,13 +52,10 @@ export const checkAuth = createAsyncThunk('user/checkAuth',
     async () => {
         try {
             const response = await AuthService.refresh(localStorage.getItem('refresh'))
-            console.log('checkAuth')
-            console.log('access ' + response.data.access)
-            console.log('refresh ' + response.data.refresh)
-            //localStorage.setItem('token', response.data.access)
             return response.data
         }catch (err){
-            console.log('refresh not worked')
+            console.log('refresh failed')
+            console.log(err)
         }
     },
 )

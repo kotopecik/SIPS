@@ -36,7 +36,7 @@ const userSlice = createSlice({
             .addCase(registerUser.fulfilled, (state, action) => {
                 state.isAuth = false
                 state.isLoading = false;
-                console.log('register')
+                console.log('register good')
             })
             .addCase(logoutUser.fulfilled, (state, action) => {
                 state.isAuth = false
