@@ -1,5 +1,5 @@
 import styles from "./Page.module.scss";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {BackArrow} from "@/components/BackArrow/BackArrow";
 import { useState, ChangeEvent } from "react";
 import { useAppDispatch } from "@/hooks/hook";
@@ -15,15 +15,15 @@ const Authorization = () => {
   const [user, setUser] = useState<IUser> (
     {
       username: '', 
-      password: '', 
-      email:'', 
+      password: 'TempTemp123!', 
+      email:'tempuser@icloud.com', 
       first_name:'', 
       last_name:'', 
       middle_name:'', 
       organization:''
     }
   )
-
+  const navigate = useNavigate();
 
   const handleChange: React.ChangeEventHandler<HTMLInputElement> = (e: ChangeEvent<HTMLInputElement>) => {
     setUser({
@@ -39,6 +39,7 @@ const onSubmit = (e) => {
 
   console.log(user)
   e.preventDefault()
+  navigate('/');
 }
 
   return (
@@ -55,6 +56,7 @@ const onSubmit = (e) => {
           placeholder="Email" 
           type="text"
           name="email"
+          value={user.email}
           onChange={handleChange}
           />
         </div>
@@ -63,6 +65,7 @@ const onSubmit = (e) => {
           type="password" 
           placeholder="Пароль" 
           name="password"
+          value={user.password}
           onChange={handleChange}
           />
         </div>

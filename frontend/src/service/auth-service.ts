@@ -18,7 +18,8 @@ export default class AuthService{
     static async logout(): Promise<void>{
         return api.post('/logout')
     }
-    static async refresh(refreshToken: refresh):Promise<AxiosResponse<AuthorizationResponse>>{
-        return api.post<AuthorizationResponse>('/token/refresh', refreshToken)
+    static async refresh(refresh: string):Promise<AxiosResponse<AuthorizationResponse>>{
+        console.log({refresh})
+        return api.post<AuthorizationResponse>('/token/refresh', {refresh})
     }
 }

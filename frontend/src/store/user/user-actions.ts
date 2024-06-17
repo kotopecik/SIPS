@@ -49,17 +49,14 @@ export const logoutUser = createAsyncThunk('user/logoutUser',
 export const checkAuth = createAsyncThunk('user/checkAuth',
     async () => {
         try {
-            console.log('token ' + localStorage.getItem('refresh'))
-            let refresh: refresh;
-            refresh.refresh = localStorage.getItem('refresh')
-            const response = await AuthService.refresh(refresh)
-            //const response = await axios.get<AuthorizationResponse>(`${API_URL}/token/refresh`, {withCredentials: true})
-            localStorage.setItem('token', response.data.access)
-            //console.log(response)
-            
+            const response = await AuthService.refresh(localStorage.getItem('refresh'))
+            console.log('checkAuth')
+            console.log('access ' + response.data.access)
+            console.log('refresh ' + response.data.refresh)
+            //localStorage.setItem('token', response.data.access)
             return response.data
         }catch (err){
-            console.log(err)
+            console.log('refresh not worked')
         }
     },
 )
