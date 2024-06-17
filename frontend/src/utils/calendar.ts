@@ -128,15 +128,24 @@ export const months = [
 export const convertDates = (arr : string[]) : ISettingDates[] => {
     let strs : ISettingDates [] = [];
 
-    const convert = ((el : string) => {
+    const convert = ((el : string): {str: string, value: number} => {
         let day = el.substring(8, 10)
         let month = el.substring(5, 7)
         let year = el.substring(0, 4)
-        return day + "-" + month + "-" + year
+        let value = Number(day) + Number(month) * 30 + Number(year) + 365
+        return {str: day + "-" + month + "-" + year , value: value}
     })
     arr.forEach((el) => {
-        strs.push({reverse: el, normal : convert(el)})
+        strs.push({reverse: el, normal : convert(el).str, value: convert(el).value})
     })
 
-    return strs.reverse()
+    return strs.reverse().sort(function(a, b){
+        if(a.value > b.value){
+            return 1;
+        }
+        if(a.value < b.value){
+            return -1;
+        }
+        return 0;
+    })
 }

@@ -1,4 +1,5 @@
 export interface ISettingDates {
     reverse : string,
-    normal : string
+    normal : string,
+    value : number
 }
