@@ -15,8 +15,8 @@ const Authorization = () => {
   const [user, setUser] = useState<IUser> (
     {
       username: '', 
-      password: 'TempTemp123!', 
-      email:'tempuser@icloud.com', 
+      password: '', 
+      email:'', 
       first_name:'', 
       last_name:'', 
       middle_name:'', 
