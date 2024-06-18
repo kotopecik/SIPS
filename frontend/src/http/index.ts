@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-export const API_URL = `http://84.237.93.16:8080/api/vAUTH`;
+export const API_URL = `http://84.237.93.16:8080/api`;
 
 
 const api = axios.create({

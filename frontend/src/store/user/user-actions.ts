@@ -1,5 +1,5 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
-import AuthService, { refresh } from "@/service/auth-service";
+import AuthService from "@/service/auth-service";
 import { IUser } from "@/interfaces/IUser";
 import axios from "axios";
 import { API_URL } from "@/http";

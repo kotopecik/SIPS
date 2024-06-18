@@ -7,6 +7,7 @@ export interface CatalogState{
     composite : string,
     start_day : string,
     end_day : string
-    catalogItems : ICatalogItem[]
+    catalogItems : IImage[]
     images : IImage[]
+    datetimes : string[]
 }

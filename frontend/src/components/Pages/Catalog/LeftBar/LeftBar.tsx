@@ -3,7 +3,6 @@ import s from './LeftBar.module.scss'
 import Calendar from "@/components/Calendar";
 import {FaSearch} from "react-icons/fa";
 import {IoMdDownload} from "react-icons/io";
-import {catalogitems} from "@/data/catalogitem";
 import {CatalogItem} from "@/components/Pages/Catalog/LeftBar/CatalogItem/CatalogItem";
 import { CiSettings } from "react-icons/ci";
 import { CiCalendar } from "react-icons/ci";
@@ -13,6 +12,7 @@ import { useAppDispatch, useAppSelector } from '@/hooks/hook';
 import { convert, convertDates } from '@/utils/calendar';
 import { IImage } from '@/interfaces/IImage';
 import { setImages } from '@/store/catalog/catalog-slice';
+import { fetchCatalogItems, fetchCatalogTimes } from '@/store/catalog/catalog-actions';
 
 export const LeftBar = () => {
 
@@ -23,6 +23,8 @@ export const LeftBar = () => {
     const start_day : string = useAppSelector(state => state.catalog).start_day
     const end_day : string = useAppSelector(state => state.catalog).end_day
     const dates : string [] = useAppSelector(state => state.tile).dotdates
+    const images : IImage[] = useAppSelector(state => state.catalog).images
+    const catalogItems : IImage[] = useAppSelector(state => state.catalog).catalogItems
 
     const [selectAllChecked, setSelectAllChecked] = useState<boolean>(false)
     const handleSelectAllChecked = () => {
@@ -46,15 +48,19 @@ export const LeftBar = () => {
                  arr.push(el)
              }
         })
-        let arr1 : IImage[] = []
-        convertDates(arr).forEach((el) => {
-            arr1.push({
-                datetime: el.reverse,
-                satellite: sattelite,
-                composite : composite
-            })
-        })
-        dispatch(setImages(arr1))
+        dispatch(fetchCatalogTimes(arr));
+
+        dispatch(fetchCatalogItems(images))
+
+        // let arr1 : IImage[] = []
+        // convertDates(arr).forEach((el) => {
+        //     arr1.push({
+        //         datetime: el.reverse,
+        //         satellite: sattelite,
+        //         composite : composite
+        //     })
+        // })
+        //dispatch(setImages(arr1))
     }
     return (
         <div className={s.leftbar}>
@@ -82,14 +88,9 @@ export const LeftBar = () => {
 
 
             </div>
-            {catalogitems.map((catalogitem => (
-                <CatalogItem
-                    key={catalogitem.id}
-                    catalogitem={catalogitem}
-                    selectAllChecked={selectAllChecked}
-                    setSelectAllChecked={setSelectAllChecked}
-                />
-            )))}
+            {/* {catalogItems.map((catalogitem => (
+                <CatalogItem catalogitem={catalogitem} />
+            )))} */}
         
         </div>
     );

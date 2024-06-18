@@ -1,5 +1,6 @@
 export interface IImage{
     datetime: string,
     satellite : string,
-    composite : string
+    composite : string,
+    url? : string
 } 
