@@ -1,5 +1,6 @@
 import { ICatalogItem } from "@/interfaces/ICatalogItem";
 import { IImage } from "@/interfaces/IImage";
+import { IImages } from "@/interfaces/IImages";
 import { ISatellite } from "@/interfaces/ISatellite";
 
 export interface CatalogState{
@@ -10,4 +11,5 @@ export interface CatalogState{
     catalogItems : IImage[]
     images : IImage[]
     datetimes : string[]
+    imagesObj: IImages
 }

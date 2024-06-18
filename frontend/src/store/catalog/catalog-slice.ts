@@ -1,7 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { CatalogState } from "./catalog-state";
-import { fetchCatalogItems, fetchCatalogTimes } from "./catalog-actions";
+import { downloadImage, fetchCatalogItems, fetchCatalogTimes } from "./catalog-actions";
 import { IImage } from "@/interfaces/IImage";
+import { IImages } from "@/interfaces/IImages";
 
 
 const initialState = {
@@ -11,7 +12,10 @@ const initialState = {
     end_day : '',
     catalogItems : [],
     images : [],
-    datetimes : []
+    datetimes : [],
+    imagesObj : {
+        images: []
+    }
 } as CatalogState
 
 
@@ -43,20 +47,25 @@ const catalogSlice = createSlice({
     extraReducers:(builder) => {
         builder
             .addCase(fetchCatalogItems.fulfilled, (state, action) => {
-                state.catalogItems = action.payload
-                console.log(state.catalogItems)
+                state.imagesObj = action.payload
             })
             .addCase(fetchCatalogTimes.fulfilled, (state, action) => {
                 state.datetimes = action.payload
-
+                let arr : IImage[] = []
                 action.payload.forEach((el) => {
                     let image = {
                         datetime: el,
                         composite: state.composite,
                         satellite: state.sattelite
                     };
-                    state.images.push(image)
+                    arr.push(image)
+                    
                 })
+                state.images = arr;
+                
+            })
+            .addCase(downloadImage.fulfilled, (state, action) => {
+                console.log('downloadImage')
             })
         }
 })

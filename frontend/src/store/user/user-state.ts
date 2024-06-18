@@ -4,6 +4,6 @@ export interface UserState{
     user : IUser
     isAuth : boolean
     isLoading : boolean
-    access : string,
+    token : string,
     refresh : string
 }

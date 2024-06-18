@@ -13,6 +13,7 @@ import { convert, convertDates } from '@/utils/calendar';
 import { IImage } from '@/interfaces/IImage';
 import { setImages } from '@/store/catalog/catalog-slice';
 import { fetchCatalogItems, fetchCatalogTimes } from '@/store/catalog/catalog-actions';
+import { IImages } from '@/interfaces/IImages';
 
 export const LeftBar = () => {
 
@@ -25,6 +26,7 @@ export const LeftBar = () => {
     const dates : string [] = useAppSelector(state => state.tile).dotdates
     const images : IImage[] = useAppSelector(state => state.catalog).images
     const catalogItems : IImage[] = useAppSelector(state => state.catalog).catalogItems
+    const imagesObj : IImages = useAppSelector(state => state.catalog).imagesObj
 
     const [selectAllChecked, setSelectAllChecked] = useState<boolean>(false)
     const handleSelectAllChecked = () => {
@@ -50,17 +52,10 @@ export const LeftBar = () => {
         })
         dispatch(fetchCatalogTimes(arr));
 
-        dispatch(fetchCatalogItems(images))
+    }
 
-        // let arr1 : IImage[] = []
-        // convertDates(arr).forEach((el) => {
-        //     arr1.push({
-        //         datetime: el.reverse,
-        //         satellite: sattelite,
-        //         composite : composite
-        //     })
-        // })
-        //dispatch(setImages(arr1))
+    const handleFind = () => {
+        dispatch(fetchCatalogItems(images))
     }
     return (
         <div className={s.leftbar}>
@@ -68,6 +63,7 @@ export const LeftBar = () => {
                 <button onClick = {handleOpenSett}><CiSettings className={s.headerbtn}/></button>
                 <button onClick = {handleOpenCale} ><CiCalendar className={s.headerbtn} /></button>
                 <button className={s.searchbtn} onClick={handleSearch}>Поиск<FaSearch /></button>
+                <button onClick = {handleFind}>find</button>
             </div>
             
             {isSetOpen && <SettingsLeft/>}
@@ -88,9 +84,9 @@ export const LeftBar = () => {
 
 
             </div>
-            {/* {catalogItems.map((catalogitem => (
-                <CatalogItem catalogitem={catalogitem} />
-            )))} */}
+             {imagesObj.images.map((catalogitem => (
+                <CatalogItem key={catalogitem.uid} catalogitem={catalogitem} />
+            )))} 
         
         </div>
     );

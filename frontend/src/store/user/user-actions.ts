@@ -48,6 +48,8 @@ export const logoutUser = createAsyncThunk('user/logoutUser',
 )
 
 
+
+
 export const checkAuth = createAsyncThunk('user/checkAuth',
     async () => {
         try {

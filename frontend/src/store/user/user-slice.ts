@@ -15,7 +15,7 @@ const initialState = {
     },
     isAuth: false,
     isLoading: false,
-    access : '',
+    token : '',
     refresh : ''
 } as UserState
 
@@ -28,7 +28,7 @@ const userSlice = createSlice({
         builder
             .addCase(loginUser.fulfilled, (state, action) => {
                 state.isAuth = true
-                state.access = action.payload.access || ''
+                state.token = action.payload.access || ''
                 state.refresh = action.payload.refresh || ''
                 state.isLoading = false;
                 console.log('login')
@@ -47,14 +47,14 @@ const userSlice = createSlice({
                 state.user.last_name = undefined
                 state.user.middle_name = undefined
                 state.user.organization = undefined
-                state.access = '';
+                state.token = '';
                 state.refresh = '';
                 state.isLoading = false;
 
             })
             .addCase(checkAuth.fulfilled, (state, action) => {
                 state.isAuth = true
-                state.access = action.payload.access || ''
+                state.token = action.payload.access || ''
                 state.refresh = action.payload.refresh || ''
                 state.isLoading = false;
             })

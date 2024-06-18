@@ -59,7 +59,6 @@ const Settings = () => {
               <LayerSwitch />
               <AdditionalInformation />
               <Satelite />
-              
             </FormGroup>
           </div>
         )}

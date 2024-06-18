@@ -1,4 +1,4 @@
-import React, {useRef} from 'react';
+import React, {useEffect} from 'react';
 import s from './Catalog.module.scss'
 import Map from "@/components/Map/Map";
 import {LeftBar} from "@/components/Pages/Catalog/LeftBar/LeftBar";
@@ -6,6 +6,8 @@ import Header from "@/components/Header";
 import { MapContainer, TileLayer, FeatureGroup, Circle  } from 'react-leaflet';
 import { LatLngExpression } from 'leaflet';
 import { EditControl } from 'react-leaflet-draw';
+import { checkAuth } from '@/store/user/user-actions';
+import { useAppDispatch } from '@/hooks/hook';
 
 
 
@@ -14,9 +16,16 @@ const CENTR:LatLngExpression = [54.84643545576913, 83.05183410644533];
 
 
 export const Catalog = () => {
+    const dispatch = useAppDispatch();
+    useEffect(() => {
+        if (localStorage.getItem('token')){
+            dispatch(checkAuth())
+        }
+    })
+
     return (
         <>
-            <Header/>
+            {/* <Header/> */}
         <div className={s.catalog}>
             <LeftBar/>
             <MapContainer

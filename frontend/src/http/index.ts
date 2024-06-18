@@ -8,14 +8,16 @@ const api = axios.create({
     baseURL: API_URL
 })
 
-const apireg = axios.create({
-    withCredentials: true,
-    baseURL : API_URL
-})
+
 
 api.interceptors.request.use((config) => {
-    config.headers.Authorization = `Bearer ${localStorage.getItem('token')}`
-    return config
-})
+    const token = localStorage.getItem('token');
+    if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+}, (error) => {
+    return Promise.reject(error);
+});
 
-export default {api, apireg}
+export default api
