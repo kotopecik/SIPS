@@ -53,6 +53,7 @@ export const checkAuth = createAsyncThunk('user/checkAuth',
     async () => {
         try {
             const response = await AuthService.refresh(localStorage.getItem('refresh'))
+            localStorage.setItem('token', response.data.access)
             return response.data
         }catch (err){
             console.log('refresh failed')

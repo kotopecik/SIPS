@@ -11,13 +11,13 @@ import { loginUser, registerUser } from "@/store/user/user-actions";
 const Registration = () => {
   const [user, setUser] = useState<IUser> (
     {
-      username: 'username1706', 
-      password: 'Password1706!', 
-      email:'email1706@mail.ru', 
-      first_name:'first1706', 
-      last_name:'last1706', 
-      middle_name:'middle1706', 
-      organization:'organization1706'
+      username: '', 
+      password: '', 
+      email:'', 
+      first_name:'', 
+      last_name:'', 
+      middle_name:'', 
+      organization:''
     }
   )
 

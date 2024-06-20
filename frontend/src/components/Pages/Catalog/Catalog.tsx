@@ -18,11 +18,7 @@ const CENTR:LatLngExpression = [54.84643545576913, 83.05183410644533];
 
 export const Catalog = () => {
     const dispatch = useAppDispatch();
-    useEffect(() => {
-        if (localStorage.getItem('token')){
-            dispatch(checkAuth())
-        }
-    })
+
 
     return (
         <div className={s.catalogcontainer}>

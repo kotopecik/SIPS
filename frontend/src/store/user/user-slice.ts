@@ -64,7 +64,6 @@ const userSlice = createSlice({
             .addCase(checkAuth.fulfilled, (state, action) => {
                 state.isAuth = true
                 state.token = action.payload.access
-                state.refresh = action.payload.refresh
                 state.isLoading = false;
             })
             .addCase(checkAuth.pending, (state) => {

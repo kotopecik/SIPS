@@ -50,13 +50,11 @@ export default class CatalogService{
 
 
     static async newGetItems(images: IImage[]) {
-        const token = localStorage.getItem('token');
-        //const token : string = useAppSelector(state => state.user).token
         const options = {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
             },
             body: JSON.stringify({ images })
         };

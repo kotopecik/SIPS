@@ -1,6 +1,5 @@
-import React, {useState, useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import s from './LeftBar.module.scss'
-import Calendar from "@/components/Calendar";
 import {FaSearch} from "react-icons/fa";
 import {IoMdDownload} from "react-icons/io";
 import {CatalogItem} from "@/components/Pages/Catalog/LeftBar/CatalogItem/CatalogItem";
@@ -11,10 +10,11 @@ import { CalendarLeft } from './calendar/CalendarLeft';
 import { useAppDispatch, useAppSelector } from '@/hooks/hook';
 import { convert, convertDates } from '@/utils/calendar';
 import { IImage } from '@/interfaces/IImage';
-import { setImages } from '@/store/catalog/catalog-slice';
 import { fetchCatalogItems, fetchCatalogTimes } from '@/store/catalog/catalog-actions';
 import { IImages } from '@/interfaces/IImages';
 import { checkAuth } from '@/store/user/user-actions';
+import { unwrapResult } from '@reduxjs/toolkit';
+import { AppDispatch } from '@/store';
 
 export const LeftBar = () => {
 
@@ -29,12 +29,7 @@ export const LeftBar = () => {
     const catalogItems : IImage[] = useAppSelector(state => state.catalog).catalogItems
     const imagesObj : IImages = useAppSelector(state => state.catalog).imagesObj
     const i : IImage[] = useAppSelector(state => state.catalog).images
-    
-    useEffect(() => {
-        if (localStorage.getItem('token')){
-            dispatch(checkAuth())
-        }
-    })
+
 
     const [selectAllChecked, setSelectAllChecked] = useState<boolean>(false)
     const handleSelectAllChecked = () => {
@@ -51,15 +46,16 @@ export const LeftBar = () => {
         setIsCaleOpen(!isCaleOpen)
     }
 
-    const handleSearch = () => {
-        let arr : string[] = []
-        dates.forEach((el) => {
-             if(convert(el).value >= convert(start_day).value && convert(el).value <= convert(end_day).value){
-                 arr.push(el)
-             }
-        })
-        dispatch(fetchCatalogTimes(arr));
 
+
+    const handleSearch = async() => {
+        const filteredDates = dates.filter((el) => {
+            const convertedElValue = convert(el).value;
+            return convertedElValue >= convert(start_day).value && convertedElValue <= convert(end_day).value;
+        });
+
+        dispatch(fetchCatalogTimes(filteredDates))
+        dispatch(fetchCatalogItems(i))
     }
 
     const handleFind = () => {
@@ -71,7 +67,11 @@ export const LeftBar = () => {
             <div className={s.btns}>
                 <button onClick = {handleOpenSett}><CiSettings className={s.headerbtn}/></button>
                 <button onClick = {handleOpenCale} ><CiCalendar className={s.headerbtn} /></button>
-                <button className={s.searchbtn} onClick={handleSearch}>Поиск<FaSearch /></button>
+                <button className={s.searchbtn} onClick={() => {
+                    handleSearch()
+                    handleFind()
+                    }
+                }>Поиск<FaSearch /></button>
                 <button onClick = {handleFind}>find</button>
             </div>
             
