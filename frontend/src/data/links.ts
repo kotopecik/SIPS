@@ -1,7 +1,6 @@
 import {ILink} from "@/interfaces/Ilink";
 
-
-export const profileLinks: ILink[] = [
+export const profileLinksAuth: ILink[] = [
     {
         id: 1,
         to: "/home",
@@ -17,6 +16,19 @@ export const profileLinks: ILink[] = [
         to: "/catalog",
         title: "Каталог"
     },
+]
+
+export const profileLinksNotAuth: ILink[] = [
+    {
+        id: 1,
+        to: "/home",
+        title: "Главная",
+    },
+    {
+        id: 2,
+        to: "/management",
+        title: "Руководство пользователя",
+    }
 ]
 
 export const mainLinks: ILink[] = [
