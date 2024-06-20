@@ -16,7 +16,8 @@ const initialState = {
     isAuth: false,
     isLoading: false,
     token : '',
-    refresh : ''
+    refresh : '',
+    err : {}
 } as UserState
 
 
@@ -30,22 +31,25 @@ const userSlice = createSlice({
             state.isAuth = false;
             state.token = ''
             state.refresh = ''
+        },
+        removeErrors(state){
+            state.err = null;
         }
     },
     extraReducers:(builder) => {
         builder
             .addCase(loginUser.fulfilled, (state, action) => {
-                console.log(action.payload)
                 state.isAuth = true
                 state.token = action.payload.access || ''
                 state.refresh = action.payload.refresh || ''
                 state.isLoading = false;
-                console.log('login')
             })
             .addCase(registerUser.fulfilled, (state, action) => {
+                state.err = null
                 state.isAuth = false
                 state.isLoading = false;
-                console.log('register good')
+                state.err = action.payload
+                console.log(state.err)
             })
             .addCase(logoutUser.fulfilled, (state, action) => {
                 state.isAuth = false
@@ -74,7 +78,7 @@ const userSlice = createSlice({
 
 export const {
     logout,
- 
+    removeErrors
 } = userSlice.actions
 
 export default userSlice.reducer

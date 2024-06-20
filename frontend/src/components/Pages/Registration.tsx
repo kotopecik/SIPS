@@ -2,13 +2,16 @@ import { Link, useNavigate } from "react-router-dom";
 import styles from "./Page.module.scss";
 import { BackArrow } from "@/components/BackArrow/BackArrow";
 import axios from "axios";
-import { useState, ChangeEvent } from "react";
+import { useState, ChangeEvent, useEffect } from "react";
 import { IUser } from "@/interfaces/IUser";
-import { useAppDispatch } from "@/hooks/hook";
+import { useAppDispatch, useAppSelector } from "@/hooks/hook";
 import { loginUser, registerUser } from "@/store/user/user-actions";
+import { RegistrationError } from "@/interfaces/response/RegistrationError";
+import { removeErrors } from "@/store/user/user-slice";
 
 
 const Registration = () => {
+  const err : RegistrationError = useAppSelector(state => state.user).err
   const [user, setUser] = useState<IUser> (
     {
       username: '', 
@@ -32,12 +35,19 @@ const Registration = () => {
     });
 };
 
-  const handleClick = (e) => {
-    user.username = user.first_name + user.last_name;
-    dispatch(registerUser(user))
+  const handleClick = async(e) => {
     e.preventDefault()
-    setIsReg(true);
+    user.username = user.first_name + user.last_name; 
+    await dispatch(registerUser(user))
+    
   }
+
+  useEffect(() => {
+    dispatch(removeErrors())
+    if (err === undefined) {
+        setIsReg(true);
+    }
+}, [err]);
 
 
   return (
@@ -61,6 +71,7 @@ const Registration = () => {
             />
             
         </div>
+        <div className={styles.error}>{err?.first_name}</div>
         <div className={styles.wrapper__input}>
           <input 
           placeholder="Фамилия"
@@ -70,6 +81,7 @@ const Registration = () => {
             onChange={handleChange}
            />
         </div>
+        <div className={styles.error}>{err?.last_name}</div>
         <div className={styles.wrapper__input}>
           <input 
           type="text" 
@@ -79,6 +91,7 @@ const Registration = () => {
             onChange={handleChange}
           />
         </div>
+        <div className={styles.error}>{err?.middle_name}</div>
         <div className={styles.wrapper__input}>
           <input 
           type="text" 
@@ -88,6 +101,7 @@ const Registration = () => {
             onChange={handleChange}
           />
         </div>
+        <div className={styles.error}>{err?.organization}</div>
         <div className={styles.wrapper__input}>
           <input 
           type="text" 
@@ -97,6 +111,7 @@ const Registration = () => {
           onChange={handleChange}
           />
         </div>
+        <div className={styles.error}>{err?.email}</div>
         <div className={styles.wrapper__input}>
           <input 
           type="password" 
@@ -106,7 +121,7 @@ const Registration = () => {
           onChange={handleChange}
           />
         </div>
-
+        <div className={styles.error}>{err?.password}</div>
           <button  type="submit" className={styles.wrapper__btn}>
             Войти
           </button>
