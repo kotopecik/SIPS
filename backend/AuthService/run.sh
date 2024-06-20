@@ -4,6 +4,8 @@
 ./CRUDAPI/manage.py makemigrations regauth;
 ./CRUDAPI/manage.py migrate;
 
+./CRUDAPI/manage.py create_superuser;
+
 # shellcheck disable=SC2164
 cd CRUDAPI;
 
