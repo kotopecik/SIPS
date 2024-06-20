@@ -7,13 +7,17 @@ import sett1 from "../../../assets/png/screenshots/set.png";
 import sett2 from '../../../assets/png/screenshots/sett3.png'
 import sett3 from '../../../assets/png/screenshots/sett4.png'
 import sett4 from '../../../assets/png/screenshots/sett5.png'
+import sett5 from '../../../assets/png/screenshots/sett6.png'
 import calend1 from "../../../assets/png/screenshots/calend1.png";
 import calend from "../../../assets/png/screenshots/calend.png";
+import katalog from "../../../assets/png/screenshots/katalog.png"
+import katalog1 from "../../../assets/png/screenshots/katalog1.png"
 import { useState } from "react";
-import Navbar from "@/components/navbar";
+
 
 const UserGuide = () => {
   const [toggleState, setToggleState] = useState(1);
+ 
   return (
       <div className={styles.root}>
         <div className={styles.block}>
@@ -21,8 +25,10 @@ const UserGuide = () => {
             <ul className={styles.modules}>
               <li
                 className={styles.modules__item}
+                
                 onClick={() => setToggleState(1)}
               >
+              
                 Модуль «Карта»
               </li>
               <li
@@ -96,12 +102,14 @@ const UserGuide = () => {
                 необходимо нажать на Radio button с соответствующим названием
                 стиля: "StandartMap", "ESRI map", "Monochrome map".
               <br/><br/>
-                3. Переключатель "Границы регионов" активирует слой, который отображает, на карте, границы регионов РФ.
-              <img className={styles.settings__img5} src={sett2} alt="настройки" /><br/>
-              4. Переключатель "Заповедники" активирует слой, отображающий полигоны заповедников.
-              <img className={styles.settings__img5} src={sett3} alt="настройки" /> <br/>
-              5. Переключатель "Населёные пукнты активирует слой, отображающий населённые пункты.
-              <img className={styles.settings__img5} src={sett4} alt="настройки" />
+                3. Переключатель "Границы регионов" активирует слой, который отображает, на карте, границы регионов РФ:
+              <img className={styles.settings__img5} src={sett2} alt="границы регионов" /><br/>
+              4. Переключатель "Заповедники" активирует слой, отображающий полигоны заповедников:
+              <img className={styles.settings__img5} src={sett3} alt="заповедники" /> <br/>
+              5. Переключатель "Населёные пукнты активирует слой, отображающий населённые пункты:
+              <img className={styles.settings__img5} src={sett4} alt="населенные пункты" /> <br/>
+              6. Для просмотра продутов необходимо выбрать спутник и дату в календаре, которая выделена зеленым цветом.   После выполнения всех пунктов под спутниками появятся доступные для просмотра продуткы:
+              <img className={styles.settings__img5} src={sett5} alt="продукты" />
             </div>
           </div>
           <div
@@ -114,11 +122,9 @@ const UserGuide = () => {
                 1. На главной станице веб-приложения в левом нижнем углу находится кнопка с иконкой календаря:
               
               <img className={styles.settings__img3} src={calend} alt="календарь" />
-              При нажатии на неё раскроется небольшое окно: 
+              При нажатии на неё раскроется небольшое окно,где можно выбрать дату и время: 
               <img className={styles.settings__img4} src={calend1} alt="календарь" />
-              Дни в которых нет информации выделяются белым цветом.<br/>
-              Дни в которых есть информация выделяются зелёным цветом. При нажатии на дату появляется временная линия.<br/>
-              Выбранный пользователем день отмечается черным цветом.
+              Дни, в которых нет информации выделяются белым цветом, дни с информацией – зеленым цветом, выбранный пользователем день – черным цветом.
             </div>
           </div>
           <div
@@ -126,12 +132,15 @@ const UserGuide = () => {
               toggleState === 4 ? styles.active : ""
             }`}
           >
-            <ul className={styles.text}>
-              <li>
-                ...
-              </li>
+            <div className={styles.text}>
+              Модуль "Каталог":
+              <img className={styles.settings__img5} src={katalog1} alt="каталог" />
+              При заполнении даты и времени появляется возможность выбора файлов, после чего осуществляется выгрузка необходимых данных при нажатии на кнопку "скачать":
+              <img className={styles.settings__img5} src={katalog} alt="каталог" />
               
-            </ul>
+             
+              
+            </div>
           </div>
         </div>
       </div>

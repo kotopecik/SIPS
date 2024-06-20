@@ -13,7 +13,7 @@ export const TileService = () => {
 
     return (
         <>
-            <TileLayer url={`${TILE_DOMAIN}/${satelliteState}/${date}/${time}/${compositeState}/${EUrls.VIIRS_TILE_ENDPOINT}`} opacity={0.7}/>
+            {date && time && compositeState && satelliteState && <TileLayer url={`${TILE_DOMAIN}/${satelliteState}/${date}/${time}/${compositeState}/${EUrls.VIIRS_TILE_ENDPOINT}`} opacity={0.7}/>}
         </>
     )
 }
