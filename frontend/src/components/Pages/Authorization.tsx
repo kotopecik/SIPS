@@ -80,7 +80,7 @@ const onSubmit = async (e) => {
           />
         </div>
 
-        {err && <p className={styles.error}>хуй</p>}
+        
           <button type="submit" className={styles.wrapper__btn}>
             Войти
           </button>
