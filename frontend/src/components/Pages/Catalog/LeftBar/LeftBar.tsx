@@ -23,15 +23,8 @@ export const LeftBar = () => {
     const start_day : string = useAppSelector(state => state.catalog).start_day
     const end_day : string = useAppSelector(state => state.catalog).end_day
     const dates : string [] = useAppSelector(state => state.tile).dotdates
-    const i : IImage[] = useAppSelector(state => state.catalog).images
-    const catalogItems : IImage[] = useAppSelector(state => state.catalog).catalogItems
     const imagesObj : IImages = useAppSelector(state => state.catalog).imagesObj
-     
-    const[im, setIm] = useState<IImage[]>(i)
-
-    useEffect(() => {
-        setIm(i)
-    }, [i])
+ 
 
     const [selectAllChecked, setSelectAllChecked] = useState<boolean>(false)
     const handleSelectAllChecked = () => {
