@@ -12,6 +12,11 @@ export const profileLinks: ILink[] = [
         to: "/management",
         title: "Руководство пользователя",
     },
+    {
+        id: 3,
+        to: "/catalog",
+        title: "Каталог"
+    },
 ]
 
 export const mainLinks: ILink[] = [
@@ -30,13 +35,13 @@ export const mainLinks: ILink[] = [
 export const navbarLinks: ILink[] = [
     {
         id: 1,
-        to: "/catalog",
-        title: "Каталог"
+        to: "/",
+        title: "Перейти к карте",
     },
     {
         id: 2,
-        to: "/",
-        title: "Перейти к карте",
+        to: "/catalog",
+        title: "Каталог"
     },
     {
         id: 3,
