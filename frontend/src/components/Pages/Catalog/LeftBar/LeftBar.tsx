@@ -1,23 +1,84 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import s from './LeftBar.module.scss'
 import Calendar from "@/components/Calendar";
 import {FaSearch} from "react-icons/fa";
 import {IoMdDownload} from "react-icons/io";
-import {catalogitems} from "@/data/catalogitem";
 import {CatalogItem} from "@/components/Pages/Catalog/LeftBar/CatalogItem/CatalogItem";
-import {SetShapes} from "@/components/Pages/Catalog/LeftBar/SetShapes/SetShapes";
+import { CiSettings } from "react-icons/ci";
+import { CiCalendar } from "react-icons/ci";
+import { SettingsLeft } from './settings/SettingsLeft';
+import { CalendarLeft } from './calendar/CalendarLeft';
+import { useAppDispatch, useAppSelector } from '@/hooks/hook';
+import { convert, convertDates } from '@/utils/calendar';
+import { IImage } from '@/interfaces/IImage';
+import { setImages } from '@/store/catalog/catalog-slice';
+import { fetchCatalogItems, fetchCatalogTimes } from '@/store/catalog/catalog-actions';
+import { IImages } from '@/interfaces/IImages';
+import { checkAuth } from '@/store/user/user-actions';
 
 export const LeftBar = () => {
+
+
+    const dispatch = useAppDispatch();
+    const sattelite : string = useAppSelector(state => state.catalog).sattelite
+    const composite : string = useAppSelector(state => state.catalog).composite
+    const start_day : string = useAppSelector(state => state.catalog).start_day
+    const end_day : string = useAppSelector(state => state.catalog).end_day
+    const dates : string [] = useAppSelector(state => state.tile).dotdates
+    
+    const catalogItems : IImage[] = useAppSelector(state => state.catalog).catalogItems
+    const imagesObj : IImages = useAppSelector(state => state.catalog).imagesObj
+    const i : IImage[] = useAppSelector(state => state.catalog).images
+    
+    useEffect(() => {
+        if (localStorage.getItem('token')){
+            dispatch(checkAuth())
+        }
+    })
+
     const [selectAllChecked, setSelectAllChecked] = useState<boolean>(false)
     const handleSelectAllChecked = () => {
         setSelectAllChecked(!selectAllChecked);
     };
+
+    const [isSetOpen, setIsSetOpen] = useState<boolean>(false)
+    const handleOpenSett = () => {
+        setIsSetOpen(!isSetOpen)
+    }
+
+    const [isCaleOpen, setIsCaleOpen] = useState<boolean>(false)
+    const handleOpenCale = () => {
+        setIsCaleOpen(!isCaleOpen)
+    }
+
+    const handleSearch = () => {
+        let arr : string[] = []
+        dates.forEach((el) => {
+             if(convert(el).value >= convert(start_day).value && convert(el).value <= convert(end_day).value){
+                 arr.push(el)
+             }
+        })
+        dispatch(fetchCatalogTimes(arr));
+
+    }
+
+    const handleFind = () => {
+        dispatch(fetchCatalogItems(i))
+    }
+
     return (
         <div className={s.leftbar}>
+            <div className={s.btns}>
+                <button onClick = {handleOpenSett}><CiSettings className={s.headerbtn}/></button>
+                <button onClick = {handleOpenCale} ><CiCalendar className={s.headerbtn} /></button>
+                <button className={s.searchbtn} onClick={handleSearch}>Поиск<FaSearch /></button>
+                <button onClick = {handleFind}>find</button>
+            </div>
+            
+            {isSetOpen && <SettingsLeft/>}
+            {isCaleOpen && <CalendarLeft/>}
 
-            <button className={s.searchbtn}>Поиск<FaSearch /></button>
-
-            <div className={s.setttab}>suomi-npp | viirs | 06.03.2019 - 06.03.2019</div>
+            <div className={s.setttab}>{sattelite && sattelite + ' | ' }  {composite && composite + ' | '} {(start_day && end_day) && start_day + ' - ' + end_day}</div>
             <div className={s.btnstab}>
                 <button className={s.sortbtn}> сортировать</button>
                 <div className={s.choseallbtn}  onClick={handleSelectAllChecked}>
@@ -32,15 +93,10 @@ export const LeftBar = () => {
 
 
             </div>
-            {catalogitems.map((catalogitem => (
-                <CatalogItem
-                    key={catalogitem.id}
-                    catalogitem={catalogitem}
-                    selectAllChecked={selectAllChecked}
-                    setSelectAllChecked={setSelectAllChecked}
-                />
-            )))}
-            <SetShapes />
+             {imagesObj.images.map((catalogitem => (
+                <CatalogItem key={catalogitem.uid} catalogitem={catalogitem} />
+            )))} 
+        
         </div>
     );
 }

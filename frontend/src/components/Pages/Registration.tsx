@@ -1,55 +1,115 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styles from "./Page.module.scss";
 import { BackArrow } from "@/components/BackArrow/BackArrow";
 import axios from "axios";
+import { useState, ChangeEvent } from "react";
+import { IUser } from "@/interfaces/IUser";
+import { useAppDispatch } from "@/hooks/hook";
+import { loginUser, registerUser } from "@/store/user/user-actions";
 
 
 const Registration = () => {
-  const handleClick = (e) => {
-    let data = axios.post(`http://84.237.93.16:8080/api/vAUTH/registration/`, {
-      username: "dea11111111111den12312djke12",
-      password: "13H111111o1241rotu!12",
-      email: "perc25111111111112eptionarmy12@icloud.com",
-      first_name: "Ste2pan",
-      last_name: "Isa3ev",
-      middle_name: "An3dreevich",
-      organization: "VK11INGU"
-    })
-    console.log(data)
+  const [user, setUser] = useState<IUser> (
+    {
+      username: 'username1706', 
+      password: 'Password1706!', 
+      email:'email1706@mail.ru', 
+      first_name:'first1706', 
+      last_name:'last1706', 
+      middle_name:'middle1706', 
+      organization:'organization1706'
+    }
+  )
 
+  const [isReg, setIsReg] = useState<boolean> (false);
+
+  const dispatch = useAppDispatch();
+
+  const handleChange: React.ChangeEventHandler<HTMLInputElement> = (e: ChangeEvent<HTMLInputElement>) => {
+    setUser({
+        ...user,
+        [e.target.name]: e.target.value,
+    });
+};
+
+  const handleClick = (e) => {
+    user.username = user.first_name + user.last_name;
+    dispatch(registerUser(user))
+    e.preventDefault()
+    setIsReg(true);
   }
+
+
   return (
     <div className={styles.root}>
       <BackArrow />
-      <form onSubmit={(e) => {
+      {!isReg ? <form onSubmit={(e) => {
         handleClick(e)
-        e.preventDefault()
+        
       }} className={styles.wrapper}>
+
         <h1>Регистрация</h1>
+
         <div className={styles.wrapper__input}>
-          <input placeholder="Имя" />
+          <input 
+            
+            placeholder="Имя" 
+            name = 'first_name'
+            type="text" 
+            value={user.first_name} 
+            onChange={handleChange}
+            />
+            
         </div>
         <div className={styles.wrapper__input}>
-          <input placeholder="Фамилия" />
+          <input 
+          placeholder="Фамилия"
+           name = 'last_name'
+           type="text" 
+            value={user.last_name} 
+            onChange={handleChange}
+           />
         </div>
         <div className={styles.wrapper__input}>
-          <input type="text" placeholder="Отчество" />
+          <input 
+          type="text" 
+          placeholder="Отчество" 
+          name = 'middle_name' 
+            value={user.middle_name} 
+            onChange={handleChange}
+          />
         </div>
         <div className={styles.wrapper__input}>
-          <input type="text" placeholder="Название организации" />
+          <input 
+          type="text" 
+          placeholder="Название организации" 
+          name = 'organization'
+            value={user.organization} 
+            onChange={handleChange}
+          />
         </div>
         <div className={styles.wrapper__input}>
-          <input type="text" placeholder="Email" />
+          <input 
+          type="text" 
+          placeholder="Email" 
+          name = 'email'
+          value={user.email} 
+          onChange={handleChange}
+          />
         </div>
         <div className={styles.wrapper__input}>
-          <input type="password" placeholder="Пароль" />
+          <input 
+          type="password" 
+          placeholder="Пароль" 
+          name = 'password'
+          value={user.password} 
+          onChange={handleChange}
+          />
         </div>
 
-        <Link to="/">
           <button  type="submit" className={styles.wrapper__btn}>
             Войти
           </button>
-        </Link>
         <div className={styles.wrapper__reg}>
           <p>
             У вас есть аккаунт? <Link to="/authorization">Авторизоваться</Link>
@@ -58,7 +118,19 @@ const Registration = () => {
             Забыли пароль? <Link to="/restoreaccess">Восстановить доступ</Link>
           </p>
         </div>
-      </form>
+      </form> 
+      : 
+      <div className={styles.wrapper}>
+        <h1>Регистрация прошла успешно</h1>
+        <Link to="/authorization">
+          <button className={styles.wrapper__btn}>
+            Перейти к авторизации
+          </button>
+        </Link>
+      </div>
+      
+      }
+      
     </div>
   );
 };

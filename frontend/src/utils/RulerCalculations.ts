@@ -20,6 +20,7 @@ export class RulerCalculations{
     static getLengthSegment(p1: LatLngExpression, p2: LatLngExpression):string{
         let from = new LatLng(p1[0], p1[1])
         let to = new LatLng(p2[0], p2[1])
+        console.log(parseFloat(from.distanceTo(to).toFixed(2)) + " m")
         return parseFloat(from.distanceTo(to).toFixed(2)) + " m"
     }
 }

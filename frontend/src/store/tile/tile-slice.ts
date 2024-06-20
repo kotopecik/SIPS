@@ -1,6 +1,6 @@
 import {createSlice} from "@reduxjs/toolkit";
 import {TileState} from "@/store/tile/tile-state";
-import {generateDate} from "@/utils/calendar";
+import {convertDates, generateDate} from "@/utils/calendar";
 import dayjs from "dayjs";
 import {fetchComposites, fetchDates, fetchSatellites, fetchTimes} from "@/store/tile/tile-actions";
 
@@ -27,6 +27,7 @@ const tileSlice = createSlice({
             state.dateTime.dotdate = action.payload
         },
         setNonDotDate(state, action){
+
             state.dateTime.nondotdate = action.payload
         },
         setTime(state, action){
@@ -79,9 +80,14 @@ const tileSlice = createSlice({
         })
 
         builder.addCase(fetchComposites.fulfilled, (state: TileState, action) => {
-
-            state.composites = action.payload.composites
+       
+            state.composites = action.payload.composites 
+      
+            
             console.log(state.composites)
+        })
+        builder.addCase(fetchComposites.rejected, (state, actions) => {
+            state.composites = []
         })
 
 
