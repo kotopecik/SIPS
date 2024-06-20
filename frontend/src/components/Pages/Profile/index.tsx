@@ -1,7 +1,24 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import styles from "./Profile.module.scss";
+import { useAppDispatch, useAppSelector } from "@/hooks/hook";
+import { checkAuth } from "@/store/user/user-actions";
+
+
+
 const Profile = () => {
+
+  const dispatch = useAppDispatch();
+
+
+
+
+  const access : string = useAppSelector(state => state.user).token
+
+  const length : number = access.length
+
+
+
   const [userInfo, setUserInfo] = useState({
     email: "нет информации",
     firstName: "нет информации",
@@ -17,7 +34,7 @@ const Profile = () => {
             <div>
               <p className={styles.text}>Ф.И.О</p>
               <p className={styles.legends}>
-                {userInfo.lastName +
+                {access ? access.substring(length - 30, length) : 'no access' +
                   " " +
                   userInfo.firstName +
                   " " +

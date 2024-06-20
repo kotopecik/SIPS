@@ -10,6 +10,7 @@ import {LatLngBounds} from "leaflet";
 export default React.memo(function Settlements(){
 
     const blueOptions = { color: 'blue' }
+    const lightBlueOptions = {color : '#00a2ff'}
     const settlements:ISettlement[] = useAppSelector(state => state.map).polygons.settlements
 
     const map = useMap()
@@ -44,7 +45,7 @@ export default React.memo(function Settlements(){
                 SettlementsCalculations.getTypeArray(zoom).includes(settlement.type)
                 && SettlementsCalculations.isCoordinateInsideBounds([settlement.latitude, settlement.longitude], bounds, settlement.type)
                 && ((zoom > 9 && settlement.poly !== null) ?
-                    <Polygon key = {index} pathOptions={blueOptions} positions={SettlementsCalculations.swapLatAndLng(settlement.poly)}><Popup>{settlement.name}</Popup></Polygon>
+                    <Polygon key = {index} pathOptions={settlement.population > 50000 ? blueOptions : lightBlueOptions} positions={SettlementsCalculations.swapLatAndLng(settlement.poly)}><Popup>{settlement.population}</Popup></Polygon>
                 :
                     <Marker icon = {icons().settlementIcon} key = {index} position = {[settlement.latitude, settlement.longitude]}><Popup>{settlement.name}</Popup></Marker>
                 )

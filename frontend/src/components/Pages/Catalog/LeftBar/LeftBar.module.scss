@@ -1,7 +1,35 @@
+@import url("https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700;800;900&family=Poppins&display=swap");
+* {
+  margin: 0;
+  padding: 0;
+  font-family: "Nunito", sans-serif;
+  box-sizing: border-box;
+}
+
 .leftbar{
   position: relative;
+  min-width: 479px;
+  .btns{
+    display: flex;
+    align-content: center;
+    align-items: center;
+    padding: 9px;
+    justify-content: space-between;
+    button{
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
+    .headerbtn{
+      width: 40px;
+      height: 40px;
+    }
+  }
+  
+
+
   .searchbtn{
-    position: absolute;
+    //position: absolute;
     z-index: 3000;
     top: 9px;
     right: 9px;
@@ -18,7 +46,7 @@
 
   .setttab{
     padding: 9px;
-    margin-top: 60px;
+    margin-top: 10px;
     color: gray;
     border-bottom: 2px lightgray solid;
   }

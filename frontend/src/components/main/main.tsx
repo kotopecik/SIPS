@@ -13,6 +13,8 @@ import Coords from "@/components/Map/Coords/Coords";
 import Settings from "@/components/Settings";
 import Calendar from "@/components/Calendar";
 import Ruler from "@/components/Map/Ruler/Ruler";
+import { checkAuth } from "@/store/user/user-actions";
+import { NotFound } from "../Pages/NotFound";
 
 
 const Header = lazy(() => import("@/components/Header"))
@@ -32,6 +34,7 @@ function Main (){
     const satellite:ESatellite = useAppSelector(state => state.tile).satellite
     const dotdate = useAppSelector(state => state.tile).dateTime.dotdate
     const time:string = useAppSelector(state => state.tile).dateTime.time
+    const isAuth : boolean = useAppSelector(state => state.user).isAuth
 
     const handleMouseMove = (event) => {
         dispatch(setCursorPosition({ x: event.clientX, y: event.clientY }));
@@ -43,8 +46,11 @@ function Main (){
         satellite != null && dotdate != null && time != null && dispatch(fetchComposites({satellite, dotdate, dottime:time?.substring(0, 2) + "-" + time?.substring(2, time?.length)}))
     },[satellite, dotdate, time])
 
-
-
+    useEffect(() => {
+        if(localStorage.getItem('token')){
+            dispatch(checkAuth())
+        }
+    }, [])
 
 
     return (<div onMouseMove={handleMouseMove}>
@@ -101,7 +107,7 @@ function Main (){
             />
             <Route path="/catalog" element={
                     <Suspense fallback={<Loading/>}>
-                        <Catalog />
+                        {isAuth ? <Catalog /> : <NotFound/>}
                     </Suspense>
                 }
             />

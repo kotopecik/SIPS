@@ -6,8 +6,14 @@ export enum EUrls{
     STANDARD_TILE_URL = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
     ESRI_TILE_URL = 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
     MONOCHROME_TILE_URL = 'https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png',
+    
+    // REGIONS_URL = `http://84.237.93.16:8080/ru-regions-json/regions.json`,
+    // NATURE_RESERVES_URL = `http://84.237.93.16:8080/ru-regions-json/natureReserves.json`,
+    // SETTLEMENTS_URL = 'http://84.237.93.16:8080/ru-regions-json/cities.json',
+
     REGIONS_URL = `https://raw.githubusercontent.com/DeadEndjke/ru-regions-json/main/regions.json`,
     NATURE_RESERVES_URL = `https://raw.githubusercontent.com/DeadEndjke/ru-regions-json/main/natureReserves.json`,
     SETTLEMENTS_URL = 'https://raw.githubusercontent.com/DeadEndjke/ru-regions-json/main/cities.json',
+
     DATES_URL = 'https://raw.githubusercontent.com/DeadEndjke/ru-regions-json/main/dates.json'
 }

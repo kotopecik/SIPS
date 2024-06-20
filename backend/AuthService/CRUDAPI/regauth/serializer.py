@@ -19,6 +19,7 @@ class PasswordValidator:
 
 
 class UserSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField(read_only=True)
     first_name = serializers.CharField(max_length=150)
     last_name = serializers.CharField(max_length=150)
     middle_name = serializers.CharField(max_length=150)
@@ -28,7 +29,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = UserModel
-        fields = ('username', 'password', 'email', 'first_name', 'last_name', 'middle_name', 'organization')
+        fields = ('id', 'username', 'password', 'email', 'first_name', 'last_name', 'middle_name', 'organization')
 
     def create(self, validated_data):
         password = validated_data.pop("password")
@@ -36,7 +37,3 @@ class UserSerializer(serializers.ModelSerializer):
         user.set_password(password)
         user.save()
         return user
-
-
-
-

@@ -6,3 +6,5 @@
 !common
 !requirements.txt
 rabbish.txt
+
+!management

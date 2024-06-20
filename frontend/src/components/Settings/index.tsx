@@ -30,7 +30,7 @@ const Settings = () => {
     enableMapDragging(map)
   }
 
-  useEffect(() => {
+  /*useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (!event.composedPath().includes(settRef.current)) {
         setOpen(false);
@@ -38,7 +38,7 @@ const Settings = () => {
     };
     document.body.addEventListener("click", handleClickOutside);
     return () => document.body.removeEventListener("click", handleClickOutside);
-  }, []);
+  }, []);*/
   return (
     <>
       <div ref={settRef} className={styles.block}>
@@ -59,8 +59,6 @@ const Settings = () => {
               <LayerSwitch />
               <AdditionalInformation />
               <Satelite />
-              <SortPanel />
-              <DataCollection />
             </FormGroup>
           </div>
         )}

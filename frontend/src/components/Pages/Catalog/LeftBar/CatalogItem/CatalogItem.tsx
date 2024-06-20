@@ -1,39 +1,35 @@
-import React, {useEffect, useState} from 'react';
 import s from './CatalogItem.module.scss'
-import {ICatalogItem} from "@/interfaces/ICatalogItem";
+import { IImage } from '@/interfaces/IImage';
+import { useAppDispatch } from '@/hooks/hook';
+import { downloadImage } from '@/store/catalog/catalog-actions';
+import { checkAuth } from '@/store/user/user-actions';
 
 interface Props{
-    catalogitem: ICatalogItem,
-    selectAllChecked: boolean;
-    setSelectAllChecked: React.Dispatch<React.SetStateAction<boolean>>;
+    catalogitem: IImage,
 }
 
-export const CatalogItem = ({ catalogitem, selectAllChecked, setSelectAllChecked }: Props) => {
-    const [checked, setChecked] = useState<boolean>(false)
 
-    useEffect(() => {
-        setChecked(selectAllChecked);
-    }, [selectAllChecked]);
 
-    const handleChecked = () => {
-        setChecked(!checked)
+export const CatalogItem = ({ catalogitem }: Props) => {
+    const dispatch = useAppDispatch();
+
+    const handleDownload = () => {
+        dispatch(checkAuth())
+        dispatch(downloadImage(catalogitem));
     }
 
-    useEffect(() => {
-        setSelectAllChecked(prev => prev && checked);
-    }, [checked]);
-    return (
-        <div
-            className={s.cataloogitem}
-            onClick={handleChecked}
-        >
-            <div className={s.cataloogitemleft}>
-                <div className={s.dates}>Дата:<span>{catalogitem.dates}</span></div>
-                <div className={s.satellite}>Спутник:<span>{catalogitem.satellite}</span></div>
-                <div className={s.radiometer}>Радиометер:<span>{catalogitem.radiometer}</span></div>
-            </div>
-            <input type={"checkbox"} checked={checked} onChange={() => {}}/>
+    const removeT = (str : string) => {
+        return str.replaceAll('T', ' ');
+    }
 
+    return (
+        <div className={s.cataloogitem}>
+            <div className={s.cataloogitemleft}>
+                <div className={s.dates}>Дата: <span>{removeT(catalogitem.datetime)}</span></div>
+                <div className={s.satellite}>Спутник: <span>{catalogitem.satellite}</span></div>
+                <div className={s.radiometer}>Композит: <span>{catalogitem.composite}</span></div>
+            </div>
+            <button onClick={handleDownload}>скачать</button>
         </div>
     );
 };

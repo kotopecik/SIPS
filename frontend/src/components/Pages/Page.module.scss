@@ -29,7 +29,9 @@
       color: white;
     }
     .wrapper__input {
-      margin: 20px;
+      margin: 20px 20px 10px 20px;
+      
+      
       input {
         padding: 10px;
         width: 100%;
@@ -79,3 +81,30 @@
   }
 }
 
+.authbtn{
+  width: 270px;
+      height: 40px;
+      background: white;
+      border-radius: 30px;
+      cursor: pointer;
+      font-size: 16px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      color: #000000;
+      font-weight: 600;
+      border: 2px solid rgba(0, 98, 255, 0.2);
+      &:hover {
+        opacity: 0.9;
+      }
+}
+
+
+.error{
+  color: red
+}
+
+
+.notfound{
+  
+  margin: 0 auto;
+  width: 100px;
+}
