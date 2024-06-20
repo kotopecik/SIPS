@@ -12,9 +12,7 @@ import { convert, convertDates } from '@/utils/calendar';
 import { IImage } from '@/interfaces/IImage';
 import { fetchCatalogItems, fetchCatalogTimes } from '@/store/catalog/catalog-actions';
 import { IImages } from '@/interfaces/IImages';
-import { checkAuth } from '@/store/user/user-actions';
-import { unwrapResult } from '@reduxjs/toolkit';
-import { AppDispatch } from '@/store';
+import TileService from '@/service/tile-service';
 
 export const LeftBar = () => {
 
@@ -25,11 +23,15 @@ export const LeftBar = () => {
     const start_day : string = useAppSelector(state => state.catalog).start_day
     const end_day : string = useAppSelector(state => state.catalog).end_day
     const dates : string [] = useAppSelector(state => state.tile).dotdates
-    
+    const i : IImage[] = useAppSelector(state => state.catalog).images
     const catalogItems : IImage[] = useAppSelector(state => state.catalog).catalogItems
     const imagesObj : IImages = useAppSelector(state => state.catalog).imagesObj
-    const i : IImage[] = useAppSelector(state => state.catalog).images
+     
+    const[im, setIm] = useState<IImage[]>(i)
 
+    useEffect(() => {
+        setIm(i)
+    }, [i])
 
     const [selectAllChecked, setSelectAllChecked] = useState<boolean>(false)
     const handleSelectAllChecked = () => {
@@ -48,31 +50,49 @@ export const LeftBar = () => {
 
 
 
-    const handleSearch = async() => {
+
+    const handleSearch = async () => {
+
         const filteredDates = dates.filter((el) => {
             const convertedElValue = convert(el).value;
-            return convertedElValue >= convert(start_day).value && convertedElValue <= convert(end_day).value;
+            return (
+                convertedElValue >= convert(start_day).value &&
+                convertedElValue <= convert(end_day).value
+            );
         });
 
-        dispatch(fetchCatalogTimes(filteredDates))
-        dispatch(fetchCatalogItems(i))
+
+        const arr = await Promise.all(filteredDates.map(async (el) => {
+            const response = await TileService.getTimes(el);
+            return response.map(el2 => `${el} ${el2.label}`);
+        }));
+
+        
+
+        let arr2 : IImage[] = []
+                arr.flat().forEach((el) => {
+                    let image = {
+                        datetime: el,
+                        composite: composite,
+                        satellite: sattelite
+                    };
+                    
+                    arr2.push(image)
+                    
+                })
+        
+        await dispatch(fetchCatalogItems(arr2));
     }
 
-    const handleFind = () => {
-        dispatch(fetchCatalogItems(i))
-    }
+
+
 
     return (
         <div className={s.leftbar}>
             <div className={s.btns}>
                 <button onClick = {handleOpenSett}><CiSettings className={s.headerbtn}/></button>
                 <button onClick = {handleOpenCale} ><CiCalendar className={s.headerbtn} /></button>
-                <button className={s.searchbtn} onClick={() => {
-                    handleSearch()
-                    handleFind()
-                    }
-                }>Поиск<FaSearch /></button>
-                <button onClick = {handleFind}>find</button>
+                <button className={s.searchbtn} onClick={handleSearch}>Поиск<FaSearch /></button>
             </div>
             
             {isSetOpen && <SettingsLeft/>}

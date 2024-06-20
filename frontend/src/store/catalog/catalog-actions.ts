@@ -8,6 +8,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 export const fetchCatalogItems = createAsyncThunk('catalog/fetchCatalogItems',
     async (images : IImage[]) => {
         try{
+            console.log(images)
             return await CatalogService.newGetItems(images)
         }catch (err){
             console.log("fetchCatalogItems failed " + err)
