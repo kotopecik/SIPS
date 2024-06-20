@@ -1,4 +1,5 @@
 import React, {useEffect} from 'react';
+import './../../Map/Map.scss'
 import s from './Catalog.module.scss'
 import Map from "@/components/Map/Map";
 import {LeftBar} from "@/components/Pages/Catalog/LeftBar/LeftBar";
