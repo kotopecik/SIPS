@@ -3,4 +3,5 @@ export interface IImage{
     satellite : string,
     composite : string,
     url? : string
+    uid? : string
 } 

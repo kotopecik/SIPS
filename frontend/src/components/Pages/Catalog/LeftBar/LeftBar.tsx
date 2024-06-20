@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import s from './LeftBar.module.scss'
 import Calendar from "@/components/Calendar";
 import {FaSearch} from "react-icons/fa";
@@ -13,6 +13,8 @@ import { convert, convertDates } from '@/utils/calendar';
 import { IImage } from '@/interfaces/IImage';
 import { setImages } from '@/store/catalog/catalog-slice';
 import { fetchCatalogItems, fetchCatalogTimes } from '@/store/catalog/catalog-actions';
+import { IImages } from '@/interfaces/IImages';
+import { checkAuth } from '@/store/user/user-actions';
 
 export const LeftBar = () => {
 
@@ -23,8 +25,16 @@ export const LeftBar = () => {
     const start_day : string = useAppSelector(state => state.catalog).start_day
     const end_day : string = useAppSelector(state => state.catalog).end_day
     const dates : string [] = useAppSelector(state => state.tile).dotdates
-    const images : IImage[] = useAppSelector(state => state.catalog).images
+    
     const catalogItems : IImage[] = useAppSelector(state => state.catalog).catalogItems
+    const imagesObj : IImages = useAppSelector(state => state.catalog).imagesObj
+    const i : IImage[] = useAppSelector(state => state.catalog).images
+    
+    useEffect(() => {
+        if (localStorage.getItem('token')){
+            dispatch(checkAuth())
+        }
+    })
 
     const [selectAllChecked, setSelectAllChecked] = useState<boolean>(false)
     const handleSelectAllChecked = () => {
@@ -50,30 +60,25 @@ export const LeftBar = () => {
         })
         dispatch(fetchCatalogTimes(arr));
 
-        dispatch(fetchCatalogItems(images))
-
-        // let arr1 : IImage[] = []
-        // convertDates(arr).forEach((el) => {
-        //     arr1.push({
-        //         datetime: el.reverse,
-        //         satellite: sattelite,
-        //         composite : composite
-        //     })
-        // })
-        //dispatch(setImages(arr1))
     }
+
+    const handleFind = () => {
+        dispatch(fetchCatalogItems(i))
+    }
+
     return (
         <div className={s.leftbar}>
             <div className={s.btns}>
                 <button onClick = {handleOpenSett}><CiSettings className={s.headerbtn}/></button>
                 <button onClick = {handleOpenCale} ><CiCalendar className={s.headerbtn} /></button>
                 <button className={s.searchbtn} onClick={handleSearch}>Поиск<FaSearch /></button>
+                <button onClick = {handleFind}>find</button>
             </div>
             
             {isSetOpen && <SettingsLeft/>}
             {isCaleOpen && <CalendarLeft/>}
 
-            <div className={s.setttab}>{sattelite} | {composite} | {start_day} - {end_day}</div>
+            <div className={s.setttab}>{sattelite && sattelite + ' | ' }  {composite && composite + ' | '} {(start_day && end_day) && start_day + ' - ' + end_day}</div>
             <div className={s.btnstab}>
                 <button className={s.sortbtn}> сортировать</button>
                 <div className={s.choseallbtn}  onClick={handleSelectAllChecked}>
@@ -88,9 +93,9 @@ export const LeftBar = () => {
 
 
             </div>
-            {/* {catalogItems.map((catalogitem => (
-                <CatalogItem catalogitem={catalogitem} />
-            )))} */}
+             {imagesObj.images.map((catalogitem => (
+                <CatalogItem key={catalogitem.uid} catalogitem={catalogitem} />
+            )))} 
         
         </div>
     );

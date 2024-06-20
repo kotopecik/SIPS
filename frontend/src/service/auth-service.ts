@@ -7,15 +7,15 @@ import { IUser } from "@/interfaces/IUser";
 
 export default class AuthService{
     static async login(email: string, password: string): Promise<AxiosResponse<AuthorizationResponse>>{
-        return api.api.post<AuthorizationResponse>('vAUTH/token', {email, password})
+        return api.post<AuthorizationResponse>('vAUTH/token', {email, password})
     }
     static async registration(user : IUser): Promise<AxiosResponse<RegistrationResponse>>{
-        return api.apireg.post<RegistrationResponse>('vAUTH/users', user)
+        return api.post<RegistrationResponse>('vAUTH/users', user)
     }
     static async logout(): Promise<void>{
-        return api.api.post('/logout')
+        return api.post('/logout')
     }
     static async refresh(refresh: string):Promise<AxiosResponse<AuthorizationResponse>>{
-        return api.api.post<AuthorizationResponse>('vAUTH/token/refresh', {refresh})
+        return api.post<AuthorizationResponse>('vAUTH/token/refresh', {refresh})
     }
 }

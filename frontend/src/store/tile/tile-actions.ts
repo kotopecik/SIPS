@@ -43,7 +43,7 @@ export const fetchComposites = createAsyncThunk('tile/fetchComposites',
         try {
             return (await TileService.getComposites(obj.satellite, obj.dotdate, obj.dottime)).data
         }catch (err) {
-            console.log(err)
+            return {composites : []}
         }
     }
 )

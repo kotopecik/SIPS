@@ -1,9 +1,6 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
 import AuthService from "@/service/auth-service";
 import { IUser } from "@/interfaces/IUser";
-import axios from "axios";
-import { API_URL } from "@/http";
-import { AuthorizationResponse } from "@/interfaces/response/AuthorizationResponse";
 
 
 
@@ -15,8 +12,10 @@ export const loginUser = createAsyncThunk('user/loginUser',
             localStorage.setItem('refresh', response.data.refresh)
             return response.data
         }catch (err){
-            console.log('login failed')
-            console.log(err)
+            
+            localStorage.removeItem('token')
+            localStorage.removeItem('refresh')
+            return {access: '', refresh: ''}
         }
 
     },
@@ -48,6 +47,8 @@ export const logoutUser = createAsyncThunk('user/logoutUser',
 )
 
 
+
+
 export const checkAuth = createAsyncThunk('user/checkAuth',
     async () => {
         try {
@@ -55,7 +56,7 @@ export const checkAuth = createAsyncThunk('user/checkAuth',
             return response.data
         }catch (err){
             console.log('refresh failed')
-            console.log(err)
+            return {access: '', refresh: ''}
         }
     },
 )
