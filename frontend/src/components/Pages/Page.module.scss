@@ -29,7 +29,9 @@
       color: white;
     }
     .wrapper__input {
-      margin: 20px;
+      margin: 20px 20px 10px 20px;
+      
+      
       input {
         padding: 10px;
         width: 100%;
@@ -98,4 +100,11 @@
 
 .error{
   color: red
+}
+
+
+.notfound{
+  
+  margin: 0 auto;
+  width: 100px;
 }

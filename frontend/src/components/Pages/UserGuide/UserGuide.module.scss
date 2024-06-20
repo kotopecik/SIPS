@@ -8,16 +8,10 @@
 .root {
   padding: 20px 0;
   background-color: #171718;
-  //background-image: url("./../../../assets/png/backgrounds/header-bg.png");
-  //background-repeat: no-repeat;
+  //background-color: #a285a8;
   block-size: auto;
-  //background-position: center;
-  color: #ffff;
+  color: #ffffff;
   min-height: 100vh;
-  //min-width: 100vh;
-  /* @media (max-width: 1240px) {
-    padding: 40px 0;
-  } */
 }
 .block {
   margin: 0 auto;
@@ -143,6 +137,9 @@
     display: block;
     margin: 0 auto;
     max-width: 600px;
+    //margin-left: 50%;
   }
  
 }
+
+

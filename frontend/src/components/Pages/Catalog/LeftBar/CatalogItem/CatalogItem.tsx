@@ -2,6 +2,7 @@ import s from './CatalogItem.module.scss'
 import { IImage } from '@/interfaces/IImage';
 import { useAppDispatch } from '@/hooks/hook';
 import { downloadImage } from '@/store/catalog/catalog-actions';
+import { checkAuth } from '@/store/user/user-actions';
 
 interface Props{
     catalogitem: IImage,
@@ -13,6 +14,7 @@ export const CatalogItem = ({ catalogitem }: Props) => {
     const dispatch = useAppDispatch();
 
     const handleDownload = () => {
+        dispatch(checkAuth())
         dispatch(downloadImage(catalogitem));
     }
 

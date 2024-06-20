@@ -12,7 +12,6 @@ export const loginUser = createAsyncThunk('user/loginUser',
             localStorage.setItem('refresh', response.data.refresh)
             return response.data
         }catch (err){
-            
             localStorage.removeItem('token')
             localStorage.removeItem('refresh')
             return {access: '', refresh: ''}
@@ -27,8 +26,7 @@ export const registerUser = createAsyncThunk('user/registerUser',
         try{
             const response = await AuthService.registration(user)
         }catch (err){
-            console.log("register failed")
-            console.log(err)
+            return err.response.data
         }
     },
 )
@@ -53,6 +51,7 @@ export const checkAuth = createAsyncThunk('user/checkAuth',
     async () => {
         try {
             const response = await AuthService.refresh(localStorage.getItem('refresh'))
+            localStorage.setItem('token', response.data.access)
             return response.data
         }catch (err){
             console.log('refresh failed')

@@ -1,6 +1,5 @@
 
 import { IImage } from "@/interfaces/IImage";
-import { IImages } from "@/interfaces/IImages";
 import CatalogService from "@/service/catalog-service";
 import TileService from "@/service/tile-service";
 import { createAsyncThunk } from "@reduxjs/toolkit";
@@ -9,10 +8,11 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 export const fetchCatalogItems = createAsyncThunk('catalog/fetchCatalogItems',
     async (images : IImage[]) => {
         try{
+            console.log(images)
             return await CatalogService.newGetItems(images)
         }catch (err){
-            console.log("fetchCatalogItems failed")
-            console.log(err)
+            console.log("fetchCatalogItems failed " + err)
+            return {images:[]};
         }
 
     },
@@ -29,6 +29,7 @@ export const fetchCatalogTimes = createAsyncThunk('catalog/fetchCatalogTimes',
             return arr.flat();
         } catch(ex){
             console.log(ex)
+            return []
         }
     }
 )

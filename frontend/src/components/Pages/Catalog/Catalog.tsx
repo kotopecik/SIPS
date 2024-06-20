@@ -1,4 +1,5 @@
 import React, {useEffect} from 'react';
+import './../../Map/Map.scss'
 import s from './Catalog.module.scss'
 import Map from "@/components/Map/Map";
 import {LeftBar} from "@/components/Pages/Catalog/LeftBar/LeftBar";
@@ -17,11 +18,7 @@ const CENTR:LatLngExpression = [54.84643545576913, 83.05183410644533];
 
 export const Catalog = () => {
     const dispatch = useAppDispatch();
-    useEffect(() => {
-        if (localStorage.getItem('token')){
-            dispatch(checkAuth())
-        }
-    })
+
 
     return (
         <div className={s.catalogcontainer}>

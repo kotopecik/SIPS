@@ -45,7 +45,7 @@ const onSubmit = async (e) => {
     if (localStorage.getItem('token')) {
       navigate('/');
     } else {
-      console.log('Token not found');
+      setErr(true)
     }
   } catch (err) {
     console.log(err);
@@ -79,8 +79,8 @@ const onSubmit = async (e) => {
           onChange={handleChange}
           />
         </div>
-
-        {err && <p className={styles.error}>хуй</p>}
+        {err && <div className={styles.error}>Ошибка в заполненных данных</div>}
+        
           <button type="submit" className={styles.wrapper__btn}>
             Войти
           </button>

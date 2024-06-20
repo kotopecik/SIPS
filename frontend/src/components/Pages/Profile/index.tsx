@@ -11,11 +11,6 @@ const Profile = () => {
   const dispatch = useAppDispatch();
 
 
-  useEffect(() => {
-    if (localStorage.getItem('token')){
-        dispatch(checkAuth())
-    }
-  }, [])
 
 
   const access : string = useAppSelector(state => state.user).token

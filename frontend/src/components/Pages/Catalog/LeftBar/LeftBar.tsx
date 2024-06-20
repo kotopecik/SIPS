@@ -1,6 +1,5 @@
-import React, {useState, useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import s from './LeftBar.module.scss'
-import Calendar from "@/components/Calendar";
 import {FaSearch} from "react-icons/fa";
 import {IoMdDownload} from "react-icons/io";
 import {CatalogItem} from "@/components/Pages/Catalog/LeftBar/CatalogItem/CatalogItem";
@@ -11,10 +10,9 @@ import { CalendarLeft } from './calendar/CalendarLeft';
 import { useAppDispatch, useAppSelector } from '@/hooks/hook';
 import { convert, convertDates } from '@/utils/calendar';
 import { IImage } from '@/interfaces/IImage';
-import { setImages } from '@/store/catalog/catalog-slice';
 import { fetchCatalogItems, fetchCatalogTimes } from '@/store/catalog/catalog-actions';
 import { IImages } from '@/interfaces/IImages';
-import { checkAuth } from '@/store/user/user-actions';
+import TileService from '@/service/tile-service';
 
 export const LeftBar = () => {
 
@@ -25,16 +23,8 @@ export const LeftBar = () => {
     const start_day : string = useAppSelector(state => state.catalog).start_day
     const end_day : string = useAppSelector(state => state.catalog).end_day
     const dates : string [] = useAppSelector(state => state.tile).dotdates
-    
-    const catalogItems : IImage[] = useAppSelector(state => state.catalog).catalogItems
     const imagesObj : IImages = useAppSelector(state => state.catalog).imagesObj
-    const i : IImage[] = useAppSelector(state => state.catalog).images
-    
-    useEffect(() => {
-        if (localStorage.getItem('token')){
-            dispatch(checkAuth())
-        }
-    })
+ 
 
     const [selectAllChecked, setSelectAllChecked] = useState<boolean>(false)
     const handleSelectAllChecked = () => {
@@ -51,20 +41,44 @@ export const LeftBar = () => {
         setIsCaleOpen(!isCaleOpen)
     }
 
-    const handleSearch = () => {
-        let arr : string[] = []
-        dates.forEach((el) => {
-             if(convert(el).value >= convert(start_day).value && convert(el).value <= convert(end_day).value){
-                 arr.push(el)
-             }
-        })
-        dispatch(fetchCatalogTimes(arr));
 
+
+
+    const handleSearch = async () => {
+
+        const filteredDates = dates.filter((el) => {
+            const convertedElValue = convert(el).value;
+            return (
+                convertedElValue >= convert(start_day).value &&
+                convertedElValue <= convert(end_day).value
+            );
+        });
+
+
+        const arr = await Promise.all(filteredDates.map(async (el) => {
+            const response = await TileService.getTimes(el);
+            return response.map(el2 => `${el} ${el2.label}`);
+        }));
+
+        
+
+        let arr2 : IImage[] = []
+                arr.flat().forEach((el) => {
+                    let image = {
+                        datetime: el,
+                        composite: composite,
+                        satellite: sattelite
+                    };
+                    
+                    arr2.push(image)
+                    
+                })
+        
+        await dispatch(fetchCatalogItems(arr2));
     }
 
-    const handleFind = () => {
-        dispatch(fetchCatalogItems(i))
-    }
+
+
 
     return (
         <div className={s.leftbar}>
@@ -72,7 +86,6 @@ export const LeftBar = () => {
                 <button onClick = {handleOpenSett}><CiSettings className={s.headerbtn}/></button>
                 <button onClick = {handleOpenCale} ><CiCalendar className={s.headerbtn} /></button>
                 <button className={s.searchbtn} onClick={handleSearch}>Поиск<FaSearch /></button>
-                <button onClick = {handleFind}>find</button>
             </div>
             
             {isSetOpen && <SettingsLeft/>}
