@@ -31,7 +31,17 @@ export const profileLinksNotAuth: ILink[] = [
     }
 ]
 
-export const mainLinks: ILink[] = [
+export const mainLinksNotAuth: ILink[] = [
+
+    {
+        id: 1,
+        to: "/authorization",
+        title: "Вход",
+    },
+]
+
+
+export const mainLinksAuth: ILink[] = [
     {
         id: 1,
         to: "/profile",
@@ -40,7 +50,7 @@ export const mainLinks: ILink[] = [
     {
         id: 2,
         to: "/authorization",
-        title: "Вход",
+        title: "выход",
     },
 ]
 
