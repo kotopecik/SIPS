@@ -27,7 +27,7 @@ export const mainLinks: ILink[] = [
     },
 ]
 
-export const navbarLinks: ILink[] = [
+export const navbarLinksAuth: ILink[] = [
     {
         id: 1,
         to: "/catalog",
@@ -53,9 +53,30 @@ export const navbarLinks: ILink[] = [
         to: "/management",
         title: "Руководство пользователя",
     },
+    
+]
+
+
+export const navbarLinksNotAuth: ILink[] = [
     {
-        id: 6,
-        to: "/authorization",
-        title: "Выход",
+        id: 2,
+        to: "/",
+        title: "Перейти к карте",
     },
+    {
+        id: 3,
+        to: "/profile",
+        title: "Профиль",
+    },
+    {
+        id: 4,
+        to: "/home",
+        title: "Главная",
+    },
+    {
+        id: 5,
+        to: "/management",
+        title: "Руководство пользователя",
+    },
+    
 ]

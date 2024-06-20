@@ -25,7 +25,7 @@ export const fetchCatalogTimes = createAsyncThunk('catalog/fetchCatalogTimes',
                 const response = await TileService.getTimes(el);
                 return response.map(el2 => `${el} ${el2.label}`);
             }));
-            
+        
             return arr.flat();
         } catch(ex){
             console.log(ex)
@@ -34,9 +34,9 @@ export const fetchCatalogTimes = createAsyncThunk('catalog/fetchCatalogTimes',
 )
 
 export const downloadImage = createAsyncThunk('catalog/downloadImage',
-    async (uid : string) => {
+    async (image : IImage) => {
         try{
-            await CatalogService.downloadImage(uid);
+            await CatalogService.downloadImage(image);
         }catch (err){
             console.log(err)
         }

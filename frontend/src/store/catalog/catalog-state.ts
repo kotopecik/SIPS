@@ -12,4 +12,5 @@ export interface CatalogState{
     images : IImage[]
     datetimes : string[]
     imagesObj: IImages
+    
 }

@@ -37,6 +37,8 @@
     position: relative; /* Добавляем позиционирование для корректной работы псевдоэлемента */
     cursor: pointer;
     list-style: none;
+    background: none;
+    border: none;
 
     &:hover,
     &:active {

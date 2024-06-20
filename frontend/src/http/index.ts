@@ -1,3 +1,4 @@
+import { useAppSelector } from '@/hooks/hook';
 import axios from 'axios'
 
 export const API_URL = `http://84.237.93.16:8080/api`;
@@ -12,6 +13,7 @@ const api = axios.create({
 
 api.interceptors.request.use((config) => {
     const token = localStorage.getItem('token');
+    //const token = useAppSelector(state => state.user).token || localStorage.getItem('token')
     if (token) {
         config.headers.Authorization = `Bearer ${token}`;
     }

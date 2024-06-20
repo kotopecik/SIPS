@@ -62,6 +62,7 @@ const catalogSlice = createSlice({
                     
                 })
                 state.images = arr;
+                console.log(state.images)
                 
             })
             .addCase(downloadImage.fulfilled, (state, action) => {

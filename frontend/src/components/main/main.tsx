@@ -44,11 +44,6 @@ function Main (){
         satellite != null && dotdate != null && time != null && dispatch(fetchComposites({satellite, dotdate, dottime:time?.substring(0, 2) + "-" + time?.substring(2, time?.length)}))
     },[satellite, dotdate, time])
 
-    useEffect(() => {
-        if (localStorage.getItem('token')){
-            dispatch(checkAuth())
-        }
-      })
 
 
 

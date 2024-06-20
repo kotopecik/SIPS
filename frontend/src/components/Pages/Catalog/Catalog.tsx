@@ -24,37 +24,37 @@ export const Catalog = () => {
     })
 
     return (
-        <>
-            {/* <Header/> */}
-        <div className={s.catalog}>
-            <LeftBar/>
-            <MapContainer
-                        center={CENTR}
-                        maxZoom={13}
-                        zoom={4}
-                        minZoom={3}
-                        scrollWheelZoom={true}
-                        maxBounds={[[-110, -170], [100, 200]]}
-                        doubleClickZoom={false}
-                    >
-                        <TileLayer 
-                            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors' 
-                            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" 
-                        />
-                    <FeatureGroup>
-                        <EditControl
-                        position='topright'
-                        draw={{
-                            marker:false,
-                            circlemarker: false,
-                            polyline: false
-                        }}
-                        />
-                        <Circle center={[51.51, -0.06]} radius={200} />
-                    </FeatureGroup>
-               
-            </MapContainer>
+        <div className={s.catalogcontainer}>
+            <Header/>
+                <div className={s.catalog}>
+                    <LeftBar/>
+                    <MapContainer
+                                center={CENTR}
+                                maxZoom={13}
+                                zoom={4}
+                                minZoom={3}
+                                scrollWheelZoom={true}
+                                maxBounds={[[-110, -170], [100, 200]]}
+                                doubleClickZoom={false}
+                            >
+                                <TileLayer 
+                                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors' 
+                                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" 
+                                />
+                            <FeatureGroup>
+                                <EditControl
+                                position='topright'
+                                draw={{
+                                    marker:false,
+                                    circlemarker: false,
+                                    polyline: false
+                                }}
+                                />
+                                <Circle center={[51.51, -0.06]} radius={200} />
+                            </FeatureGroup>
+                    
+                    </MapContainer>
+                </div>
         </div>
-        </>
     );
 }

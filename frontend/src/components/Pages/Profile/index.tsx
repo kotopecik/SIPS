@@ -13,7 +13,6 @@ const Profile = () => {
 
   useEffect(() => {
     if (localStorage.getItem('token')){
-        console.log('refresh')
         dispatch(checkAuth())
     }
   }, [])

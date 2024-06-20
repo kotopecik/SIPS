@@ -23,6 +23,8 @@ const Authorization = () => {
       organization:''
     }
   )
+
+  const [err, setErr] = useState<boolean>(false);
   const navigate = useNavigate();
 
   const handleChange: React.ChangeEventHandler<HTMLInputElement> = (e: ChangeEvent<HTMLInputElement>) => {
@@ -34,15 +36,20 @@ const Authorization = () => {
 
 const dispatch = useAppDispatch();
 
-const onSubmit = (e) => {
-  try{
-    dispatch(loginUser(user))
-    navigate('/');
-    e.preventDefault()
-  } catch(err){
-    console.log(err)
+const onSubmit = async (e) => {
+  e.preventDefault(); 
+
+  try {
+    await dispatch(loginUser(user));
+
+    if (localStorage.getItem('token')) {
+      navigate('/');
+    } else {
+      console.log('Token not found');
+    }
+  } catch (err) {
+    console.log(err);
   }
-  
 }
 
   return (
@@ -73,7 +80,7 @@ const onSubmit = (e) => {
           />
         </div>
 
-
+        {err && <p className={styles.error}>хуй</p>}
           <button type="submit" className={styles.wrapper__btn}>
             Войти
           </button>

@@ -17,29 +17,41 @@ export default class CatalogService{
         return api.post<DatesResponse>(`/vICOD/dates/${date}/times`, date)
     }
 
-    static async downloadImage(uid : string){
-        try {
-            const response = await api.get(`http://84.237.93.16:8080/api/vCD/composites/download/${uid}`, {
-                responseType: 'blob' 
-            });
-            const url = window.URL.createObjectURL(new Blob([response.data]));
+    static async downloadImage(image : IImage){
+        const url = `http://84.237.93.16:8080/api/vCD/composites/download/${image.uid}`;
 
-            
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `image_${uid}.tif`; 
-            document.body.appendChild(a); 
-            a.click(); 
-            document.body.removeChild(a); 
-        } catch (error) {
-            console.error('Ошибка при скачивании файла:', error);
+    try {
+        const token = localStorage.getItem('token')
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
         }
+
+        const blob = await response.blob();
+        const downloadUrl = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = downloadUrl;
+        a.download = `${image.datetime}_${image.composite}_${image.satellite}.tif`; 
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        window.URL.revokeObjectURL(downloadUrl);
+    } catch (error) {
+        console.error('There was a problem with the fetch operation:', error);
+    }
     }
 
 
 
     static async newGetItems(images: IImage[]) {
         const token = localStorage.getItem('token');
+        //const token : string = useAppSelector(state => state.user).token
         const options = {
             method: 'POST',
             headers: {
