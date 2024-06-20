@@ -1,6 +1,6 @@
-from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponse
+from django.shortcuts import get_object_or_404
 from rest_framework import generics
+
 from .serializer import UserSerializer
 from .models import UserModel
 from rest_framework.permissions import AllowAny, IsAuthenticatedOrReadOnly
@@ -16,7 +16,7 @@ class UserCreate(generics.CreateAPIView):
 class UserDetail(generics.RetrieveAPIView):
     queryset = UserModel.objects.all()
     serializer_class = UserSerializer
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAuthenticated, )
 
     def get_object(self, *args, **kwargs):
         user_id = self.kwargs["id"]

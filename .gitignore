@@ -23,3 +23,5 @@ backend/main.py
 
 **/celerybeat-schedule*
 trash.txt
+
+**/*.7z
