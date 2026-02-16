@@ -1,131 +1,127 @@
-import React, {useState} from 'react';
-import s from './Calendar.module.scss'
-import {useAppDispatch, useAppSelector} from "@/hooks/hook";
-import {ICalendar} from "@/interfaces/ICalendar";
+import React, { useState } from 'react';
+import s from './Calendar.module.scss';
+import { useAppDispatch, useAppSelector } from '@/hooks/hook';
+import { ICalendar } from '@/interfaces/ICalendar';
 import {
   decrementCurrentMonth,
-  decrementCurrentYear, incrementCurrentMonth,
-  incrementCurrentYear, removeTimes,
-  setDotDate, setNonDotDate, setTime
-} from "@/store/tile/tile-slice";
+  decrementCurrentYear,
+  incrementCurrentMonth,
+  incrementCurrentYear,
+  removeTimes,
+  setDotDate,
+  setNonDotDate,
+} from '@/store/tile/tile-slice';
 import {
   convertNumber,
-  days, getMarksByDate,
+  days,
   getStringDate,
   isThereDataForThisDay,
-  months
-} from "@/utils/calendar"
-import {AiFillCaretLeft, AiFillCaretRight} from "react-icons/ai";
-import {BsCalendar2MinusFill} from "react-icons/bs";
-import TimeLine from "@/components/Calendar/TimeLine/TimeLine";
-import {Dayjs} from "dayjs";
-import {IDate} from "@/interfaces/IDate";
-import {useMap} from "react-leaflet";
-import {disableMapDragging, enableMapDragging} from "@/utils/mapdragging";
-import {fetchTimes} from "@/store/tile/tile-actions";
+  months,
+} from '@/utils/calendar';
+import { AiFillCaretLeft, AiFillCaretRight } from 'react-icons/ai';
+import { BsCalendar2MinusFill } from 'react-icons/bs';
+import TimeLine from '@/components/Calendar/TimeLine/TimeLine';
+import { Dayjs } from 'dayjs';
+import { useMap } from 'react-leaflet';
+import { disableMapDragging, enableMapDragging } from '@/utils/mapdragging';
+import { fetchTimes } from '@/store/tile/tile-actions';
 
 const Calendar = () => {
+  const dispatch = useAppDispatch();
+  const map = useMap();
 
-  const currentDate = useAppSelector(state => state.tile).currentDate
+  const currentDate = useAppSelector((state) => state.tile.currentDate);
+  const calendar: ICalendar[] = useAppSelector((state) => state.tile.calendar);
+  const nondotdates: string[] = useAppSelector((state) => state.tile.nondotdates);
+
   const [selectDate, setSelectDate] = useState<Dayjs>(currentDate);
-  const [isOpenCalendar, setIsOpenCalendar] = useState<boolean>(false)
-  const [isOpenTimeLine, setIsOpenTimeLine] = useState<boolean>(false)
-  const calendar:ICalendar[] = useAppSelector(state => state.tile).calendar
-  const dispatch = useAppDispatch()
+  const [isOpenCalendar, setIsOpenCalendar] = useState<boolean>(false);
+  const [isOpenTimeLine, setIsOpenTimeLine] = useState<boolean>(false);
 
   const handleOpenCalendar = () => {
-    setIsOpenCalendar(!isOpenCalendar)
-    if(isOpenCalendar){
-      setIsOpenTimeLine(false)
-    }
-  }
+    setIsOpenCalendar((prev) => !prev);
+    if (isOpenCalendar) setIsOpenTimeLine(false);
+  };
 
-  const nondotdates: string[] = useAppSelector(state => state.tile).nondotdates
-  const dotdate: string[] = useAppSelector(state => state.tile).dateTime.dotdate
-  const map = useMap()
+  const handleMouseDown = () => disableMapDragging(map);
+  const handleMouseUp = () => enableMapDragging(map);
 
-  const handleNextMonth = () => {
-    dispatch(incrementCurrentMonth())
-  }
-  const handlePrevMonth = () => {
-    dispatch(decrementCurrentMonth())
-  }
-  const handleNextYear = () => {
-    dispatch(incrementCurrentYear())
-  }
-  const handlePrevYear = () => {
-    dispatch(decrementCurrentYear())
-  }
-
-  const handleMouseDown = () => {
-    disableMapDragging(map)
-  }
-  const handleMouseUp = () => {
-    enableMapDragging(map)
-  }
   return (
-      <div
-          onMouseDown={handleMouseDown}
-          onMouseUp={handleMouseUp}
+    <div onMouseDown={handleMouseDown} onMouseUp={handleMouseUp} className={s.block}>
+      {isOpenTimeLine && <TimeLine selectDate={selectDate} />}
 
-          className = {s.block}
-      >
-        {isOpenTimeLine && <TimeLine selectDate = {selectDate}/>}
-        <BsCalendar2MinusFill
-            className = {`${location.pathname === "/" ? s.calendarbtnbot : s.calendarbtntop}`}
-            onClick={handleOpenCalendar}/>
-        {isOpenCalendar && <div className={s.calendar}>
+      <BsCalendar2MinusFill
+        className={location.pathname === '/' ? s.calendarbtnbot : s.calendarbtntop}
+        onClick={handleOpenCalendar}
+      />
 
+      {isOpenCalendar && (
+        <div className={s.calendar}>
           <div className={s.header}>
-
             <div className={s.btns}>
-              <AiFillCaretLeft onClick={handlePrevMonth} />
+              <AiFillCaretLeft onClick={() => dispatch(decrementCurrentMonth())} />
               <span>{months[currentDate.month()]}</span>
-              <AiFillCaretRight  onClick={handleNextMonth} />
+              <AiFillCaretRight onClick={() => dispatch(incrementCurrentMonth())} />
             </div>
 
             <div className={s.btns}>
-              <AiFillCaretLeft onClick={handlePrevYear} />
+              <AiFillCaretLeft onClick={() => dispatch(decrementCurrentYear())} />
               <span>{currentDate.year()}</span>
-              <AiFillCaretRight onClick={handleNextYear} />
+              <AiFillCaretRight onClick={() => dispatch(incrementCurrentYear())} />
             </div>
-
           </div>
 
           <div className={s.days}>
-            {days.map((day, index) => (
-                    <h1 key={index} className={s.day}>
-                      {day}
-                    </h1>
-                )
-            )}
+            {days.map((day, i) => (
+              <h1 key={i} className={s.day}>
+                {day}
+              </h1>
+            ))}
           </div>
+
           <div className={s.days}>
-            {calendar.map(
-                ({ date, currentMonth, today }, index) => (
-                    <div key={index} className={s.calendarday}>
-                      <h3 className={`
-                            ${!currentMonth && s.notthatmonth} 
-                            ${selectDate.toDate().toDateString() === date.toDate().toDateString() && s.selecteddate}
-                            ${isThereDataForThisDay(getStringDate(date), nondotdates) && s.daygreen}
-                            ${s.normalday}`}
-                          onClick={() => {
-                            setSelectDate(date);
-                            setIsOpenTimeLine(true);
-                            dispatch(setNonDotDate(getStringDate(date)));
-                            dispatch(setDotDate(date.year() + "-" + convertNumber(String(Number(currentDate.month()) + 1)) + "-" + convertNumber(String(date.date()))))
-                            isThereDataForThisDay(getStringDate(date), nondotdates) ? dispatch(fetchTimes(date.year() + "-" + convertNumber(String(Number(currentDate.month()) + 1)) + "-" + convertNumber(String(date.date())))) : removeTimes();
-                          }}>
-                        {date.date()}
-                      </h3>
-                    </div>
-                )
-            )}
+            {calendar.map(({ date, currentMonth }, index) => {
+              const year = date.year();
+              const month = currentDate.month() + 1; // 0-based → human month
+              const day = date.date();
+
+              const formattedDate = `${year}-${convertNumber(String(month))}-${convertNumber(String(day))}`;
+              const stringDate = getStringDate(date);
+              const hasData = isThereDataForThisDay(stringDate, nondotdates);
+
+              return (
+                <div key={index} className={s.calendarday}>
+                  <h3
+                    className={`
+                      ${!currentMonth ? s.notthatmonth : ''}
+                      ${selectDate.isSame(date, 'day') ? s.selecteddate : ''}
+                      ${hasData ? s.daygreen : ''}
+                      ${s.normalday}
+                    `}
+                    onClick={() => {
+                      setSelectDate(date);
+                      setIsOpenTimeLine(true);
+
+                      dispatch(setNonDotDate(stringDate));
+                      // ← ИСПРАВЛЕНИЕ ОШИБКИ TS2322
+                      dispatch(setDotDate([formattedDate]));
+
+                      if (hasData) {
+                        dispatch(fetchTimes(formattedDate));
+                      } else {
+                        dispatch(removeTimes());
+                      }
+                    }}
+                  >
+                    {date.date()}
+                  </h3>
+                </div>
+              );
+            })}
           </div>
-        </div>}
-      </div>
-
-
+        </div>
+      )}
+    </div>
   );
 };
 
