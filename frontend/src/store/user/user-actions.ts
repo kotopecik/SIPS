@@ -4,21 +4,22 @@ import { IUser } from "@/interfaces/IUser";
 
 
 
-export const loginUser = createAsyncThunk('user/loginUser',
-    async (user:IUser) => {
-        try{
-            const response = await AuthService.login(user.email, user.password)
-            localStorage.setItem('token', response.data.access)
-            localStorage.setItem('refresh', response.data.refresh)
-            return response.data
-        }catch (err){
-            localStorage.removeItem('token')
-            localStorage.removeItem('refresh')
-            return {access: '', refresh: ''}
-        }
+export const loginUser = createAsyncThunk(
+  "user/login",
+  async (payload: { email: string; password: string }, thunkAPI) => {
+    try {
+      const res = await AuthService.login(payload.email, payload.password);
 
-    },
-)
+      // ВАЖНО: сохраняем токены
+      localStorage.setItem("token", res.data.access);
+      localStorage.setItem("refresh", res.data.refresh);
+
+      return res.data; // {access, refresh}
+    } catch (e) {
+      return thunkAPI.rejectWithValue("Ошибка авторизации");
+    }
+  }
+);
 
 
 export const registerUser = createAsyncThunk('user/registerUser',
