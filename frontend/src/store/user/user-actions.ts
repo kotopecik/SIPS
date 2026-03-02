@@ -1,62 +1,73 @@
-import {createAsyncThunk} from "@reduxjs/toolkit";
+import { createAsyncThunk } from "@reduxjs/toolkit";
 import AuthService from "@/service/auth-service";
+import { AuthMock } from "@/service/auth-mock";
+import { MOCK_AUTH } from "@/shared/config";
 import { IUser } from "@/interfaces/IUser";
 
-
-
+// LOGIN
 export const loginUser = createAsyncThunk(
   "user/login",
   async (payload: { email: string; password: string }, thunkAPI) => {
     try {
-      const res = await AuthService.login(payload.email, payload.password);
+      const data = MOCK_AUTH
+        ? await AuthMock.login(payload.email, payload.password)
+        : (await AuthService.login(payload.email, payload.password)).data;
 
-      // ВАЖНО: сохраняем токены
-      localStorage.setItem("token", res.data.access);
-      localStorage.setItem("refresh", res.data.refresh);
+      localStorage.setItem("token", data.access);
+      localStorage.setItem("refresh", data.refresh);
 
-      return res.data; // {access, refresh}
-    } catch (e) {
+      return data; // {access, refresh}
+    } catch {
       return thunkAPI.rejectWithValue("Ошибка авторизации");
     }
   }
 );
 
+// REGISTER
+export const registerUser = createAsyncThunk(
+  "user/register",
+  async (user: IUser, thunkAPI) => {
+    try {
+      if (MOCK_AUTH) {
+        await AuthMock.registration(user);
+        return { ok: true };
+      }
 
-export const registerUser = createAsyncThunk('user/registerUser',
-    async (user:IUser) => {
-        try{
-            const response = await AuthService.registration(user)
-        }catch (err){
-            return err.response.data
-        }
-    },
-)
+      return (await AuthService.registration(user)).data;
+    } catch {
+      return thunkAPI.rejectWithValue("Ошибка регистрации");
+    }
+  }
+);
 
-export const logoutUser = createAsyncThunk('user/logoutUser',
-    async () => {
-        try{
-            const response = await AuthService.logout()
-            localStorage.removeItem('token')
-        }catch (err){
-            console.log("logout failed")
-            console.log(err)
-        }
+// LOGOUT
+export const logoutUser = createAsyncThunk("user/logout", async () => {
+  try {
+    if (MOCK_AUTH) {
+      await AuthMock.logout();
+    } else {
+      await AuthService.logout();
+    }
+  } finally {
+    localStorage.removeItem("token");
+    localStorage.removeItem("refresh");
+  }
+});
 
-    },
-)
+// CHECK AUTH (refresh)
+export const checkAuth = createAsyncThunk("user/checkAuth", async () => {
+  try {
+    const refresh = localStorage.getItem("refresh");
 
+    const data = MOCK_AUTH
+      ? await AuthMock.refresh(refresh)
+      : (await AuthService.refresh(refresh as any)).data;
 
+    localStorage.setItem("token", data.access);
+    if (data.refresh) localStorage.setItem("refresh", data.refresh);
 
-
-export const checkAuth = createAsyncThunk('user/checkAuth',
-    async () => {
-        try {
-            const response = await AuthService.refresh(localStorage.getItem('refresh'))
-            localStorage.setItem('token', response.data.access)
-            return response.data
-        }catch (err){
-            console.log('refresh failed')
-            return {access: '', refresh: ''}
-        }
-    },
-)
+    return data;
+  } catch {
+    return { access: "", refresh: "" };
+  }
+});

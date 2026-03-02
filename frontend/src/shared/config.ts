@@ -1,0 +1,1 @@
+export const MOCK_AUTH = true; // true = заглушка, false = реальный бэк

@@ -1,83 +1,128 @@
-import { useState, useEffect, useRef} from "react";
+import { useState, useEffect, useRef } from "react";
 import styles from "./Header.module.scss";
 import { Link } from "react-router-dom";
-import {mainLinksAuth, mainLinksNotAuth, profileLinksAuth, profileLinksNotAuth} from "@/data/links";
+import { mainLinksAuth, mainLinksNotAuth, profileLinksAuth, profileLinksNotAuth } from "@/data/links";
 import { MdOutlineMenu } from "react-icons/md";
 import { IoPeopleCircleOutline } from "react-icons/io5";
 import { ILink } from "@/interfaces/Ilink";
 import { useAppDispatch, useAppSelector } from "@/hooks/hook";
-import { logout } from "@/store/user/user-slice";
+import { logoutUser } from "@/store/user/user-actions";
+import { ConfirmLogoutModal } from "@/components/ConfirmLogoutModal/ConfirmLogoutModal";
 
 const Header = () => {
-  const headRef= useRef();
+  const headRef = useRef<HTMLHeadElement | null>(null);
+
   const [isOpenMenu, setOpenMenu] = useState(false);
   const [isOpenProfile, setOpenProfile] = useState(false);
-  const isAuth : boolean = useAppSelector(state => state.user).isAuth
+  const [confirmOpen, setConfirmOpen] = useState(false);
 
-  const profileLinks : ILink[] = isAuth ? profileLinksAuth : profileLinksNotAuth
-  const mainLinks : ILink[] = isAuth ? mainLinksAuth : mainLinksNotAuth
+  const isAuth: boolean = useAppSelector((state) => state.user.isAuth);
+
+  const profileLinks: ILink[] = isAuth ? profileLinksAuth : profileLinksNotAuth;
+  const mainLinks: ILink[] = isAuth ? mainLinksAuth : mainLinksNotAuth;
+
   const dispatch = useAppDispatch();
 
-  const handleLogout = () => {
-    dispatch(logout());
-  }
+  // Настоящий logout (только после подтверждения)
+  const onConfirmLogout = async () => {
+    await dispatch(logoutUser());
+    setConfirmOpen(false);
+    setOpenMenu(false);
+    setOpenProfile(false);
+  };
 
-  const closeProfileMenu = () => {
+  const toggleProfileMenu = () => {
     setOpenProfile(!isOpenProfile);
-    if (isOpenMenu) {
-      setOpenMenu(false);
-    }
+    if (isOpenMenu) setOpenMenu(false);
   };
-  const closeMainMenu = () => {
+
+  const toggleMainMenu = () => {
     setOpenMenu(!isOpenMenu);
-    if (isOpenProfile) {
-      setOpenProfile(false);
-    }
+    if (isOpenProfile) setOpenProfile(false);
   };
+
+  // Закрытие при клике вне header
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (!event.composedPath().includes(headRef.current)) {
+      if (headRef.current && !headRef.current.contains(event.target as Node)) {
         setOpenMenu(false);
         setOpenProfile(false);
       }
     };
+
     document.body.addEventListener("click", handleClickOutside);
-    return () => document.body.removeEventListener("click", handleClickOutside); 
+    return () => {
+      document.body.removeEventListener("click", handleClickOutside);
+    };
   }, []);
 
   return (
+    <>
+      <header ref={headRef as any} className={styles.root}>
+        <IoPeopleCircleOutline
+          className={styles.icons__profile}
+          onClick={toggleProfileMenu}
+        />
 
-        <header ref={headRef} className={styles.root}>
+        <Link to="/" className={styles.logo}>
+          SIPS
+        </Link>
 
-          <IoPeopleCircleOutline className={styles.icons__profile} onClick={closeProfileMenu} />
-          <Link to="/" className={styles.logo}>SIPS</Link>
-          <MdOutlineMenu className={styles.icons__open} onClick={closeMainMenu} />
+        <MdOutlineMenu
+          className={styles.icons__open}
+          onClick={toggleMainMenu}
+        />
 
-          {isOpenMenu && <ul className={`${styles.navbar__menu} ${styles.active}`}>
-            {mainLinks.map((link) => (
-                link.id === 2 ? <button onClick={handleLogout} className={styles.exitbtn}>Выход</button> : 
-                <Link to={link.to}>
-                  <li key={link.id} className={styles.navbar__item}>
-                    {link.title}
-                  </li>
+        {/* БУРГЕР МЕНЮ */}
+        {isOpenMenu && (
+          <ul className={`${styles.navbar__menu} ${styles.active}`}>
+            {mainLinks.map((link) =>
+              link.title === "Выход" ? (
+                <button
+                  key={link.id}
+                  onClick={() => setConfirmOpen(true)}
+                  className={styles.exitbtn}
+                >
+                  Выход
+                </button>
+              ) : (
+                <Link key={link.id} to={link.to}>
+                  <li className={styles.navbar__item}>{link.title}</li>
                 </Link>
+              )
+            )}
+          </ul>
+        )}
 
-            ))}
-          </ul>}
+        {/* ПРОФИЛЬ МЕНЮ */}
+        {isOpenProfile && (
+          <ul className={`${styles.navbar__profile} ${styles.active}`}>
+            {profileLinks.map((link) =>
+              link.title === "Выход" ? (
+                <button
+                  key={link.id}
+                  onClick={() => setConfirmOpen(true)}
+                  className={styles.exitbtn}
+                >
+                  Выход
+                </button>
+              ) : (
+                <Link key={link.id} to={link.to}>
+                  <li className={styles.navbar__item}>{link.title}</li>
+                </Link>
+              )
+            )}
+          </ul>
+        )}
+      </header>
 
-          {isOpenProfile && <ul className={`${styles.navbar__profile} ${styles.active}`}>
-            {profileLinks.map((link) => (
-               <Link to={link.to}>
-                 <li key={link.id} className={styles.navbar__item}>
-                   {link.title}
-                 </li>
-               </Link>
-            ))}
-          </ul>}
-
-
-        </header>
-
+      {/* МОДАЛКА ПОДТВЕРЖДЕНИЯ */}
+      <ConfirmLogoutModal
+        open={confirmOpen}
+        onClose={() => setConfirmOpen(false)}
+        onConfirm={onConfirmLogout}
+      />
+    </>
   );
 };
 

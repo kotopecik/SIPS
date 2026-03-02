@@ -1,0 +1,300 @@
+.page {
+  padding: 20px 22px;
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+}
+
+.headerRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.title {
+  font-size: 28px;
+  font-weight: 900;
+  color: #111827;
+  margin: 0;
+}
+
+.exitBtn {
+  height: 42px;
+  border-radius: 10px;
+  border: 1px solid #d9d9d9;
+  background: #fff;
+  font-weight: 800;
+  cursor: pointer;
+  padding: 0 14px;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 360px 1fr;
+  gap: 16px;
+  align-items: start;
+}
+
+/* Левая карточка */
+.card {
+  background: #fff;
+  border: 1px solid #d9d9d9;
+  border-radius: 14px;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
+  padding: 16px;
+}
+
+.avatarBlock {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.avatar {
+  width: 92px;
+  height: 92px;
+  border-radius: 16px;
+  border: 1px solid #d9d9d9;
+  background: #f5f7ff;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.avatarEmpty {
+  font-weight: 900;
+  color: #6b7280;
+}
+
+.avatarImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.avatarBtns {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.blueBtn {
+  height: 40px;
+  border-radius: 10px;
+  border: none;
+  background: #2f66ff;
+  color: #fff;
+  font-weight: 900;
+  cursor: pointer;
+  padding: 0 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.whiteBtn {
+  height: 40px;
+  border-radius: 10px;
+  border: 1px solid #d9d9d9;
+  background: #fff;
+  font-weight: 900;
+  cursor: pointer;
+  padding: 0 14px;
+}
+
+.whiteBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.info {
+  margin-top: 14px;
+}
+
+.name {
+  font-size: 18px;
+  font-weight: 900;
+  color: #111827;
+  margin-bottom: 8px;
+}
+
+.meta {
+  font-size: 13px;
+  color: #374151;
+  display: grid;
+  gap: 6px;
+}
+
+.meta span {
+  color: #6b7280;
+  font-weight: 900;
+  margin-right: 6px;
+}
+
+/* Правая часть */
+.right {
+  background: transparent;
+}
+
+.tabs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.tab,
+.tabActive {
+  height: 42px;
+  border-radius: 10px;
+  border: 1px solid #d9d9d9;
+  background: #fff;
+  font-weight: 900;
+  cursor: pointer;
+  padding: 0 14px;
+}
+
+.tabActive {
+  background: #2f66ff;
+  border-color: #2f66ff;
+  color: #fff;
+}
+
+.panel {
+  background: #fff;
+  border: 1px solid #d9d9d9;
+  border-radius: 14px;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
+  padding: 16px;
+}
+
+/* Форма */
+.formTitle {
+  font-weight: 900;
+  margin-bottom: 10px;
+}
+
+.formGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.label {
+  font-size: 12px;
+  font-weight: 900;
+  color: #374151;
+}
+
+.input {
+  height: 44px;
+  border-radius: 10px;
+  border: 1px solid #d9d9d9;
+  padding: 0 12px;
+  font-size: 14px;
+  outline: none;
+}
+
+.input:focus {
+  border-color: #2f66ff;
+  box-shadow: 0 0 0 3px rgba(47, 102, 255, 0.18);
+}
+
+.inputSaved {
+  border-color: #22c55e !important;
+  box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.15) !important;
+}
+
+.divider {
+  height: 1px;
+  background: #eef2f7;
+  margin: 6px 0;
+}
+
+.saveBtn {
+  margin-top: 14px;
+  height: 46px;
+  border: none;
+  border-radius: 10px;
+  background: #2f66ff;
+  color: #fff;
+  font-weight: 900;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 0 16px;
+}
+
+/* История */
+.history {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.tableWrap {
+  border: 1px solid #d9d9d9;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table thead th {
+  text-align: left;
+  padding: 12px;
+  background: #f5f7ff;
+  border-bottom: 1px solid #e5e7eb;
+  font-size: 13px;
+  color: #374151;
+}
+
+.table tbody td {
+  padding: 12px;
+  border-bottom: 1px solid #eef2f7;
+  font-size: 13px;
+  color: #111827;
+}
+
+.badge {
+  display: inline-flex;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid #d9d9d9;
+  background: #fff;
+  font-weight: 900;
+  font-size: 12px;
+}
+
+.historyBtns {
+  display: flex;
+  gap: 10px;
+}
+
+.blueBtn2 {
+  height: 42px;
+  border: none;
+  border-radius: 10px;
+  background: #2f66ff;
+  color: #fff;
+  font-weight: 900;
+  padding: 0 14px;
+  cursor: pointer;
+}
+
+.whiteBtn2 {
+  height: 42px;
+  border: 1px solid #d9d9d9;
+  border-radius: 10px;
+  background: #fff;
+  font-weight: 900;
+  padding: 0 14px;
+  cursor: pointer;
+}
