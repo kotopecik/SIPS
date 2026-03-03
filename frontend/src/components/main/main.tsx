@@ -1,5 +1,5 @@
 import React, { lazy, Suspense, useEffect } from "react";
-import { Route, Routes } from "react-router";
+import { Route, Routes } from "react-router-dom";
 import { Loading } from "@/components/main/Loading/Loading";
 import { useAppDispatch, useAppSelector } from "@/hooks/hook";
 import { setCursorPosition } from "@/store/cursor/cursor-slice";
@@ -60,13 +60,17 @@ function Main() {
 
   return (
     <div onMouseMove={handleMouseMove}>
+      {/* HEADER НА ВСЕХ СТРАНИЦАХ */}
+      <Suspense fallback={<Loading />}>
+        <Header />
+      </Suspense>
+
       <Routes>
         {/* КАРТА */}
         <Route
           path="/"
           element={
             <Suspense fallback={<Loading />}>
-              <Header />
               <Map />
             </Suspense>
           }
@@ -90,7 +94,7 @@ function Main() {
           }
         />
         <Route
-          path="/restoreaccess"
+          path="/restore"
           element={
             <Suspense fallback={<Loading />}>
               <RestoreAccess />
@@ -123,16 +127,7 @@ function Main() {
           path="/profile"
           element={
             <Suspense fallback={<Loading />}>
-              {isAuth ? (
-                <>
-                  <Navbar />
-                  <Profile />
-                </>
-              ) : (
-                <NotFound />
-                // или можно отправить на авторизацию:
-                // <Navigate to="/authorization" replace />
-              )}
+              {isAuth ? <Profile /> : <NotFound />}
             </Suspense>
           }
         />

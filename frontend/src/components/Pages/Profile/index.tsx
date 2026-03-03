@@ -15,8 +15,20 @@ export default function Profile() {
   const email = useMemo(() => user?.email || "—", [user?.email]);
 
   const [tab, setTab] = useState<Tab>("profile");
+
+  // фото — заглушка (локально в UI)
   const [photoUrl, setPhotoUrl] = useState<string | null>(null);
+
+  // модалка выхода
   const [confirmOpen, setConfirmOpen] = useState(false);
+
+  const fullName = useMemo(() => {
+    const ln = user?.last_name?.trim();
+    const fn = user?.first_name?.trim();
+    const mn = user?.middle_name?.trim();
+    const parts = [ln, fn, mn].filter(Boolean);
+    return parts.length ? parts.join(" ") : "Фамилия Имя";
+  }, [user?.last_name, user?.first_name, user?.middle_name]);
 
   const onPickPhoto = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -25,8 +37,6 @@ export default function Profile() {
 
     const url = URL.createObjectURL(file);
     setPhotoUrl(url);
-
-    // чтобы можно было выбрать тот же файл снова
     e.target.value = "";
   };
 
@@ -40,17 +50,22 @@ export default function Profile() {
 
   return (
     <div className={styles.page}>
-      <div className={styles.headerRow}>
-        <h1 className={styles.title}>Личный кабинет</h1>
-        <button className={styles.exitBtn} onClick={() => setConfirmOpen(true)}>
+      <div className={styles.topRow}>
+        <h1 className={styles.pageTitle}>Личный кабинет</h1>
+
+        <button
+          type="button"
+          className={styles.exitBtn}
+          onClick={() => setConfirmOpen(true)}
+        >
           Выход
         </button>
       </div>
 
       <div className={styles.layout}>
-        {/* Левая карточка */}
-        <div className={styles.card}>
-          <div className={styles.avatarBlock}>
+        {/* ЛЕВАЯ КАРТОЧКА */}
+        <div className={styles.leftCard}>
+          <div className={styles.avatarRow}>
             <div className={styles.avatar}>
               {photoUrl ? (
                 <img className={styles.avatarImg} src={photoUrl} alt="avatar" />
@@ -60,7 +75,7 @@ export default function Profile() {
             </div>
 
             <div className={styles.avatarBtns}>
-              <label className={styles.blueBtn}>
+              <label className={styles.btnBlue}>
                 Добавить фото
                 <input
                   type="file"
@@ -71,7 +86,7 @@ export default function Profile() {
               </label>
 
               <button
-                className={styles.whiteBtn}
+                className={styles.btnWhite}
                 onClick={onDeletePhoto}
                 type="button"
                 disabled={!photoUrl}
@@ -81,24 +96,27 @@ export default function Profile() {
             </div>
           </div>
 
-          <div className={styles.info}>
-            <div className={styles.name}>
-              {user?.last_name || "Фамилия"} {user?.first_name || "Имя"}{" "}
-              {user?.middle_name || ""}
-            </div>
+          <div className={styles.userInfo}>
+            <div className={styles.userName}>{fullName}</div>
 
             <div className={styles.meta}>
-              <div>
-                <span>Email:</span> {email}
+              <div className={styles.metaRow}>
+                <span>Email</span>
+                <b>{email}</b>
               </div>
-              <div>
-                <span>Организация:</span> {user?.organization || "—"}
+
+              <div className={styles.metaRow}>
+                <span>Организация</span>
+                <b>{user?.organization || "—"}</b>
               </div>
             </div>
+
+            {/* вариант выхода №1 как в макете (в меню) */}
+            
           </div>
         </div>
 
-        {/* Правая часть */}
+        {/* ПРАВАЯ ЧАСТЬ */}
         <div className={styles.right}>
           <div className={styles.tabs}>
             <button
@@ -119,7 +137,11 @@ export default function Profile() {
           </div>
 
           <div className={styles.panel}>
-            {tab === "profile" ? <ProfileForm /> : <DownloadsHistory />}
+            {tab === "profile" ? (
+              <ProfileForm />
+            ) : (
+              <DownloadsHistory />
+            )}
           </div>
         </div>
       </div>
@@ -149,6 +171,9 @@ function ProfileForm() {
     new_password2: "",
   });
 
+  // подсказки показываем не сразу, а после попытки сохранить
+  const [submitAttempted, setSubmitAttempted] = useState(false);
+
   useEffect(() => {
     setForm((p) => ({
       ...p,
@@ -166,54 +191,76 @@ function ProfileForm() {
     setForm((p) => ({ ...p, [name]: value }));
   };
 
+  const passwordHint =
+    submitAttempted &&
+    form.new_password.trim().length > 0 &&
+    form.new_password.trim().length < 8
+      ? "Минимум 8 символов"
+      : null;
+
+  const password2Hint =
+    submitAttempted &&
+    form.new_password2.trim().length > 0 &&
+    form.new_password.trim() !== form.new_password2.trim()
+      ? "Пароли должны совпадать"
+      : null;
+
   const onSave = () => {
-    // пока без бэка — делаем “сохранено” через зелёную подсветку полей
+    setSubmitAttempted(true);
+
+    // заглушка: если пароль начали менять — проверим минимально красиво
+    if (form.new_password.trim().length > 0) {
+      if (form.new_password.trim().length < 8) return;
+      if (form.new_password.trim() !== form.new_password2.trim()) return;
+    }
+
     setSaved(true);
     setTimeout(() => setSaved(false), 1200);
   };
 
   return (
     <div className={styles.form}>
-      <div className={styles.formTitle}>Данные пользователя</div>
+      <div className={styles.sectionTitle}>Данные пользователя</div>
 
-      <div className={styles.formGrid}>
+      <div className={styles.grid2}>
         <Field label="Фамилия" name="last_name" value={form.last_name} onChange={onChange} saved={saved} />
         <Field label="Имя" name="first_name" value={form.first_name} onChange={onChange} saved={saved} />
         <Field label="Отчество" name="middle_name" value={form.middle_name} onChange={onChange} saved={saved} />
         <Field label="Организация" name="organization" value={form.organization} onChange={onChange} saved={saved} />
-        <Field label="Email" name="email" value={form.email} onChange={onChange} saved={saved} />
+        <Field label="Email" name="email" value={form.email} onChange={onChange} saved={saved} type="email" />
+      </div>
 
-        <div className={styles.divider} />
+      <div className={styles.divider} />
 
-        <Field
-          label="Старый пароль"
-          name="old_password"
-          value={form.old_password}
-          onChange={onChange}
-          saved={saved}
-          type="password"
-        />
-        <Field
+      <div className={styles.sectionTitle}>Смена пароля</div>
+
+      <div className={styles.grid1}>
+        <Field label="Старый пароль" name="old_password" value={form.old_password} onChange={onChange} saved={saved} type="password" />
+        <FieldWithHint
           label="Новый пароль"
           name="new_password"
           value={form.new_password}
           onChange={onChange}
           saved={saved}
           type="password"
+          hint={passwordHint}
         />
-        <Field
+        <FieldWithHint
           label="Повторите новый пароль"
           name="new_password2"
           value={form.new_password2}
           onChange={onChange}
           saved={saved}
           type="password"
+          hint={password2Hint}
         />
       </div>
 
       <button type="button" className={styles.saveBtn} onClick={onSave}>
         Сохранить изменения
       </button>
+
+      {saved && <div className={styles.savedToast}>Сохранено</div>}
     </div>
   );
 }
@@ -227,7 +274,7 @@ function DownloadsHistory() {
 
   return (
     <div className={styles.history}>
-      <div className={styles.formTitle}>История скачиваний</div>
+      <div className={styles.sectionTitle}>История скачиваний</div>
 
       <div className={styles.tableWrap}>
         <table className={styles.table}>
@@ -255,10 +302,10 @@ function DownloadsHistory() {
       </div>
 
       <div className={styles.historyBtns}>
-        <button type="button" className={styles.blueBtn2}>
+        <button type="button" className={styles.btnBlueWide}>
           Скачать всё
         </button>
-        <button type="button" className={styles.whiteBtn2}>
+        <button type="button" className={styles.btnWhiteWide}>
           Очистить
         </button>
       </div>
@@ -291,6 +338,32 @@ function Field({
         onChange={onChange}
         type={type}
       />
+    </label>
+  );
+}
+
+function FieldWithHint(props: {
+  label: string;
+  name: string;
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  saved: boolean;
+  type?: string;
+  hint: string | null;
+}) {
+  const { label, name, value, onChange, saved, type = "text", hint } = props;
+
+  return (
+    <label className={styles.field}>
+      <div className={styles.label}>{label}</div>
+      <input
+        className={`${styles.input} ${saved ? styles.inputSaved : ""}`}
+        name={name}
+        value={value}
+        onChange={onChange}
+        type={type}
+      />
+      {hint && <div className={styles.hint}>{hint}</div>}
     </label>
   );
 }

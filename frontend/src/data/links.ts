@@ -107,3 +107,19 @@ export const navbarLinksNotAuth: ILink[] = [
     },
     
 ]
+
+export const headerSimpleLinks: ILink[] = [
+  { id: 1, to: "/home", title: "Главная" },
+  { id: 2, to: "/", title: "Перейти к карте" },
+];
+
+export const headerLinksNotAuth: ILink[] = [
+  { id: 1, to: "/", title: "Перейти к карте" },
+  { id: 2, to: "/home", title: "Главная" },
+];
+
+export const headerLinksAuth: ILink[] = [
+  { id: 1, to: "/", title: "Перейти к карте" },
+  { id: 2, to: "/catalog", title: "Каталог" },
+  { id: 3, to: "/home", title: "Главная" },
+];

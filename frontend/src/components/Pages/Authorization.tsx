@@ -92,7 +92,15 @@ const Authorization = () => {
 
           <div className={styles.links}>
             <span>Забыли пароль?</span>
-            <Link to="/restoreaccess">Восстановить доступ</Link>
+                          <Link
+                to={
+                  form.email.trim()
+                    ? `/restore?email=${encodeURIComponent(form.email.trim())}`
+                    : "/restore"
+                }
+              >
+                Восстановить доступ
+              </Link>
           </div>
         </form>
       </div>

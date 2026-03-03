@@ -1,58 +1,70 @@
 .page {
-  padding: 20px 22px;
+  padding: 22px 22px 28px;
   font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  background: #ffffff;
 }
 
-.headerRow {
+.topRow {
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin-bottom: 14px;
 }
 
-.title {
-  font-size: 28px;
+.pageTitle {
+  font-size: 44px;
   font-weight: 900;
   color: #111827;
   margin: 0;
 }
 
 .exitBtn {
-  height: 42px;
-  border-radius: 10px;
-  border: 1px solid #d9d9d9;
-  background: #fff;
-  font-weight: 800;
+  height: 44px;
+  border-radius: 12px;
+  border: 1px solid #2f66ff;
+  background: #ffffff;
+  color: #2f66ff;
+  font-weight: 900;
   cursor: pointer;
-  padding: 0 14px;
+  padding: 0 18px;
+  transition: 0.15s;
+}
+
+.exitBtn:hover {
+  background: #f5f7ff;
+}
+
+.exitBtn:active {
+  transform: translateY(1px);
 }
 
 .layout {
   display: grid;
-  grid-template-columns: 360px 1fr;
-  gap: 16px;
+  grid-template-columns: 420px 1fr;
+  gap: 18px;
   align-items: start;
 }
 
-/* Левая карточка */
-.card {
+/* ===== LEFT CARD ===== */
+
+.leftCard {
   background: #fff;
   border: 1px solid #d9d9d9;
-  border-radius: 14px;
+  border-radius: 16px;
   box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
-  padding: 16px;
+  padding: 18px;
 }
 
-.avatarBlock {
+.avatarRow {
   display: flex;
-  gap: 12px;
+  gap: 14px;
   align-items: center;
 }
 
 .avatar {
-  width: 92px;
-  height: 92px;
-  border-radius: 16px;
+  width: 118px;
+  height: 118px;
+  border-radius: 18px;
   border: 1px solid #d9d9d9;
   background: #f5f7ff;
   overflow: hidden;
@@ -78,60 +90,67 @@
   gap: 10px;
 }
 
-.blueBtn {
-  height: 40px;
-  border-radius: 10px;
+.btnBlue {
+  height: 44px;
+  border-radius: 12px;
   border: none;
   background: #2f66ff;
   color: #fff;
   font-weight: 900;
   cursor: pointer;
-  padding: 0 14px;
+  padding: 0 16px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
 }
 
-.whiteBtn {
-  height: 40px;
-  border-radius: 10px;
+.btnWhite {
+  height: 44px;
+  border-radius: 12px;
   border: 1px solid #d9d9d9;
   background: #fff;
   font-weight: 900;
   cursor: pointer;
-  padding: 0 14px;
+  padding: 0 16px;
 }
 
-.whiteBtn:disabled {
+.btnWhite:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
 
-.info {
-  margin-top: 14px;
+.userInfo {
+  margin-top: 16px;
 }
 
-.name {
-  font-size: 18px;
+.userName {
+  font-size: 22px;
   font-weight: 900;
   color: #111827;
-  margin-bottom: 8px;
+  margin-bottom: 12px;
 }
 
 .meta {
-  font-size: 13px;
-  color: #374151;
   display: grid;
-  gap: 6px;
+  gap: 10px;
 }
 
-.meta span {
-  color: #6b7280;
+.metaRow {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 14px;
+  color: #111827;
+}
+
+.metaRow span {
+  color: #2f66ff;
   font-weight: 900;
-  margin-right: 6px;
 }
 
-/* Правая часть */
+
+/* ===== RIGHT ===== */
+
 .right {
   background: transparent;
 }
@@ -139,18 +158,19 @@
 .tabs {
   display: flex;
   gap: 10px;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
 }
 
 .tab,
 .tabActive {
-  height: 42px;
-  border-radius: 10px;
+  height: 44px;
+  border-radius: 12px;
   border: 1px solid #d9d9d9;
   background: #fff;
   font-weight: 900;
   cursor: pointer;
-  padding: 0 14px;
+  padding: 0 16px;
+  white-space: nowrap;
 }
 
 .tabActive {
@@ -162,21 +182,34 @@
 .panel {
   background: #fff;
   border: 1px solid #d9d9d9;
-  border-radius: 14px;
+  border-radius: 16px;
   box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
-  padding: 16px;
+  padding: 18px;
 }
 
-/* Форма */
-.formTitle {
+/* ===== FORM ===== */
+
+.form {
+  position: relative;
+}
+
+.sectionTitle {
   font-weight: 900;
-  margin-bottom: 10px;
+  font-size: 16px;
+  color: #111827;
+  margin-bottom: 12px;
 }
 
-.formGrid {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
+.grid2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px 14px;
+}
+
+.grid1 {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
 }
 
 .field {
@@ -186,16 +219,16 @@
 }
 
 .label {
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 900;
-  color: #374151;
+  color: #2f66ff;
 }
 
 .input {
-  height: 44px;
-  border-radius: 10px;
+  height: 46px;
+  border-radius: 12px;
   border: 1px solid #d9d9d9;
-  padding: 0 12px;
+  padding: 0 14px;
   font-size: 14px;
   outline: none;
 }
@@ -210,26 +243,48 @@
   box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.15) !important;
 }
 
+.hint {
+  font-size: 12px;
+  color: #6b7280;
+  margin-top: 4px;
+}
+
 .divider {
   height: 1px;
   background: #eef2f7;
-  margin: 6px 0;
+  margin: 16px 0;
 }
 
 .saveBtn {
-  margin-top: 14px;
-  height: 46px;
+  margin-top: 16px;
+  height: 48px;
   border: none;
-  border-radius: 10px;
+  border-radius: 12px;
   background: #2f66ff;
   color: #fff;
   font-weight: 900;
   font-size: 14px;
   cursor: pointer;
   padding: 0 16px;
+  width: 320px;
+  max-width: 100%;
 }
 
-/* История */
+.savedToast {
+  position: absolute;
+  right: 0;
+  top: 0;
+  background: #ecfdf5;
+  border: 1px solid #bbf7d0;
+  color: #065f46;
+  font-weight: 900;
+  border-radius: 12px;
+  padding: 10px 12px;
+  font-size: 13px;
+}
+
+/* ===== HISTORY ===== */
+
 .history {
   display: flex;
   flex-direction: column;
@@ -238,7 +293,7 @@
 
 .tableWrap {
   border: 1px solid #d9d9d9;
-  border-radius: 12px;
+  border-radius: 14px;
   overflow: hidden;
 }
 
@@ -278,23 +333,39 @@
   gap: 10px;
 }
 
-.blueBtn2 {
-  height: 42px;
+.btnBlueWide {
+  height: 44px;
   border: none;
-  border-radius: 10px;
+  border-radius: 12px;
   background: #2f66ff;
   color: #fff;
   font-weight: 900;
-  padding: 0 14px;
+  padding: 0 16px;
   cursor: pointer;
 }
 
-.whiteBtn2 {
-  height: 42px;
+.btnWhiteWide {
+  height: 44px;
   border: 1px solid #d9d9d9;
-  border-radius: 10px;
+  border-radius: 12px;
   background: #fff;
   font-weight: 900;
-  padding: 0 14px;
+  padding: 0 16px;
   cursor: pointer;
+}
+
+/* ===== ADAPTIVE ===== */
+
+@media (max-width: 980px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+
+  .grid2 {
+    grid-template-columns: 1fr;
+  }
+
+  .saveBtn {
+    width: 100%;
+  }
 }
