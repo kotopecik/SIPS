@@ -6,26 +6,31 @@ import { useAppSelector } from "@/hooks/hook";
 
 const Header = () => {
   const location = useLocation();
+  const isAuthModalOpen =
+  location.pathname === "/authorization" ||
+  location.pathname === "/registration" ||
+  location.pathname === "/restore";
   const navigate = useNavigate();
+  const closeAuthModal = () => {
+    navigate("/", { replace: true });
+  };
 
   const isAuth = useAppSelector((s) => s.user.isAuth);
   const user = useAppSelector((s) => s.user.user);
 
   const links = isAuth ? headerLinksAuth : headerLinksNotAuth;
 
-  // Заглушка: если в user нет avatarUrl — показываем букву
   const avatarLetter = useMemo(() => {
     const name = (user?.first_name || user?.email || "U").trim();
     return (name[0] || "U").toUpperCase();
   }, [user?.first_name, user?.email]);
 
-  // Если позже появится user.avatarUrl — просто подставишь сюда
   const avatarUrl: string | null = null;
 
-  const onAvatarClick = () => {
-    if (isAuth) navigate("/profile");
-    else navigate("/authorization");
-  };
+const onAvatarClick = () => {
+  if (isAuth) navigate("/profile");
+  else navigate("/authorization");
+};
 
   return (
     <header className={styles.root}>

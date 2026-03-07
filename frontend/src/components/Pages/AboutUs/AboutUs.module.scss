@@ -1,47 +1,302 @@
-@import url("https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700;800;900&family=Poppins&display=swap");
-* {
-  margin: 0;
-  padding: 0;
-  font-family: "Nunito", sans-serif;
-  box-sizing: border-box;
+.root {
+  background: #ffffff;
+  color: #111827;
 }
-.root { //no
-  padding: 20px 0;
-  background-color: #171718;
-  block-size: auto;
-  color: #ffff;
-  min-height: 100vh;
-  .block {
-    margin: 0 auto;
-    padding: 0 15px;
-    max-width: 1200px;
-    .inf {
-      display: block;
-      padding: 10px;
-      max-width: 100%;
-      max-height: 700px;
-      background: linear-gradient(
-                      135deg,
-                      rgba(255, 255, 255, 0.1),
-                      rgba(255, 255, 255, 0)
-      );
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      border-radius: 10px;
-      box-shadow: 0 8px 32px 0 #5a2bb24d;
-      margin-bottom: 20px;
-      font-size: 16px;
-    }:not(:first-child){
-       margin-top: 20px;
-     }
+
+/* ===== HERO (как на скрине) ===== */
+
+.hero {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 36px 18px 10px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: start;
+}
+
+.heroLeft {
+  padding-top: 70px; /* опускаем текст чуть вниз, как на скрине */
+}
+
+.heroText {
+  width: 320px;
+  font-family: "Inter", sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 1.45;
+  color: #111827;
+}
+
+.heroRight {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 40px;
+}
+
+.heroTitle {
+  margin: 0;
+  font-family: "SouthGhetto", sans-serif;
+  font-size: 40px;
+  font-weight: 400;
+  line-height: 1.02;
+  letter-spacing: 0.8px;
+  transform: scale(0.97);
+}
+
+/* ===== SECTION TITLES ===== */
+
+.sectionBigTitle {
+  margin: 0;
+  text-align: center;
+  font-family: "SouthGhetto", sans-serif;
+  font-size: 38px;
+  font-weight: 400;
+  letter-spacing: 0.8px;
+  transform: scale(0.97);
+}
+
+/* ===== PRODUCTS + CAROUSEL ===== */
+
+.products {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 44px 18px 12px;
+}
+
+.track {
+  margin-top: 22px;
+  display: flex;
+  gap: 18px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  padding: 10px 2px 12px;
+
+  scrollbar-width: none;
+}
+.track::-webkit-scrollbar {
+  display: none;
+}
+
+.card {
+  scroll-snap-align: start;
+  flex: 0 0 calc((100% - 36px) / 3); /* 3 карточки */
+  min-width: 280px;
+
+  border: 2px solid #111827;
+  border-radius: 6px;
+  background: #ffffff;
+  padding: 16px 16px 18px;
+  min-height: 130px;
+}
+
+.cardTitle {
+  font-family: "SouthGhetto", sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  color: #2f66ff;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  margin-bottom: 10px;
+}
+
+.cardText {
+  font-family: "Inter", sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 1.45;
+  color: #111827;
+}
+
+.dots {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.dot,
+.dotActive {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+  background: #cbd5e1;
+}
+
+.dotActive {
+  background: #2f66ff;
+}
+
+/* ===== GUIDE ===== */
+
+.guide {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 40px 18px 40px;
+}
+
+.steps {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.step {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  align-items: center;
+  gap: 18px;
+  padding: 26px 0;
+  border-top: 1px solid #e5e7eb;
+}
+
+.step:nth-child(1) {
+  margin-left: 80px;
+}
+
+.step:nth-child(2) {
+  margin-left: 220px;
+}
+
+.step:nth-child(3) {
+  margin-left: 360px;
+}
+
+.step:nth-child(4) {
+  margin-left: 500px;
+}
+
+.step:last-child {
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.stepNum {
+  font-size: 72px;
+  font-family: "SouthGhetto", sans-serif;
+  font-weight: 700;
+  color: #2f66ff;
+  line-height: 1;
+  text-align: center;
+  opacity: 0.9;
+}
+
+.stepText {
+  font-family: "Inter", sans-serif;
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 1.5;
+  max-width: 560px;
+  color: #111827;
+}
+
+.toMapBtn {
+  margin: 24px auto 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 720px;
+  max-width: 100%;
+  height: 44px;
+  border-radius: 4px;
+  background: #2f66ff;
+  color: #ffffff;
+  text-decoration: none;
+  font-family: "SouthGhetto", sans-serif;
+  font-size: 20px;
+  font-weight: 400;
+  letter-spacing: 0.8px;
+}
+
+/* ===== FOOTER ===== */
+
+.footer {
+  position: relative;
+  margin-top: 24px;
+  color: #ffffff;
+  overflow: hidden;
+}
+
+.footer::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+
+  background-image: url("../../../assets/images/Rectangle.png");
+  background-size: cover;
+  background-position: center;
+
+  filter: brightness(0.35); /* затемнение */
+
+  z-index: 0;
+}
+
+.footerInner {
+  position: relative;
+  z-index: 1;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 40px 18px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+
+.footerTitle {
+  font-weight: 900;
+  margin-bottom: 8px;
+}
+
+/* ===== RESPONSIVE ===== */
+
+@media (max-width: 980px) {
+  .hero {
+    grid-template-columns: 1fr;
+  }
+
+  .heroRight {
+    justify-content: flex-start;
+    padding-top: 10px;
+  }
+
+  .card {
+    flex: 0 0 calc((100% - 18px) / 2); /* 2 карточки */
+  }
+
+  .step {
+    grid-template-columns: 160px 1fr;
+  }
+
+  .stepNum {
+    font-size: 72px;
   }
 }
 
+@media (max-width: 560px) {
+  .sectionBigTitle {
+    font-size: 32px;
+  }
 
-.link{
-  color: #ffff;
-  text-decoration: none;
-  &:hover{
-    opacity: 0.8;
+  .heroTitle {
+    font-size: 34px;
+  }
+
+  .card {
+    flex: 0 0 100%; /* 1 карточка */
+  }
+
+  .step {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .stepText {
+    margin: 0 auto;
+  }
+
+  .footerInner {
+    grid-template-columns: 1fr;
   }
 }

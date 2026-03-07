@@ -15,10 +15,12 @@
   max-width: 1200px;
 }
 .logo {
-  font-size: 2rem;
+  font-family: "Inter", sans-serif;
+  font-size: 34px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: #2f66ff;
   text-decoration: none;
-  font-weight: 800;
-  margin-right: auto;
 }
 .navbar {
   display: flex;
@@ -64,4 +66,16 @@
       opacity: 0.8;
     }
   }
+}
+
+.navbar__item {
+  font-family: "Inter", sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  cursor: pointer;
+  list-style: none;
+  text-align: center;
+  height: 50px;
+  line-height: 50px;
 }

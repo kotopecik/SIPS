@@ -34,7 +34,6 @@ function Main() {
     dispatch(setCursorPosition({ x: event.clientX, y: event.clientY }));
   };
 
-  // Грузим данные карты/композитов
   useEffect(() => {
     dispatch(fetchDates(EUrls.DATES_URL));
     dispatch(fetchSatellites());
@@ -50,7 +49,6 @@ function Main() {
     }
   }, [dispatch, satellite, dotdate, time]);
 
-  // Проверка авторизации при старте (если есть token)
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
@@ -60,13 +58,11 @@ function Main() {
 
   return (
     <div onMouseMove={handleMouseMove}>
-      {/* HEADER НА ВСЕХ СТРАНИЦАХ */}
       <Suspense fallback={<Loading />}>
         <Header />
       </Suspense>
 
       <Routes>
-        {/* КАРТА */}
         <Route
           path="/"
           element={
@@ -76,7 +72,6 @@ function Main() {
           }
         />
 
-        {/* AUTH */}
         <Route
           path="/authorization"
           element={
@@ -85,6 +80,7 @@ function Main() {
             </Suspense>
           }
         />
+
         <Route
           path="/registration"
           element={
@@ -93,6 +89,7 @@ function Main() {
             </Suspense>
           }
         />
+
         <Route
           path="/restore"
           element={
@@ -102,27 +99,24 @@ function Main() {
           }
         />
 
-        {/* ИНФО СТРАНИЦЫ */}
         <Route
           path="/management"
           element={
             <Suspense fallback={<Loading />}>
-              <Navbar />
               <UserGuide />
             </Suspense>
           }
         />
+
         <Route
           path="/home"
           element={
             <Suspense fallback={<Loading />}>
-              <Navbar />
               <AboutUs />
             </Suspense>
           }
         />
 
-        {/* ЛИЧНЫЙ КАБИНЕТ — ТОЛЬКО ДЛЯ АВТОРИЗОВАННЫХ */}
         <Route
           path="/profile"
           element={
@@ -132,7 +126,6 @@ function Main() {
           }
         />
 
-        {/* КАТАЛОГ — ТОЛЬКО ДЛЯ АВТОРИЗОВАННЫХ */}
         <Route
           path="/catalog"
           element={
@@ -142,7 +135,6 @@ function Main() {
           }
         />
 
-        {/* ВСЁ ОСТАЛЬНОЕ */}
         <Route path="*" element={<NotFound />} />
       </Routes>
     </div>
