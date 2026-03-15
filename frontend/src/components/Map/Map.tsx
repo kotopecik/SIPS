@@ -4,7 +4,6 @@ import {LatLngExpression, LatLngLiteral} from "leaflet";
 import {useAppDispatch, useAppSelector} from "@/hooks/hook";
 import Coords from "@/components/Map/Coords/Coords";
 import Settings from "@/components/Settings";
-import Calendar from "@/components/Calendar";
 import Ruler from "@/components/Map/Ruler/Ruler";
 import {addRulerMarker, addRulerMarkerPos} from "@/store/ruler/ruler-slice";
 import Cursor from "@/components/Cursor/Cursor";
@@ -80,7 +79,7 @@ const Map = () => {
 
                         <Coords />
                         <Settings />
-                        <Calendar/>
+                        
 
 
                         <Ruler/>

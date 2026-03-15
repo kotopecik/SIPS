@@ -1,88 +1,222 @@
-@import url("https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700;800;900&family=Poppins&display=swap");
+.sidebar {
 
-* {
-  margin: 0;
-  padding: 0;
-  font-family: "Nunito", sans-serif;
+  position: absolute;
+
+  left: 0;
+  top: 0;
+
+  width: 320px;
+  height: 100vh;
+
+  background: #f3f4f6;
+
+  padding: 20px 16px;
+
+  display: flex;
+  flex-direction: column;
+
+  z-index: 2000;
+
 }
 
-.block{
+.title {
 
-    &__icon{
-        position: fixed;
-        z-index: 1000;
-        height: 50px;
-        width: 50px;
-        border: 2px solid rgba(0, 98, 255, 0.3);
-        border-radius: 10px;
-        background-color: #fff;
-        padding: 8px;
-        cursor: pointer;
+  font-size: 20px;
+  font-weight: 600;
 
-        top: 9px;
-        right: 9px;
-        &:hover {
-            opacity: 0.8;
-        }
-    }
-    &__iconleft{
-        top: 9px;
-        left: 68px;
+  margin-bottom: 16px;
 
-        position: fixed;
-        z-index: 1000;
-        height: 50px;
-        width: 50px;
-        border: 2px solid rgba(0, 98, 255, 0.3);
-        border-radius: 10px;
-        background-color: #fff;
-        padding: 8px;
-        cursor: pointer;
-        &:hover {
-            opacity: 0.8;
-        }
-    }
-}
-.sett{
-    position: fixed;
-    top: 70px;
-    right: 9px;
-    background: white;
-    z-index: 1000;
-    border-radius: 10px;
-    border: 2px solid rgba(0, 98, 255, 0.3);
-    padding: 10px;
-    &.active{
-        display: flex;
-    }
 }
 
+/* прокрутка панели */
 
-.sort{
-    border-radius: 10px;
-    border: 2px solid rgba(0, 98, 255, 0.3);
-    line-height: 30px;
-    margin-top: 10px;
-    padding: 5px;
-    a{
-        color: white;
-    }
+.scroll {
+
+  overflow-y: auto;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 14px;
+
+  padding-right: 6px;
+
 }
-.text{
-    font-size: 16px;
-    font-weight: 700;
-    margin: 3px 0;
+
+/* карточки фильтров */
+
+.filterBlock {
+
+  background: white;
+
+  border-radius: 10px;
+
+  padding: 12px 14px;
+
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+
 }
+
+/* заголовок фильтра */
+
+.filterHeader {
+
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  cursor: pointer;
+
+  font-weight: 500;
+
+}
+
+/* стрелка фильтра */
+
+.filterArrow {
+
+  font-size: 12px;
+
+}
+
+/* текст */
+
+.text {
+
+  font-size: 14px;
+
+  margin-bottom: 10px;
+
+  color: #333;
+
+}
+
+/* блок календаря */
+
+.calendarBlock {
+
+  background: #f6f6f6;
+
+  padding: 10px;
+
+  border-radius: 8px;
+
+}
+
+.calendarHeader {
+
+  font-weight: 500;
+
+  margin-bottom: 4px;
+
+}
+
+.calendarSub {
+
+  font-size: 14px;
+
+  margin-bottom: 10px;
+
+}
+
+/* react-multi-date-picker */
+
+.calendar {
+
+  width: 100%;
+
+}
+
+.rmdp-wrapper {
+
+  width: 100%;
+
+}
+
+.rmdp-calendar {
+
+  width: 100%;
+
+  border: none;
+
+}
+
+.rmdp-day {
+
+  width: 34px;
+  height: 34px;
+
+}
+
+.rmdp-day span {
+
+  font-size: 13px;
+
+}
+
+/* композиты */
+
 .composites_block {
-    width: 400px;
-    height: auto;
+
+  margin-top: 10px;
 
 }
+
 .composites {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(3, 1fr);
+
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap: 8px;
+
 }
 
+/* tooltip композитов */
 
+.tooltip {
 
+  position: absolute;
+
+  left: 120px;
+  top: 0;
+
+  width: 220px;
+
+  background: white;
+
+  border: 1px solid #ddd;
+
+  border-radius: 8px;
+
+  padding: 10px;
+
+  font-size: 13px;
+
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+
+  z-index: 5000;
+
+}
+
+/* scrollbar */
+
+.scroll::-webkit-scrollbar {
+
+  width: 6px;
+
+}
+
+.scroll::-webkit-scrollbar-thumb {
+
+  background: #4f7bd9;
+
+  border-radius: 4px;
+
+}
+
+.calendarWrapper{
+  margin-top:10px;
+}

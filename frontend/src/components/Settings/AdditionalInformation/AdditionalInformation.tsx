@@ -40,7 +40,7 @@ const AdditionalInformation = () => {
 
     return (
         <>
-            <p className={s.text}>Отображение дополнительных данных</p>
+            <p className={s.text}>Дополнительные данные</p>
             {borders.map((border) => (
                     <FormControlLabel
                         key = {border.id}
