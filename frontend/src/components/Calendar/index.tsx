@@ -48,6 +48,8 @@ const Calendar = () => {
   const [isMonthPickerOpen, setMonthPickerOpen] = useState(false);
   const [isYearPickerOpen, setYearPickerOpen] = useState(false);
 
+  const satellite = useAppSelector((state) => state.tile.satellite);
+
 const handleMonthSelect = (monthIndex: number) => {
 
   const diff = monthIndex - currentDate.month();
@@ -170,7 +172,9 @@ const handleYearSelect = (year: number) => {
 
             const stringDate = getStringDate(date);
 
-            const hasData = isThereDataForThisDay(stringDate, nondotdates);
+            const satellite = useAppSelector((state) => state.tile.satellite);
+
+            const hasData = satellite && isThereDataForThisDay(stringDate, nondotdates);
 
             return (
               <div key={index} className={s.calendarday}>

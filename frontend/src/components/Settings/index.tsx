@@ -5,6 +5,9 @@ import LayerSwitch from "./LayerSwitch/LayerSwitch";
 import AdditionalInformation from "./AdditionalInformation/AdditionalInformation";
 import Satelite from "./Satelite";
 import Calendar from "@/components/Calendar";
+import Composites from "./Composites";
+
+import { useAppSelector } from "@/hooks/hook";
 
 const Settings = () => {
 
@@ -12,6 +15,10 @@ const Settings = () => {
   const [additionalOpen, setAdditionalOpen] = useState(true);
   const [satelliteOpen, setSatelliteOpen] = useState(true);
   const [dateOpen, setDateOpen] = useState(true);
+  const [compositesOpen, setCompositesOpen] = useState(true);
+
+  const satellite = useAppSelector(state => state.tile.satellite);
+  const selectedDate = useAppSelector(state => state.tile.dateTime.nondotdate);
 
   return (
 
@@ -59,7 +66,7 @@ const Settings = () => {
         </div>
 
 
-        {/* Спутниковые снимки */}
+        {/* Спутники */}
 
         <div className={s.filterBlock}>
 
@@ -82,19 +89,42 @@ const Settings = () => {
 
         <div className={s.filterBlock}>
 
-        <div
-          className={s.filterHeader}
-          onClick={() => setDateOpen(!dateOpen)}
-        >
-          <span>Дата</span>
-          <span className={s.filterArrow}>
-            {dateOpen ? "▾" : "▸"}
-          </span>
+          <div
+            className={s.filterHeader}
+            onClick={() => setDateOpen(!dateOpen)}
+          >
+            <span>Дата</span>
+            <span className={s.filterArrow}>
+              {dateOpen ? "▾" : "▸"}
+            </span>
+          </div>
+
+          {dateOpen && <Calendar />}
+
         </div>
 
-        {dateOpen && <Calendar />}
 
-      </div>
+        {/* Композиты */}
+
+        {satellite && selectedDate && (
+
+          <div className={s.filterBlock}>
+
+            <div
+              className={s.filterHeader}
+              onClick={() => setCompositesOpen(!compositesOpen)}
+            >
+              <span>Композиты</span>
+              <span className={s.filterArrow}>
+                {compositesOpen ? "▾" : "▸"}
+              </span>
+            </div>
+
+            {compositesOpen && <Composites />}
+
+          </div>
+
+        )}
 
       </div>
 

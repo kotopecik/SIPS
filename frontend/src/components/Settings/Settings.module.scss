@@ -156,52 +156,109 @@
 
 }
 
-/* композиты */
+/* ================================================= */
+/* КОМПОЗИТЫ */
+/* ================================================= */
 
-.composites_block {
+.compositesGrid{
 
-  margin-top: 10px;
+  display:grid;
 
-}
+  grid-template-columns:repeat(2,1fr);
 
-.composites {
+  gap:8px;
 
-  display: flex;
-
-  flex-wrap: wrap;
-
-  gap: 8px;
+  margin-top:10px;
 
 }
 
-/* tooltip композитов */
+.compositeWrapper{
 
-.tooltip {
-
-  position: absolute;
-
-  left: 120px;
-  top: 0;
-
-  width: 220px;
-
-  background: white;
-
-  border: 1px solid #ddd;
-
-  border-radius: 8px;
-
-  padding: 10px;
-
-  font-size: 13px;
-
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-
-  z-index: 5000;
+  position:relative;
 
 }
 
-/* scrollbar */
+.compositeChip{
+
+  width:100%;
+
+  padding:6px 8px;
+
+  border-radius:8px;
+
+  border:1px solid #e5e7eb;
+
+  background:white;
+
+  font-size:12px;
+
+  font-weight:500;
+
+  cursor:pointer;
+
+  transition:all .15s ease;
+
+}
+
+.compositeChip:hover{
+
+  background:#f3f4f6;
+
+}
+
+.compositeActive{
+
+  width:100%;
+
+  padding:6px 8px;
+
+  border-radius:8px;
+
+  background:#4f7bd9;
+
+  border:1px solid #4f7bd9;
+
+  color:white;
+
+  font-size:12px;
+
+  font-weight:500;
+
+  cursor:pointer;
+
+}
+
+/* подсказка композитов */
+
+.tooltipUnder{
+
+  position:absolute;
+
+  top:36px;
+
+  left:0;
+
+  width:200px;
+
+  background:white;
+
+  border-radius:8px;
+
+  border:1px solid #e5e7eb;
+
+  padding:8px 10px;
+
+  font-size:12px;
+
+  box-shadow:0 6px 14px rgba(0,0,0,0.12);
+
+  z-index:5000;
+
+}
+
+/* ================================================= */
+/* SCROLLBAR */
+/* ================================================= */
 
 .scroll::-webkit-scrollbar {
 
@@ -217,6 +274,12 @@
 
 }
 
+/* ================================================= */
+/* календарь внутри панели */
+/* ================================================= */
+
 .calendarWrapper{
+
   margin-top:10px;
+
 }
