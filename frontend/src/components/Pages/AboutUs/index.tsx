@@ -14,19 +14,15 @@ const AboutUs = () => {
       { key: "aot550", title: "CLMSK2 (МАСКА ОБЛАЧНОСТИ УРОВНЯ 2)", text: "AOT550 — продукт, отражающий концентрацию аэрозольных частиц в атмосфере по ослаблению солнечного излучения на длине волны 550 нм, используемый для оценки качества воздуха и анализа дымовых шлейфов." },
       { key: "clphs", title: "CLPHS (ФАЗА ОБЛАКОВ)", text: "CLPHS — продукт, определяющий фазовое состояние облаков (жидкая, ледяная, смешанная) на основе теплового излучения в инфракрасных каналах." },
       { key: "clmsk", title: "CLMSK (МАСКА ОБЛАЧНОСТИ)", text: "CLMSK — продукт, классифицирующий пиксели по наличию облаков на основе данных каналов M1–M16 радиометра VIIRS. Используется как фильтр для исключения облачных зон." },
-
       { key: "aotaps", title: "AOTAPS", text: "AOTAPS — продукт AOT на 550 нм с учётом поляризационных характеристик рассеянного излучения, полученный по алгоритму APS." },
       { key: "aps", title: "APS", text: "Aerosol Polarimetry Sensor (APS) — алгоритм, учитывающий поляризацию при определении оптической толщины аэрозоля." },
       { key: "clmsk2", title: "CLMSK2", text: "CLMSK2 — улучшенная версия CLMSK с учётом фазы облаков и дополнительных спектральных признаков." },
-
-      { key: "frmsk", title: "FRMSK", text: "FRMSK — продукт, выявляющий активные очаги пожаров по аномально высокой яркостной температуре в ИК диапазоне." },
+      { key: "frmsk", title: "FRMSK", text: "FRMSK — продукт, выявляющий активные очахи пожаров по аномально высокой яркостной температуре в ИК диапазоне." },
       { key: "vindvi", title: "VINDVI", text: "VINDVI — продукт NDVI: нормализованная разность отражений в ближнем ИК и красном диапазонах." },
       { key: "vlst", title: "VLST", text: "VLST — продукт, объединяющий вегетационный индекс с данными о температуре поверхности Земли." },
-
       { key: "vievi", title: "VIEVI", text: "VIEVI — продукт, корректирующий атмосферные эффекты и насыщение сигнала в густой растительности, повышенная чувствительность." },
       { key: "evi", title: "EVI", text: "Enhanced Vegetation Index (EVI) — индекс растительности для оценки здоровья и плотности, улучшенный относительно NDVI." },
       { key: "ndvi", title: "NDVI", text: "Normalized Difference Vegetation Index (NDVI) — индекс растительности, определяющий наличие растительной массы на участке." },
-
       { key: "lst", title: "LST", text: "Land Surface Temperature (LST) — температура поверхности Земли, измеряемая спутниками по тепловому ИК излучению." },
       { key: "vscmo", title: "VSCMO", text: "VSCMO — продукт, формируемый агрегацией ежедневных наблюдений за месяц для определения устойчивых зон снега." },
     ],
@@ -46,7 +42,6 @@ const AboutUs = () => {
     el.scrollIntoView({ behavior: "smooth", inline: "start", block: "nearest" });
   };
 
-  // Определяем активную карточку по скроллу
   useEffect(() => {
     const track = trackRef.current;
     if (!track) return;
@@ -81,16 +76,26 @@ const AboutUs = () => {
     };
   }, []);
 
-  // Автопрокрутка
-  useEffect(() => {
-    if (pause) return;
-    const id = window.setInterval(() => {
-      const next = (active + 1) % cards.length;
-      scrollToIndex(next);
-    }, 3000);
+// Автопрокрутка (только когда курсор над каруселью)
+useEffect(() => {
+  if (pause) return;
 
-    return () => window.clearInterval(id);
-  }, [active, pause, cards.length]);
+  const id = window.setInterval(() => {
+    const track = trackRef.current;
+    if (!track) return;
+
+    // Проверяем, видна ли карусель на экране
+    const rect = track.getBoundingClientRect();
+    const isVisible = rect.top < window.innerHeight && rect.bottom > 0;
+
+    if (!isVisible) return; // не крутим, если карусель не видна
+
+    const next = (active + 1) % cards.length;
+    scrollToIndex(next);
+  }, 3500);
+
+  return () => window.clearInterval(id);
+}, [active, pause, cards.length]);
 
   return (
     <div className={styles.root}>
@@ -132,14 +137,22 @@ const AboutUs = () => {
           ))}
         </div>
 
+        {/* ТОЧКИ (7 штук) */}
         <div className={styles.dots}>
-          {cards.map((c, i) => (
+          {Array.from({ length: 7 }).map((_, i) => (
             <button
-              key={c.key}
+              key={i}
               type="button"
-              className={i === active ? styles.dotActive : styles.dot}
+              className={i === active % 7 ? styles.dotActive : styles.dot}
               aria-label={`Слайд ${i + 1}`}
-              onClick={() => scrollToIndex(i)}
+              onClick={() => {
+                const track = trackRef.current;
+                if (!track) return;
+                const items = Array.from(track.querySelectorAll<HTMLElement>(`[data-card="1"]`));
+                const targetIndex = Math.floor((i / 6) * (items.length - 1));
+                const el = items[targetIndex];
+                if (el) el.scrollIntoView({ behavior: "smooth", inline: "start" });
+              }}
             />
           ))}
         </div>
@@ -210,6 +223,15 @@ const AboutUs = () => {
             <div className={styles.footerTitle}>
               Федеральный исследовательский центр информационных и вычислительных технологий (ФИЦ ИВТ)
             </div>
+
+            <a 
+              href="http://www.ict.nsc.ru/" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className={styles.footerLink}
+            >
+              www.ict.nsc.ru
+            </a>
           </div>
         </div>
       </footer>

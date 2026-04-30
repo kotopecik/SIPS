@@ -11,11 +11,6 @@ export const profileLinksAuth: ILink[] = [
         to: "/management",
         title: "Руководство пользователя",
     },
-    {
-        id: 3,
-        to: "/catalog",
-        title: "Каталог"
-    },
 ]
 
 export const profileLinksNotAuth: ILink[] = [
@@ -60,11 +55,7 @@ export const navbarLinksAuth: ILink[] = [
         to: "/",
         title: "Перейти к карте",
     },
-    {
-        id: 2,
-        to: "/catalog",
-        title: "Каталог"
-    },
+    
     {
         id: 3,
         to: "/profile",
@@ -120,6 +111,5 @@ export const headerLinksNotAuth: ILink[] = [
 
 export const headerLinksAuth: ILink[] = [
   { id: 1, to: "/", title: "Перейти к карте" },
-  { id: 2, to: "/catalog", title: "Каталог" },
   { id: 3, to: "/home", title: "Главная" },
 ];

@@ -3,44 +3,43 @@
   color: #111827;
 }
 
-/* ===== HERO (как на скрине) ===== */
+/* ===== HERO ===== */
 
 .hero {
   max-width: 1280px;
   margin: 0 auto;
-  padding: 36px 18px 10px;
+  padding: 60px 40px 40px;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  align-items: start;
+  align-items: center;
+  gap: 60px;
 }
 
 .heroLeft {
-  padding-top: 70px; /* опускаем текст чуть вниз, как на скрине */
+  max-width: 420px;
 }
 
 .heroText {
-  width: 320px;
   font-family: "Inter", sans-serif;
   font-weight: 500;
-  font-size: 16px;
-  line-height: 1.45;
-  color: #111827;
+  font-size: 17px;
+  line-height: 1.55;
+  color: #374151;
 }
 
 .heroRight {
   display: flex;
   justify-content: flex-end;
-  padding-top: 40px;
 }
 
 .heroTitle {
   margin: 0;
   font-family: "SouthGhetto", sans-serif;
-  font-size: 40px;
+  font-size: 52px;
   font-weight: 400;
-  line-height: 1.02;
-  letter-spacing: 0.8px;
-  transform: scale(0.97);
+  line-height: 1.05;
+  letter-spacing: 0.5px;
+  color: #111827;
 }
 
 /* ===== SECTION TITLES ===== */
@@ -55,7 +54,7 @@
   transform: scale(0.97);
 }
 
-/* ===== PRODUCTS + CAROUSEL ===== */
+/* ===== PRODUCTS + CAROUSEL (современные карточки) ===== */
 
 .products {
   max-width: 1280px;
@@ -66,11 +65,11 @@
 .track {
   margin-top: 22px;
   display: flex;
-  gap: 18px;
+  gap: 20px;
   overflow-x: auto;
   scroll-snap-type: x mandatory;
   scroll-behavior: smooth;
-  padding: 10px 2px 12px;
+  padding: 10px 4px 20px;
 
   scrollbar-width: none;
 }
@@ -80,32 +79,41 @@
 
 .card {
   scroll-snap-align: start;
-  flex: 0 0 calc((100% - 36px) / 3); /* 3 карточки */
-  min-width: 280px;
+  flex: 0 0 calc((100% - 40px) / 3);
+  min-width: 300px;
 
-  border: 2px solid #111827;
-  border-radius: 6px;
   background: #ffffff;
-  padding: 16px 16px 18px;
-  min-height: 130px;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 20px 20px 22px;
+  min-height: 160px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  transition: all 0.2s ease;
+}
+
+.card:hover {
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  transform: translateY(-4px);
+  border-color: #2f66ff;
 }
 
 .cardTitle {
   font-family: "SouthGhetto", sans-serif;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 400;
   color: #2f66ff;
   text-transform: uppercase;
-  letter-spacing: 0.6px;
-  margin-bottom: 10px;
+  letter-spacing: 0.8px;
+  margin-bottom: 12px;
+  line-height: 1.3;
 }
 
 .cardText {
   font-family: "Inter", sans-serif;
   font-weight: 500;
-  font-size: 16px;
-  line-height: 1.45;
-  color: #111827;
+  font-size: 15px;
+  line-height: 1.5;
+  color: #374151;
 }
 
 .dots {
@@ -129,16 +137,16 @@
   background: #2f66ff;
 }
 
-/* ===== GUIDE ===== */
+/* ===== GUIDE (ЛЕСЕНКА) ===== */
 
 .guide {
   max-width: 1280px;
   margin: 0 auto;
-  padding: 40px 18px 40px;
+  padding: 60px 40px 50px;
 }
 
 .steps {
-  margin-top: 20px;
+  margin-top: 32px;
   display: flex;
   flex-direction: column;
   position: relative;
@@ -146,68 +154,64 @@
 
 .step {
   display: grid;
-  grid-template-columns: 220px 1fr;
-  align-items: center;
-  gap: 18px;
-  padding: 26px 0;
-  border-top: 1px solid #e5e7eb;
+  grid-template-columns: 80px 1fr;
+  align-items: flex-start;
+  gap: 20px;
+  padding: 28px 0;
+  border-top: 1px solid #e2e8f0;
 }
 
-.step:nth-child(1) {
-  margin-left: 80px;
-}
-
-.step:nth-child(2) {
-  margin-left: 220px;
-}
-
-.step:nth-child(3) {
-  margin-left: 360px;
-}
-
-.step:nth-child(4) {
-  margin-left: 500px;
-}
+.step:nth-child(1) { margin-left: 0; }
+.step:nth-child(2) { margin-left: 120px; }
+.step:nth-child(3) { margin-left: 240px; }
+.step:nth-child(4) { margin-left: 360px; }
 
 .step:last-child {
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid #e2e8f0;
 }
 
 .stepNum {
-  font-size: 72px;
+  font-size: 56px;
   font-family: "SouthGhetto", sans-serif;
   font-weight: 700;
   color: #2f66ff;
   line-height: 1;
   text-align: center;
-  opacity: 0.9;
 }
 
 .stepText {
   font-family: "Inter", sans-serif;
   font-weight: 500;
-  font-size: 15px;
-  line-height: 1.5;
-  max-width: 560px;
-  color: #111827;
+  font-size: 15.5px;
+  line-height: 1.6;
+  color: #334155;
+  max-width: 620px;
+  padding-top: 8px;
 }
 
 .toMapBtn {
-  margin: 24px auto 0;
+  margin: 32px auto 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 720px;
-  max-width: 100%;
-  height: 44px;
-  border-radius: 4px;
-  background: #2f66ff;
+  width: 100%;
+  max-width: 420px;
+  height: 56px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #2f66ff, #1e4fd1);
   color: #ffffff;
   text-decoration: none;
   font-family: "SouthGhetto", sans-serif;
-  font-size: 20px;
+  font-size: 22px;
   font-weight: 400;
-  letter-spacing: 0.8px;
+  letter-spacing: 1px;
+  box-shadow: 0 8px 25px rgba(47, 102, 255, 0.35);
+  transition: all 0.3s ease;
+}
+
+.toMapBtn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 15px 35px rgba(47, 102, 255, 0.45);
 }
 
 /* ===== FOOTER ===== */
@@ -228,8 +232,7 @@
   background-size: cover;
   background-position: center;
 
-  filter: brightness(0.35); /* затемнение */
-
+  filter: brightness(0.35);
   z-index: 0;
 }
 
@@ -249,28 +252,44 @@
   margin-bottom: 8px;
 }
 
+.footerLink {
+  display: inline-block;
+  margin-top: 12px;
+  color: #ffffff;
+  text-decoration: underline;
+  font-size: 15px;
+  opacity: 0.9;
+  transition: opacity 0.2s ease;
+}
+
+.footerLink:hover {
+  opacity: 1;
+  color: #a5b4fc;
+}
+
 /* ===== RESPONSIVE ===== */
 
 @media (max-width: 980px) {
   .hero {
     grid-template-columns: 1fr;
+    gap: 40px;
   }
 
   .heroRight {
     justify-content: flex-start;
-    padding-top: 10px;
   }
 
   .card {
-    flex: 0 0 calc((100% - 18px) / 2); /* 2 карточки */
+    flex: 0 0 calc((100% - 18px) / 2);
   }
 
   .step {
-    grid-template-columns: 160px 1fr;
+    flex-direction: column;
+    gap: 12px;
   }
 
   .stepNum {
-    font-size: 72px;
+    font-size: 36px;
   }
 }
 
@@ -280,20 +299,11 @@
   }
 
   .heroTitle {
-    font-size: 34px;
+    font-size: 38px;
   }
 
   .card {
-    flex: 0 0 100%; /* 1 карточка */
-  }
-
-  .step {
-    grid-template-columns: 1fr;
-    text-align: center;
-  }
-
-  .stepText {
-    margin: 0 auto;
+    flex: 0 0 100%;
   }
 
   .footerInner {
