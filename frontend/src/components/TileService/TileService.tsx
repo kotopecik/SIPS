@@ -1,19 +1,27 @@
-import {TileLayer} from "react-leaflet";
-import {EUrls, TILE_DOMAIN} from "@/enums/EUrls";
-import {ESatellite} from "@/enums/ESatellite";
-import {useAppSelector} from "@/hooks/hook";
-import {EComposite} from "@/enums/EComposite";
+import { TileLayer } from "react-leaflet";
+import { useAppSelector } from "@/hooks/hook";
+
+const TILE_DOMAIN = "https://gis-eng3.esemc.nsc.ru:8443/tiles";
 
 export const TileService = () => {
-    const satelliteState: ESatellite = useAppSelector(state => state.tile).satellite
-    const compositeState: EComposite = useAppSelector(state => state.tile).composite
+    const satellite = useAppSelector(state => state.tile.satellite);
+    const composite = useAppSelector(state => state.tile.composite);
+    const date = useAppSelector(state => state.tile.dateTime.nondotdate);
+    const time = useAppSelector(state => state.tile.dateTime.time);
 
-    const date = useAppSelector(state => state.tile).dateTime.nondotdate
-    const time = useAppSelector(state => state.tile).dateTime.time
+    if (!satellite || !composite || !date || !time) {
+        return null;
+    }
+
+    const tileUrl = `${TILE_DOMAIN}/${satellite}/${date}/${time}/${composite}/{z}/{x}/{y}.png`;
+
+    console.log("🗺️ Tile URL:", tileUrl);
 
     return (
-        <>
-            {date && time && compositeState && satelliteState && <TileLayer url={`${TILE_DOMAIN}/${satelliteState}/${date}/${time}/${compositeState}/${EUrls.VIIRS_TILE_ENDPOINT}`} opacity={0.7}/>}
-        </>
-    )
-}
+        <TileLayer 
+            url={tileUrl} 
+            opacity={0.75} 
+            zIndex={10} 
+        />
+    );
+};

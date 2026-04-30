@@ -9,8 +9,8 @@ import {ISatelliteResponse} from "@/interfaces/ISatelliteResponse";
 
 export interface TileState {
     dateTime: IDateTime
-    satellite: ESatellite,
-    composite: EComposite,
+    satellite: ESatellite | null,      // ← FIX: добавили | null
+    composite: EComposite | null,      // ← FIX
     chanelComposition: string,
     expansion: string,
     calendar: ICalendar[],

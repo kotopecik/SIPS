@@ -35,13 +35,13 @@ function Main() {
   };
 
   useEffect(() => {
-    dispatch(fetchDates(EUrls.DATES_URL));
+    dispatch(fetchDates());
     dispatch(fetchSatellites());
 
-    if (satellite != null && dotdate != null && time != null) {
+    if (satellite && dotdate && time) {
       dispatch(
         fetchComposites({
-          satellite,
+          satellite: satellite as ESatellite,   // ← исправлено
           dotdate,
           dottime: time.substring(0, 2) + "-" + time.substring(2),
         })

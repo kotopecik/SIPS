@@ -65,7 +65,11 @@ const Map = () => {
                         maxBounds={[[-110, -170], [100, 200]]}
                         doubleClickZoom={false}
                     >
-                        <TileLayer url={layer} />
+                        <TileLayer 
+                            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" 
+                            opacity={0.4} 
+                            zIndex={1} 
+                        />
 
                         {satelliteState != null && compositeState != null && time != null && date != null && <TileService />}
 

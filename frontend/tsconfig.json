@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    // 👇️ set jsx to react-jsx
     "jsx": "react-jsx",
     "target": "es6",
     "lib": ["dom", "esnext"],
@@ -10,7 +9,6 @@
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
-    "plugins": [],
     "module": "esnext",
     "moduleResolution": "node",
     "resolveJsonModule": true,
@@ -19,12 +17,8 @@
     "paths": {
       "@/*": ["./src/*"]
     },
-    "types": [
-      "webpack-env"
-    ]
+    "types": ["webpack-env"]
   },
-  "include": ["./**/*.ts","src/**/*"],
-  "exclude": [
-    "node_modules/**/*"
-  ]
+  "include": ["src/**/*", "**/*.ts", "**/*.tsx"],
+  "exclude": ["node_modules", "build", "dist"]
 }

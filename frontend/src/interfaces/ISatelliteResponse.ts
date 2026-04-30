@@ -1,5 +1,5 @@
 export interface ISatelliteResponse{
-    id: 1,
+    id: number,
     name: string,
     tag: string
 }
