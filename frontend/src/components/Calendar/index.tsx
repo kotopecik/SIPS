@@ -3,6 +3,7 @@ import s from "./Calendar.module.scss";
 import {
   setDotDate,
   setNonDotDate,
+  setTime,
   removeTimes,
 } from "@/store/tile/tile-slice";
 import { useAppDispatch, useAppSelector } from "@/hooks/hook";
@@ -18,42 +19,42 @@ import { Dayjs } from "dayjs";
 
 const Calendar = () => {
   const dispatch = useAppDispatch();
-
   const nondotdates: string[] = useAppSelector((state) => state.tile.nondotdates) || [];
 
   const [selectDate, setSelectDate] = useState<Dayjs>(dayjs('2023-06-20'));
 
-  // Загружаем даты
   useEffect(() => {
-    dispatch(fetchDates());
+    dispatch(fetchDates(""));
   }, [dispatch]);
 
-  // Отладка
   useEffect(() => {
     console.log("=== КАЛЕНДАРЬ ОТЛАДКА ===");
     console.log("nondotdates.length:", nondotdates.length);
     console.log("Пример дат:", nondotdates.slice(0, 5));
   }, [nondotdates]);
 
-  // Генерируем дни июня 2023
+  // Жёстко генерируем дни июня 2023
   const calendar = Array.from({ length: 30 }, (_, i) => ({
     date: dayjs(`2023-06-${i + 1}`),
   }));
 
-  const handleDayClick = (date: Dayjs) => {
-    setSelectDate(date);
-    const stringDate = getStringDate(date);
-    const formattedDate = date.format("YYYY-MM-DD");
+const handleDayClick = (date: Dayjs) => {
+  setSelectDate(date);
+  const stringDate = getStringDate(date);
+  const formattedDate = date.format("YYYY-MM-DD");
 
-    dispatch(setNonDotDate(stringDate));
-    dispatch(setDotDate(formattedDate));
+  dispatch(setNonDotDate(stringDate));
+  dispatch(setDotDate(formattedDate));
 
-    if (isThereDataForThisDay(stringDate, nondotdates)) {
-      dispatch(fetchTimes(formattedDate));
-    } else {
-      dispatch(removeTimes());
-    }
-  };
+  // Устанавливаем время по умолчанию (12:00)
+  dispatch(setTime("1200"));   // ← добавь эту строку
+
+  if (isThereDataForThisDay(stringDate, nondotdates)) {
+    dispatch(fetchTimes(formattedDate));
+  } else {
+    dispatch(removeTimes());
+  }
+};
 
   return (
     <div className={s.block}>

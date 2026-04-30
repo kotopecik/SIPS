@@ -9,13 +9,16 @@ export const TileService = () => {
     const date = useAppSelector(state => state.tile.dateTime.nondotdate);
     const time = useAppSelector(state => state.tile.dateTime.time);
 
+    console.log("🗺️ TileService state:", { satellite, composite, date, time });
+
     if (!satellite || !composite || !date || !time) {
+        console.log("🗺️ Пропущен рендер тайлов — не все данные");
         return null;
     }
 
     const tileUrl = `${TILE_DOMAIN}/${satellite}/${date}/${time}/${composite}/{z}/{x}/{y}.png`;
 
-    console.log("🗺️ Tile URL:", tileUrl);
+    console.log("🗺️ Загружаем тайлы:", tileUrl);
 
     return (
         <TileLayer 

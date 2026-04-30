@@ -3,14 +3,13 @@ import TileService from "@/service/tile-service";
 import { ICompositeResponse } from "@/interfaces/ICompositeResponse";
 
 export const fetchDates = createAsyncThunk('tile/fetchDates',
-    async () => {                    // ← убрали (url: string)
+    async (url: string = "") => {           // ← дефолтное значение
         try {
-            return await TileService.getDates();
+            return (await TileService.getDates(url))
         } catch (err) {
-            console.error(err);
-            return { dotdates: [], nondotdates: [] };
+            console.log(err)
         }
-    }
+    },
 );
 
 export const fetchTimes = createAsyncThunk('tile/fetchTimes',

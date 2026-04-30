@@ -9,9 +9,9 @@
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
+    "plugins": [],
     "module": "esnext",
     "moduleResolution": "node",
-    "ignoreDeprecations": "6.0",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": false,
@@ -20,6 +20,6 @@
     },
     "types": ["webpack-env"]
   },
-  "include": ["src/**/*", "**/*.ts", "**/*.tsx"],
-  "exclude": ["node_modules", "build", "dist"]
+  "include": ["./**/*.ts", "src/**/*"],
+  "exclude": ["node_modules/**/*"]
 }

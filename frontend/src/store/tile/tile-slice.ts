@@ -1,5 +1,4 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { ICalendar } from "@/interfaces/ICalendar";
 import dayjs from "dayjs";
 import { Mark } from "@mui/base";
 import { ISatelliteResponse } from "@/interfaces/ISatelliteResponse";
@@ -14,7 +13,7 @@ interface DateTime {
 
 interface TileState {
   currentDate: any;
-  calendar: ICalendar[];
+  calendar: any[];
   dotdates: string[];
   nondotdates: string[];
   dateTime: DateTime;
@@ -30,16 +29,24 @@ const initialState: TileState = {
   currentDate: dayjs(),
   calendar: [],
   dotdates: [],
-  nondotdates: [],
-  dateTime: { dotdate: "", nondotdate: "", time: "" },
-  times: [],
-  satellites: [],
+  nondotdates: [
+    "20230617", "20230618", "20230619", "20230620",
+    "20230621", "20230622", "20230623", "20230624",
+    "20230625", "20230626", "20230627", "20230628",
+    "20230629", "20230630"
+  ],
+  dateTime: { dotdate: "2023-06-20", nondotdate: "20230620", time: "1200" },
+  times: [{ label: "1200", value: 1200 }],
+  satellites: [
+    { id: 1, name: "Suomi NPP", tag: ESatellite.SUOMI_NPP },
+    { id: 2, name: "NOAA-20", tag: ESatellite.NOAA_20 },
+  ],
   composites: [
     "aot550", "aotaps", "clphs", "clmsk", "clmsk2",
     "frmsk", "vievi", "vindvi", "vlst", "vscmo"
   ],
-  satellite: "snpp" as ESatellite,        // ← исправлено
-  composite: "aot550" as EComposite,      // ← исправлено
+  satellite: "snpp" as ESatellite,
+  composite: "aot550" as EComposite,
   isLoading: false,
 };
 
@@ -47,11 +54,6 @@ const tileSlice = createSlice({
   name: "tile",
   initialState,
   reducers: {
-    incrementCurrentMonth: (state) => { state.currentDate = state.currentDate.add(1, "month"); },
-    decrementCurrentMonth: (state) => { state.currentDate = state.currentDate.subtract(1, "month"); },
-    incrementCurrentYear: (state) => { state.currentDate = state.currentDate.add(1, "year"); },
-    decrementCurrentYear: (state) => { state.currentDate = state.currentDate.subtract(1, "year"); },
-
     setDotDate: (state, action: PayloadAction<string>) => {
       state.dateTime.dotdate = action.payload;
       state.dateTime.nondotdate = action.payload.replace(/-/g, "");
@@ -70,17 +72,9 @@ const tileSlice = createSlice({
     },
     removeTimes: (state) => { state.times = []; },
   },
-
-  extraReducers: (builder) => {
-    // Добавь сюда свои extraReducers если они были
-  }
 });
 
 export const {
-  incrementCurrentMonth,
-  decrementCurrentMonth,
-  incrementCurrentYear,
-  decrementCurrentYear,
   setDotDate,
   setNonDotDate,
   setTime,

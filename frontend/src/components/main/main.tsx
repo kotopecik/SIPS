@@ -35,7 +35,7 @@ function Main() {
   };
 
   useEffect(() => {
-    dispatch(fetchDates());
+    dispatch(fetchDates(""));
     dispatch(fetchSatellites());
 
     if (satellite && dotdate && time) {
