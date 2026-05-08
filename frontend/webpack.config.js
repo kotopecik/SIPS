@@ -53,12 +53,14 @@ module.exports = {
     entry: './src/index.tsx',
 
     devServer: {
-        port: port ?? 3001,
-        open : true,
-        historyApiFallback: true,
-        static: './build',
-        hot: mode === 'development',
-    },
+    port: port ?? 3001,
+    open: true,
+    historyApiFallback: true,
+    static: './build',
+    hot: mode === 'development',
+    allowedHosts: 'all',
+    host: '0.0.0.0',
+},
 
     output: {
         path: path.resolve(__dirname, 'build'),

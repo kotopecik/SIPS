@@ -1,19 +1,27 @@
-import { useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import styles from "./ProfilePage.module.scss";
 import { useAppDispatch, useAppSelector } from "@/hooks/hook";
 import { logoutUser } from "@/store/user/user-actions";
 import { useNavigate } from "react-router-dom";
 import { ConfirmLogoutModal } from "@/components/ConfirmLogoutModal/ConfirmLogoutModal";
 
+type ProfileTab = "profile" | "history";
+
+const downloadHistory = Array.from({ length: 13 }, () => ({
+  date: "19.11.2025",
+  data: "Standart map | Soumi NPP | vist | 14.04.25 - 23.04.25",
+}));
+
 export default function Profile() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const user = useAppSelector((s) => s.user.user);
 
+  const [activeTab, setActiveTab] = useState<ProfileTab>("profile");
+
   const [photoUrl, setPhotoUrl] = useState<string | null>(null);
   const [confirmOpen, setConfirmOpen] = useState(false);
 
-  // Личные данные
   const [personalForm, setPersonalForm] = useState({
     last_name: user?.last_name || "",
     first_name: user?.first_name || "",
@@ -22,7 +30,6 @@ export default function Profile() {
     email: user?.email || "",
   });
 
-  // Смена пароля
   const [passwordForm, setPasswordForm] = useState({
     old_password: "",
     new_password: "",
@@ -35,15 +42,26 @@ export default function Profile() {
   const [isSavingPersonal, setIsSavingPersonal] = useState(false);
   const [isSavingPassword, setIsSavingPassword] = useState(false);
 
-  // Загрузка фото
   useEffect(() => {
     const saved = localStorage.getItem("userPhoto");
     if (saved) setPhotoUrl(saved);
   }, []);
 
-  const onPickPhoto = (e: React.ChangeEvent<HTMLInputElement>) => {
+  useEffect(() => {
+    setPersonalForm({
+      last_name: user?.last_name || "",
+      first_name: user?.first_name || "",
+      middle_name: user?.middle_name || "",
+      organization: user?.organization || "",
+      email: user?.email || "",
+    });
+  }, [user]);
+
+  const onPickPhoto = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
+
     if (!file || !file.type.startsWith("image/")) return;
+
     const url = URL.createObjectURL(file);
     setPhotoUrl(url);
     localStorage.setItem("userPhoto", url);
@@ -57,42 +75,45 @@ export default function Profile() {
 
   const isValidEmail = (email: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
-  // Сохранение личных данных
   const handlePersonalSave = async () => {
     setPersonalMsg(null);
+
     if (!personalForm.first_name || !personalForm.last_name || !personalForm.email) {
       setPersonalMsg({ type: "error", text: "Фамилия, имя и email — обязательные поля" });
       return;
     }
+
     if (!isValidEmail(personalForm.email)) {
       setPersonalMsg({ type: "error", text: "Введите корректный email" });
       return;
     }
 
     setIsSavingPersonal(true);
-    await new Promise(r => setTimeout(r, 800));
+    await new Promise((r) => setTimeout(r, 800));
     setPersonalMsg({ type: "success", text: "Данные успешно обновлены ✓" });
     setIsSavingPersonal(false);
   };
 
-  // Смена пароля
   const handlePasswordSave = async () => {
     setPasswordMsg(null);
+
     if (!passwordForm.old_password || !passwordForm.new_password || !passwordForm.new_password2) {
       setPasswordMsg({ type: "error", text: "Заполните все поля" });
       return;
     }
+
     if (passwordForm.new_password.length < 6) {
       setPasswordMsg({ type: "error", text: "Новый пароль должен быть минимум 6 символов" });
       return;
     }
+
     if (passwordForm.new_password !== passwordForm.new_password2) {
       setPasswordMsg({ type: "error", text: "Пароли не совпадают" });
       return;
     }
 
     setIsSavingPassword(true);
-    await new Promise(r => setTimeout(r, 800));
+    await new Promise((r) => setTimeout(r, 800));
     setPasswordMsg({ type: "success", text: "Пароль успешно изменён ✓" });
     setPasswordForm({ old_password: "", new_password: "", new_password2: "" });
     setIsSavingPassword(false);
@@ -106,96 +127,191 @@ export default function Profile() {
 
   return (
     <div className={styles.page}>
-      <div className={styles.content}>
+      <div className={`${styles.content} ${activeTab === "history" ? styles.historyMode : ""}`}>
+        {activeTab === "profile" && (
+          <div className={styles.avatarSection}>
+            <div className={styles.avatarBig}>
+              {photoUrl ? (
+                <img src={photoUrl} alt="avatar" />
+              ) : (
+                <div className={styles.avatarFallbackBig}>
+                  {(user?.first_name || user?.email || "Л")[0].toUpperCase()}
+                </div>
+              )}
+            </div>
 
-        {/* Аватар */}
-        <div className={styles.avatarSection}>
-          <div className={styles.avatarBig}>
-            {photoUrl ? (
-              <img src={photoUrl} alt="avatar" />
-            ) : (
-              <div className={styles.avatarFallbackBig}>
-                {(user?.first_name || user?.email || "Л")[0].toUpperCase()}
-              </div>
+            <label className={styles.uploadLabel}>
+              Загрузить фото
+              <input type="file" accept="image/*" onChange={onPickPhoto} />
+            </label>
+
+            {photoUrl && (
+              <button className={styles.deleteBtn} onClick={onDeletePhoto}>
+                Удалить фото
+              </button>
             )}
           </div>
+        )}
 
-          <label className={styles.uploadLabel}>
-            Загрузить фото
-            <input type="file" accept="image/*" onChange={onPickPhoto} />
-          </label>
+        <div className={`${styles.mainSection} ${activeTab === "history" ? styles.mainSectionHistory : ""}`}>
+          {activeTab === "profile" && (
+            <>
+              <div className={styles.section}>
+                <h2 className={styles.sectionTitle}>Личные данные</h2>
 
-          {photoUrl && (
-            <button className={styles.deleteBtn} onClick={onDeletePhoto}>
-              Удалить фото
-            </button>
+                {personalMsg && (
+                  <div className={personalMsg.type === "success" ? styles.successMsg : styles.errorMsg}>
+                    {personalMsg.text}
+                  </div>
+                )}
+
+                <div className={styles.grid}>
+                  <Field
+                    label="Фамилия *"
+                    value={personalForm.last_name}
+                    onChange={(e) => setPersonalForm({ ...personalForm, last_name: e.target.value })}
+                  />
+
+                  <Field
+                    label="Имя *"
+                    value={personalForm.first_name}
+                    onChange={(e) => setPersonalForm({ ...personalForm, first_name: e.target.value })}
+                  />
+
+                  <Field
+                    label="Отчество"
+                    value={personalForm.middle_name}
+                    onChange={(e) => setPersonalForm({ ...personalForm, middle_name: e.target.value })}
+                  />
+
+                  <Field
+                    label="Организация"
+                    value={personalForm.organization}
+                    onChange={(e) => setPersonalForm({ ...personalForm, organization: e.target.value })}
+                  />
+
+                  <Field
+                    label="Email *"
+                    value={personalForm.email}
+                    type="email"
+                    onChange={(e) => setPersonalForm({ ...personalForm, email: e.target.value })}
+                  />
+                </div>
+
+                <button className={styles.saveBtn} onClick={handlePersonalSave} disabled={isSavingPersonal}>
+                  {isSavingPersonal ? "Сохранение..." : "Сохранить изменения"}
+                </button>
+              </div>
+
+              <div className={styles.section}>
+                <h2 className={styles.sectionTitle}>Смена пароля</h2>
+
+                {passwordMsg && (
+                  <div className={passwordMsg.type === "success" ? styles.successMsg : styles.errorMsg}>
+                    {passwordMsg.text}
+                  </div>
+                )}
+
+                <div className={styles.grid}>
+                  <Field
+                    label="Старый пароль"
+                    value={passwordForm.old_password}
+                    type="password"
+                    onChange={(e) => setPasswordForm({ ...passwordForm, old_password: e.target.value })}
+                  />
+
+                  <Field
+                    label="Новый пароль"
+                    value={passwordForm.new_password}
+                    type="password"
+                    onChange={(e) => setPasswordForm({ ...passwordForm, new_password: e.target.value })}
+                  />
+
+                  <Field
+                    label="Повторите новый пароль"
+                    value={passwordForm.new_password2}
+                    type="password"
+                    onChange={(e) => setPasswordForm({ ...passwordForm, new_password2: e.target.value })}
+                  />
+                </div>
+
+                <button className={styles.saveBtn} onClick={handlePasswordSave} disabled={isSavingPassword}>
+                  {isSavingPassword ? "Сохранение..." : "Сменить пароль"}
+                </button>
+              </div>
+            </>
+          )}
+
+          {activeTab === "history" && (
+            <div className={styles.historySection}>
+              <div className={styles.historyHeader}>
+                <div>Дата</div>
+                <div>Данные</div>
+              </div>
+
+              <div className={styles.historyList}>
+                {downloadHistory.map((item, index) => (
+                  <div className={styles.historyRow} key={index}>
+                    <div>{item.date}</div>
+                    <div>{item.data}</div>
+                  </div>
+                ))}
+              </div>
+
+              <div className={styles.pagination}>
+                <button type="button">‹</button>
+                <span className={styles.activePage}>1</span>
+                <span>2</span>
+                <span>3</span>
+                <span>4</span>
+                <span>5</span>
+                <span>6</span>
+                <span>7</span>
+                <span>8...</span>
+                <button type="button">›</button>
+              </div>
+            </div>
           )}
         </div>
 
-        {/* Основная часть */}
-        <div className={styles.mainSection}>
-
-          {/* Личные данные */}
-          <div className={styles.section}>
-            <h2 className={styles.sectionTitle}>Личные данные</h2>
-            
-            {personalMsg && (
-              <div className={personalMsg.type === "success" ? styles.successMsg : styles.errorMsg}>
-                {personalMsg.text}
-              </div>
-            )}
-
-            <div className={styles.grid}>
-              <Field label="Фамилия *" value={personalForm.last_name} onChange={e => setPersonalForm({ ...personalForm, last_name: e.target.value })} />
-              <Field label="Имя *" value={personalForm.first_name} onChange={e => setPersonalForm({ ...personalForm, first_name: e.target.value })} />
-              <Field label="Отчество" value={personalForm.middle_name} onChange={e => setPersonalForm({ ...personalForm, middle_name: e.target.value })} />
-              <Field label="Организация" value={personalForm.organization} onChange={e => setPersonalForm({ ...personalForm, organization: e.target.value })} />
-              <Field label="Email *" value={personalForm.email} onChange={e => setPersonalForm({ ...personalForm, email: e.target.value })} type="email" />
-            </div>
-
-            <button className={styles.saveBtn} onClick={handlePersonalSave} disabled={isSavingPersonal}>
-              {isSavingPersonal ? "Сохранение..." : "Сохранить изменения"}
-            </button>
-          </div>
-
-          {/* Смена пароля */}
-          <div className={styles.section}>
-            <h2 className={styles.sectionTitle}>Смена пароля</h2>
-            
-            {passwordMsg && (
-              <div className={passwordMsg.type === "success" ? styles.successMsg : styles.errorMsg}>
-                {passwordMsg.text}
-              </div>
-            )}
-
-            <div className={styles.grid}>
-              <Field label="Старый пароль" value={passwordForm.old_password} onChange={e => setPasswordForm({ ...passwordForm, old_password: e.target.value })} type="password" />
-              <Field label="Новый пароль" value={passwordForm.new_password} onChange={e => setPasswordForm({ ...passwordForm, new_password: e.target.value })} type="password" />
-              <Field label="Повторите новый пароль" value={passwordForm.new_password2} onChange={e => setPasswordForm({ ...passwordForm, new_password2: e.target.value })} type="password" />
-            </div>
-
-            <button className={styles.saveBtn} onClick={handlePasswordSave} disabled={isSavingPassword}>
-              {isSavingPassword ? "Сохранение..." : "Сменить пароль"}
-            </button>
-          </div>
-        </div>
-
-        {/* Сайдбар */}
         <div className={styles.sidebar}>
-          <div className={styles.sidebarItem}>Личный кабинет</div>
-          <div className={styles.sidebarItem}>История скачиваний</div>
+          <div
+            className={`${styles.sidebarItem} ${activeTab === "profile" ? styles.sidebarItemActive : ""}`}
+            onClick={() => setActiveTab("profile")}
+          >
+            Личный кабинет
+          </div>
+
+          <div
+            className={`${styles.sidebarItem} ${activeTab === "history" ? styles.sidebarItemActive : ""}`}
+            onClick={() => setActiveTab("history")}
+          >
+            История скачиваний
+          </div>
+
           <div className={styles.logout} onClick={() => setConfirmOpen(true)}>
             Выход из аккаунта
           </div>
         </div>
       </div>
 
-      <ConfirmLogoutModal open={confirmOpen} onClose={() => setConfirmOpen(false)} onConfirm={onLogout} />
+      <ConfirmLogoutModal
+        open={confirmOpen}
+        onClose={() => setConfirmOpen(false)}
+        onConfirm={onLogout}
+      />
     </div>
   );
 }
 
-function Field({ label, value, onChange, type = "text" }: any) {
+type FieldProps = {
+  label: string;
+  value: string;
+  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  type?: string;
+};
+
+function Field({ label, value, onChange, type = "text" }: FieldProps) {
   return (
     <div className={styles.field}>
       <label className={styles.fieldLabel}>{label}</label>

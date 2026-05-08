@@ -7,11 +7,24 @@
 
 .content {
   display: grid;
-  grid-template-columns: 260px 1fr 260px;
-gap: 50px;
+  grid-template-columns: 260px minmax(0, 1fr) 260px;
+  gap: 50px;
+  align-items: flex-start;
+}
+
+/* Режим истории: история широкая слева, меню справа */
+.historyMode {
+  grid-template-columns: minmax(0, 1fr) 260px;
+  gap: 60px;
+}
+
+.mainSectionHistory {
+  width: 100%;
+  max-width: none;
 }
 
 /* ===================== АВАТАР ===================== */
+
 .avatarSection {
   display: flex;
   flex-direction: column;
@@ -47,7 +60,8 @@ gap: 50px;
   font-weight: 700;
 }
 
-.uploadLabel, .deleteBtn {
+.uploadLabel,
+.deleteBtn {
   width: 100%;
   padding: 14px 20px;
   border-radius: 12px;
@@ -81,18 +95,20 @@ gap: 50px;
   }
 }
 
-/* ===================== СЕКЦИИ ===================== */
+/* ===================== ОСНОВНАЯ ЧАСТЬ ===================== */
+
+.mainSection {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  min-width: 0;
+}
+
 .section {
   background: white;
   border-radius: 20px;
   padding: 32px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.07);
-}
-
-.mainSection {
-  display: flex;
-  flex-direction: column;
-  gap: 25px;           /* ← Увеличил расстояние между блоками */
 }
 
 .sectionTitle {
@@ -155,8 +171,10 @@ gap: 50px;
   }
 }
 
-/* Сообщения об ошибках/успехе */
-.successMsg, .errorMsg {
+/* ===================== СООБЩЕНИЯ ===================== */
+
+.successMsg,
+.errorMsg {
   padding: 14px 18px;
   border-radius: 12px;
   margin-bottom: 20px;
@@ -176,6 +194,7 @@ gap: 50px;
 }
 
 /* ===================== САЙДБАР ===================== */
+
 .sidebar {
   background: white;
   border-radius: 20px;
@@ -192,6 +211,19 @@ gap: 50px;
   cursor: pointer;
   margin-bottom: 6px;
   font-weight: 500;
+  color: #64748b;
+  transition: all 0.2s;
+
+  &:hover {
+    background: #f1f5f9;
+    color: #2563eb;
+  }
+}
+
+.sidebarItemActive {
+  color: #2563eb;
+  font-weight: 700;
+  background: #eff6ff;
 }
 
 .logout {
@@ -200,12 +232,124 @@ gap: 50px;
   padding: 14px 18px;
   border-radius: 12px;
   cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s;
+
+  &:hover {
+    background: #fef2f2;
+  }
 }
 
-/* Адаптив */
+/* ===================== ИСТОРИЯ СКАЧИВАНИЙ ===================== */
+
+.historySection {
+  width: 100%;
+  padding-top: 16px;
+}
+
+.historyHeader {
+  display: grid;
+  grid-template-columns: 160px minmax(0, 1fr);
+  gap: 36px;
+  font-weight: 700;
+  font-size: 18px;
+  margin-bottom: 26px;
+  color: #222;
+}
+
+.historyList {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.historyRow {
+  display: grid;
+  grid-template-columns: 160px minmax(0, 1fr);
+  gap: 36px;
+  color: #2f66d0;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.historyRow div:last-child {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.pagination {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 60px;
+  color: #8a8a8a;
+  font-size: 16px;
+}
+
+.pagination button {
+  width: 42px;
+  height: 42px;
+  border: none;
+  border-radius: 50%;
+  background: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+  font-size: 28px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Исправление высоты стрелок */
+.pagination button {
+  line-height: 1;
+}
+
+.activePage {
+  color: #222;
+  font-weight: 600;
+}
+
+/* ===================== АДАПТИВ ===================== */
+
 @media (max-width: 1100px) {
-  .content {
+  .content,
+  .historyMode {
     grid-template-columns: 1fr;
     gap: 24px;
+  }
+
+  .sidebar {
+    position: static;
+  }
+
+  .historyHeader,
+  .historyRow {
+    grid-template-columns: 120px minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 700px) {
+  .page {
+    padding: 24px 16px;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .historyHeader,
+  .historyRow {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .historyRow {
+    font-size: 16px;
+  }
+
+  .historyRow div:last-child {
+    white-space: normal;
   }
 }
