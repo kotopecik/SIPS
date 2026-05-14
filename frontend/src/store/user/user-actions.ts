@@ -1,7 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import AuthService from "@/service/auth-service";
 import { AuthMock } from "@/service/auth-mock";
-import { MOCK_AUTH } from "@/shared/config";
+import { USE_MOCK_AUTH } from "@/shared/config";
 import { IUser } from "@/interfaces/IUser";
 
 // LOGIN
@@ -9,14 +9,26 @@ export const loginUser = createAsyncThunk(
   "user/login",
   async (payload: { email: string; password: string }, thunkAPI) => {
     try {
-      const data = MOCK_AUTH
+      const data = USE_MOCK_AUTH
         ? await AuthMock.login(payload.email, payload.password)
         : (await AuthService.login(payload.email, payload.password)).data;
 
-      localStorage.setItem("token", data.access);
-      localStorage.setItem("refresh", data.refresh);
+      const access = data.access || "";
+      const refresh = data.refresh || "";
 
-      return data; // {access, refresh}
+      if (access) {
+        localStorage.setItem("token", access);
+      }
+
+      if (refresh) {
+        localStorage.setItem("refresh", refresh);
+      }
+
+      return {
+        ...data,
+        access,
+        refresh,
+      };
     } catch {
       return thunkAPI.rejectWithValue("Ошибка авторизации");
     }
@@ -28,7 +40,7 @@ export const registerUser = createAsyncThunk(
   "user/register",
   async (user: IUser, thunkAPI) => {
     try {
-      if (MOCK_AUTH) {
+      if (USE_MOCK_AUTH) {
         await AuthMock.registration(user);
         return { ok: true };
       }
@@ -43,7 +55,7 @@ export const registerUser = createAsyncThunk(
 // LOGOUT
 export const logoutUser = createAsyncThunk("user/logout", async () => {
   try {
-    if (MOCK_AUTH) {
+    if (USE_MOCK_AUTH) {
       await AuthMock.logout();
     } else {
       await AuthService.logout();
@@ -54,20 +66,45 @@ export const logoutUser = createAsyncThunk("user/logout", async () => {
   }
 });
 
-// CHECK AUTH (refresh)
+// CHECK AUTH
 export const checkAuth = createAsyncThunk("user/checkAuth", async () => {
   try {
-    const refresh = localStorage.getItem("refresh");
+    const refreshToken = localStorage.getItem("refresh");
 
-    const data = MOCK_AUTH
-      ? await AuthMock.refresh(refresh)
-      : (await AuthService.refresh(refresh as any)).data;
+    if (!refreshToken) {
+      return {
+        access: "",
+        refresh: "",
+      };
+    }
 
-    localStorage.setItem("token", data.access);
-    if (data.refresh) localStorage.setItem("refresh", data.refresh);
+    const data = USE_MOCK_AUTH
+      ? await AuthMock.refresh(refreshToken)
+      : (await AuthService.refresh(refreshToken)).data;
 
-    return data;
+    const access = data.access || "";
+    const refresh = data.refresh || "";
+
+    if (access) {
+      localStorage.setItem("token", access);
+    }
+
+    if (refresh) {
+      localStorage.setItem("refresh", refresh);
+    }
+
+    return {
+      ...data,
+      access,
+      refresh,
+    };
   } catch {
-    return { access: "", refresh: "" };
+    localStorage.removeItem("token");
+    localStorage.removeItem("refresh");
+
+    return {
+      access: "",
+      refresh: "",
+    };
   }
 });

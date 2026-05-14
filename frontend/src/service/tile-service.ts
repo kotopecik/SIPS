@@ -1,36 +1,47 @@
-import axios from "axios";
+import api from "@/http";
 import { IDates } from "@/interfaces/IDates";
 import { Mark } from "@mui/base";
 import { ISatelliteResponse } from "@/interfaces/ISatelliteResponse";
 
+type CompositeResponse = {
+  data?: {
+    composites?: string[];
+  };
+  composites?: string[];
+};
+
 export default class TileService {
-    static async getDates(url: string): Promise<IDates> {
-        // Хардкод дат (17-30 июня 2023) — чтобы календарь подсвечивал
-        const dotDates = [
-            "2023-06-17", "2023-06-18", "2023-06-19", "2023-06-20",
-            "2023-06-21", "2023-06-22", "2023-06-23", "2023-06-24",
-            "2023-06-25", "2023-06-26", "2023-06-27", "2023-06-28",
-            "2023-06-29", "2023-06-30"
-        ];
-        
-        const nonDotDates = dotDates.map(d => d.replace(/-/g, ""));
-        
-        return { dotdates: dotDates, nondotdates: nonDotDates };
-    }
+  static async getDates(): Promise<IDates> {
+    const response = await api.get<IDates>("/vICOD/dates");
+    return response.data;
+  }
 
-    static async getTimes(date: string): Promise<Mark[]> {
-        // Возвращаем время 12:00 по умолчанию
-        return [{ label: "1200", value: 1200 }];
-    }
+  static async getTimes(date: string): Promise<Mark[]> {
+    const response = await api.post<Mark[]>(`/vICOD/dates/${date}/times`, {
+      date,
+    });
 
-    static async getSatellites(): Promise<ISatelliteResponse[]> {
-        return [
-            { id: 1, name: "Suomi NPP", tag: "snpp" },
-            { id: 2, name: "NOAA-20", tag: "noaa20" },
-        ];
-    }
+    return response.data;
+  }
 
-    static async getComposites(satellite: string, date: string, time: string) {
-        return { data: { composites: [] } };
-    }
+  static async getSatellites(): Promise<ISatelliteResponse[]> {
+    const response = await api.get<ISatelliteResponse[]>("/vICOD/satellites");
+    return response.data;
+  }
+
+  static async getComposites(
+    satellite: string,
+    date: string,
+    time: string
+  ): Promise<CompositeResponse> {
+    const response = await api.get<CompositeResponse>("/vCD/composites", {
+      params: {
+        satellite,
+        date,
+        time,
+      },
+    });
+
+    return response.data;
+  }
 }

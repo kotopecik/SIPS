@@ -1,8 +1,6 @@
 import axios from "axios";
 import type { InternalAxiosRequestConfig } from "axios";
-
-export const SERVER_URL = "https://gis-eng3.esemc.nsc.ru:8443";
-export const API_URL = `${SERVER_URL}/api`;
+import { API_URL } from "@/shared/config";
 
 const api = axios.create({
   baseURL: API_URL,
