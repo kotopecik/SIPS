@@ -353,3 +353,30 @@
     white-space: normal;
   }
 }
+
+.historyState {
+  margin-top: 32px;
+  font-size: 18px;
+  color: #64748b;
+}
+
+.emptyHistory {
+  margin-top: 32px;
+  font-size: 18px;
+  color: #64748b;
+}
+
+.historyError {
+  margin-top: 32px;
+  padding: 14px 18px;
+  border-radius: 12px;
+  background: #fef2f2;
+  color: #b91c1c;
+  border: 1px solid #fecaca;
+  font-weight: 500;
+}
+
+.pagination button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}

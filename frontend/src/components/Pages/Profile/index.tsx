@@ -4,13 +4,13 @@ import { useAppDispatch, useAppSelector } from "@/hooks/hook";
 import { logoutUser } from "@/store/user/user-actions";
 import { useNavigate } from "react-router-dom";
 import { ConfirmLogoutModal } from "@/components/ConfirmLogoutModal/ConfirmLogoutModal";
+import DownloadHistoryService, {
+  type DownloadHistoryItem,
+} from "@/service/download-history-service";
 
 type ProfileTab = "profile" | "history";
 
-const downloadHistory = Array.from({ length: 13 }, () => ({
-  date: "19.11.2025",
-  data: "Standart map | Soumi NPP | vist | 14.04.25 - 23.04.25",
-}));
+const ITEMS_PER_PAGE = 10;
 
 export default function Profile() {
   const dispatch = useAppDispatch();
@@ -21,6 +21,12 @@ export default function Profile() {
 
   const [photoUrl, setPhotoUrl] = useState<string | null>(null);
   const [confirmOpen, setConfirmOpen] = useState(false);
+
+  const [downloadHistory, setDownloadHistory] = useState<DownloadHistoryItem[]>([]);
+  const [historyTotal, setHistoryTotal] = useState(0);
+  const [historyPage, setHistoryPage] = useState(1);
+  const [isHistoryLoading, setIsHistoryLoading] = useState(false);
+  const [historyError, setHistoryError] = useState<string | null>(null);
 
   const [personalForm, setPersonalForm] = useState({
     last_name: user?.last_name || "",
@@ -36,8 +42,15 @@ export default function Profile() {
     new_password2: "",
   });
 
-  const [personalMsg, setPersonalMsg] = useState<{ type: "success" | "error"; text: string } | null>(null);
-  const [passwordMsg, setPasswordMsg] = useState<{ type: "success" | "error"; text: string } | null>(null);
+  const [personalMsg, setPersonalMsg] = useState<{
+    type: "success" | "error";
+    text: string;
+  } | null>(null);
+
+  const [passwordMsg, setPasswordMsg] = useState<{
+    type: "success" | "error";
+    text: string;
+  } | null>(null);
 
   const [isSavingPersonal, setIsSavingPersonal] = useState(false);
   const [isSavingPassword, setIsSavingPassword] = useState(false);
@@ -57,6 +70,67 @@ export default function Profile() {
     });
   }, [user]);
 
+  useEffect(() => {
+    if (activeTab !== "history") return;
+
+    let isMounted = true;
+
+    const loadHistory = async () => {
+      try {
+        setIsHistoryLoading(true);
+        setHistoryError(null);
+
+        const response = await DownloadHistoryService.getDownloadHistory(
+          historyPage,
+          ITEMS_PER_PAGE
+        );
+
+        if (!isMounted) return;
+
+        setDownloadHistory(response.items);
+        setHistoryTotal(response.total);
+      } catch (error) {
+        if (!isMounted) return;
+
+        setDownloadHistory([]);
+        setHistoryTotal(0);
+        setHistoryError("Не удалось загрузить историю скачиваний");
+      } finally {
+        if (isMounted) {
+          setIsHistoryLoading(false);
+        }
+      }
+    };
+
+    loadHistory();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [activeTab, historyPage]);
+
+  const totalHistoryPages = Math.max(
+    1,
+    Math.ceil(historyTotal / ITEMS_PER_PAGE)
+  );
+
+  const openProfileTab = () => {
+    setActiveTab("profile");
+  };
+
+  const openHistoryTab = () => {
+    setHistoryPage(1);
+    setActiveTab("history");
+  };
+
+  const goPrevHistoryPage = () => {
+    setHistoryPage((page) => Math.max(page - 1, 1));
+  };
+
+  const goNextHistoryPage = () => {
+    setHistoryPage((page) => Math.min(page + 1, totalHistoryPages));
+  };
+
   const onPickPhoto = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
 
@@ -73,49 +147,79 @@ export default function Profile() {
     localStorage.removeItem("userPhoto");
   };
 
-  const isValidEmail = (email: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  const isValidEmail = (email: string) =>
+    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
   const handlePersonalSave = async () => {
     setPersonalMsg(null);
 
     if (!personalForm.first_name || !personalForm.last_name || !personalForm.email) {
-      setPersonalMsg({ type: "error", text: "Фамилия, имя и email — обязательные поля" });
+      setPersonalMsg({
+        type: "error",
+        text: "Фамилия, имя и email — обязательные поля",
+      });
       return;
     }
 
     if (!isValidEmail(personalForm.email)) {
-      setPersonalMsg({ type: "error", text: "Введите корректный email" });
+      setPersonalMsg({
+        type: "error",
+        text: "Введите корректный email",
+      });
       return;
     }
 
     setIsSavingPersonal(true);
     await new Promise((r) => setTimeout(r, 800));
-    setPersonalMsg({ type: "success", text: "Данные успешно обновлены ✓" });
+    setPersonalMsg({
+      type: "success",
+      text: "Данные успешно обновлены ✓",
+    });
     setIsSavingPersonal(false);
   };
 
   const handlePasswordSave = async () => {
     setPasswordMsg(null);
 
-    if (!passwordForm.old_password || !passwordForm.new_password || !passwordForm.new_password2) {
-      setPasswordMsg({ type: "error", text: "Заполните все поля" });
+    if (
+      !passwordForm.old_password ||
+      !passwordForm.new_password ||
+      !passwordForm.new_password2
+    ) {
+      setPasswordMsg({
+        type: "error",
+        text: "Заполните все поля",
+      });
       return;
     }
 
     if (passwordForm.new_password.length < 6) {
-      setPasswordMsg({ type: "error", text: "Новый пароль должен быть минимум 6 символов" });
+      setPasswordMsg({
+        type: "error",
+        text: "Новый пароль должен быть минимум 6 символов",
+      });
       return;
     }
 
     if (passwordForm.new_password !== passwordForm.new_password2) {
-      setPasswordMsg({ type: "error", text: "Пароли не совпадают" });
+      setPasswordMsg({
+        type: "error",
+        text: "Пароли не совпадают",
+      });
       return;
     }
 
     setIsSavingPassword(true);
     await new Promise((r) => setTimeout(r, 800));
-    setPasswordMsg({ type: "success", text: "Пароль успешно изменён ✓" });
-    setPasswordForm({ old_password: "", new_password: "", new_password2: "" });
+    setPasswordMsg({
+      type: "success",
+      text: "Пароль успешно изменён ✓",
+    });
+    setPasswordForm({
+      old_password: "",
+      new_password: "",
+      new_password2: "",
+    });
     setIsSavingPassword(false);
   };
 
@@ -127,7 +231,11 @@ export default function Profile() {
 
   return (
     <div className={styles.page}>
-      <div className={`${styles.content} ${activeTab === "history" ? styles.historyMode : ""}`}>
+      <div
+        className={`${styles.content} ${
+          activeTab === "history" ? styles.historyMode : ""
+        }`}
+      >
         {activeTab === "profile" && (
           <div className={styles.avatarSection}>
             <div className={styles.avatarBig}>
@@ -153,14 +261,24 @@ export default function Profile() {
           </div>
         )}
 
-        <div className={`${styles.mainSection} ${activeTab === "history" ? styles.mainSectionHistory : ""}`}>
+        <div
+          className={`${styles.mainSection} ${
+            activeTab === "history" ? styles.mainSectionHistory : ""
+          }`}
+        >
           {activeTab === "profile" && (
             <>
               <div className={styles.section}>
                 <h2 className={styles.sectionTitle}>Личные данные</h2>
 
                 {personalMsg && (
-                  <div className={personalMsg.type === "success" ? styles.successMsg : styles.errorMsg}>
+                  <div
+                    className={
+                      personalMsg.type === "success"
+                        ? styles.successMsg
+                        : styles.errorMsg
+                    }
+                  >
                     {personalMsg.text}
                   </div>
                 )}
@@ -169,36 +287,65 @@ export default function Profile() {
                   <Field
                     label="Фамилия *"
                     value={personalForm.last_name}
-                    onChange={(e) => setPersonalForm({ ...personalForm, last_name: e.target.value })}
+                    onChange={(e) =>
+                      setPersonalForm({
+                        ...personalForm,
+                        last_name: e.target.value,
+                      })
+                    }
                   />
 
                   <Field
                     label="Имя *"
                     value={personalForm.first_name}
-                    onChange={(e) => setPersonalForm({ ...personalForm, first_name: e.target.value })}
+                    onChange={(e) =>
+                      setPersonalForm({
+                        ...personalForm,
+                        first_name: e.target.value,
+                      })
+                    }
                   />
 
                   <Field
                     label="Отчество"
                     value={personalForm.middle_name}
-                    onChange={(e) => setPersonalForm({ ...personalForm, middle_name: e.target.value })}
+                    onChange={(e) =>
+                      setPersonalForm({
+                        ...personalForm,
+                        middle_name: e.target.value,
+                      })
+                    }
                   />
 
                   <Field
                     label="Организация"
                     value={personalForm.organization}
-                    onChange={(e) => setPersonalForm({ ...personalForm, organization: e.target.value })}
+                    onChange={(e) =>
+                      setPersonalForm({
+                        ...personalForm,
+                        organization: e.target.value,
+                      })
+                    }
                   />
 
                   <Field
                     label="Email *"
                     value={personalForm.email}
                     type="email"
-                    onChange={(e) => setPersonalForm({ ...personalForm, email: e.target.value })}
+                    onChange={(e) =>
+                      setPersonalForm({
+                        ...personalForm,
+                        email: e.target.value,
+                      })
+                    }
                   />
                 </div>
 
-                <button className={styles.saveBtn} onClick={handlePersonalSave} disabled={isSavingPersonal}>
+                <button
+                  className={styles.saveBtn}
+                  onClick={handlePersonalSave}
+                  disabled={isSavingPersonal}
+                >
                   {isSavingPersonal ? "Сохранение..." : "Сохранить изменения"}
                 </button>
               </div>
@@ -207,7 +354,13 @@ export default function Profile() {
                 <h2 className={styles.sectionTitle}>Смена пароля</h2>
 
                 {passwordMsg && (
-                  <div className={passwordMsg.type === "success" ? styles.successMsg : styles.errorMsg}>
+                  <div
+                    className={
+                      passwordMsg.type === "success"
+                        ? styles.successMsg
+                        : styles.errorMsg
+                    }
+                  >
                     {passwordMsg.text}
                   </div>
                 )}
@@ -217,25 +370,44 @@ export default function Profile() {
                     label="Старый пароль"
                     value={passwordForm.old_password}
                     type="password"
-                    onChange={(e) => setPasswordForm({ ...passwordForm, old_password: e.target.value })}
+                    onChange={(e) =>
+                      setPasswordForm({
+                        ...passwordForm,
+                        old_password: e.target.value,
+                      })
+                    }
                   />
 
                   <Field
                     label="Новый пароль"
                     value={passwordForm.new_password}
                     type="password"
-                    onChange={(e) => setPasswordForm({ ...passwordForm, new_password: e.target.value })}
+                    onChange={(e) =>
+                      setPasswordForm({
+                        ...passwordForm,
+                        new_password: e.target.value,
+                      })
+                    }
                   />
 
                   <Field
                     label="Повторите новый пароль"
                     value={passwordForm.new_password2}
                     type="password"
-                    onChange={(e) => setPasswordForm({ ...passwordForm, new_password2: e.target.value })}
+                    onChange={(e) =>
+                      setPasswordForm({
+                        ...passwordForm,
+                        new_password2: e.target.value,
+                      })
+                    }
                   />
                 </div>
 
-                <button className={styles.saveBtn} onClick={handlePasswordSave} disabled={isSavingPassword}>
+                <button
+                  className={styles.saveBtn}
+                  onClick={handlePasswordSave}
+                  disabled={isSavingPassword}
+                >
                   {isSavingPassword ? "Сохранение..." : "Сменить пароль"}
                 </button>
               </div>
@@ -249,42 +421,74 @@ export default function Profile() {
                 <div>Данные</div>
               </div>
 
-              <div className={styles.historyList}>
-                {downloadHistory.map((item, index) => (
-                  <div className={styles.historyRow} key={index}>
-                    <div>{item.date}</div>
-                    <div>{item.data}</div>
+              {isHistoryLoading ? (
+                <div className={styles.historyState}>
+                  Загружаем историю скачиваний...
+                </div>
+              ) : historyError ? (
+                <div className={styles.historyError}>
+                  {historyError}
+                </div>
+              ) : downloadHistory.length === 0 ? (
+                <div className={styles.emptyHistory}>
+                  История скачиваний пока пустая
+                </div>
+              ) : (
+                <>
+                  <div className={styles.historyList}>
+                    {downloadHistory.map((item) => (
+                      <div className={styles.historyRow} key={item.id}>
+                        <div>{item.date}</div>
+                        <div>{item.data}</div>
+                      </div>
+                    ))}
                   </div>
-                ))}
-              </div>
 
-              <div className={styles.pagination}>
-                <button type="button">‹</button>
-                <span className={styles.activePage}>1</span>
-                <span>2</span>
-                <span>3</span>
-                <span>4</span>
-                <span>5</span>
-                <span>6</span>
-                <span>7</span>
-                <span>8...</span>
-                <button type="button">›</button>
-              </div>
+                  {totalHistoryPages > 1 && (
+                    <div className={styles.pagination}>
+                      <button
+                        type="button"
+                        onClick={goPrevHistoryPage}
+                        disabled={historyPage === 1 || isHistoryLoading}
+                      >
+                        ‹
+                      </button>
+
+                      <span className={styles.activePage}>{historyPage}</span>
+                      <span>из {totalHistoryPages}</span>
+
+                      <button
+                        type="button"
+                        onClick={goNextHistoryPage}
+                        disabled={
+                          historyPage === totalHistoryPages || isHistoryLoading
+                        }
+                      >
+                        ›
+                      </button>
+                    </div>
+                  )}
+                </>
+              )}
             </div>
           )}
         </div>
 
         <div className={styles.sidebar}>
           <div
-            className={`${styles.sidebarItem} ${activeTab === "profile" ? styles.sidebarItemActive : ""}`}
-            onClick={() => setActiveTab("profile")}
+            className={`${styles.sidebarItem} ${
+              activeTab === "profile" ? styles.sidebarItemActive : ""
+            }`}
+            onClick={openProfileTab}
           >
             Личный кабинет
           </div>
 
           <div
-            className={`${styles.sidebarItem} ${activeTab === "history" ? styles.sidebarItemActive : ""}`}
-            onClick={() => setActiveTab("history")}
+            className={`${styles.sidebarItem} ${
+              activeTab === "history" ? styles.sidebarItemActive : ""
+            }`}
+            onClick={openHistoryTab}
           >
             История скачиваний
           </div>
@@ -315,7 +519,12 @@ function Field({ label, value, onChange, type = "text" }: FieldProps) {
   return (
     <div className={styles.field}>
       <label className={styles.fieldLabel}>{label}</label>
-      <input className={styles.input} value={value} onChange={onChange} type={type} />
+      <input
+        className={styles.input}
+        value={value}
+        onChange={onChange}
+        type={type}
+      />
     </div>
   );
 }
