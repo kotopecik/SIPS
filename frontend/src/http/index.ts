@@ -4,13 +4,13 @@ import { API_URL } from "@/shared/config";
 
 const api = axios.create({
   baseURL: API_URL,
-  withCredentials: true,
+  withCredentials: false,
 });
 
 api.interceptors.request.use((config: InternalAxiosRequestConfig) => {
   const token = localStorage.getItem("token");
 
-  if (token) {
+  if (token && !token.startsWith("mock_")) {
     config.headers.set("Authorization", `Bearer ${token}`);
   }
 

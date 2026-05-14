@@ -78,6 +78,7 @@
 }
 
 .normalday {
+  position: relative;
   width: 100%;
   height: 27px;
   font-size: 13px;
@@ -93,30 +94,61 @@
   color: #111827;
 }
 
-.normalday:hover:not(.daygreen):not(.selecteddate) {
+.normalday:hover:not(.daygreen):not(.selecteddate):not(.selectedGreenDate) {
   background: #eef2ff;
   transform: scale(1.04);
 }
 
+/* Выбранная дата БЕЗ данных */
 .selecteddate {
   background: #2563eb;
   color: white;
-  font-weight: 700;
+  font-weight: 800;
   box-shadow: 0 4px 10px rgba(37, 99, 235, 0.35);
 }
 
-.selecteddate.daygreen {
-  background: #2563eb;
-  color: white;
-  border: none;
-  box-shadow: 0 4px 10px rgba(37, 99, 235, 0.35);
-}
-
+/* Дата, на которую есть данные */
 .daygreen {
   background: #22c55e;
   color: white;
-  font-weight: 700;
+  font-weight: 800;
   box-shadow: 0 3px 8px rgba(34, 197, 94, 0.35);
+}
+
+/* Выбранная дата, на которую есть данные */
+.selectedGreenDate {
+  background: #22c55e;
+  color: white;
+  font-weight: 900;
+  transform: scale(1.08);
+  box-shadow:
+    0 0 0 2px #ffffff,
+    0 0 0 5px #14532d,
+    0 6px 14px rgba(34, 197, 94, 0.55);
+}
+
+.selectedGreenDate::after {
+  content: "";
+  position: absolute;
+  bottom: 3px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #ffffff;
+}
+
+.selecteddate::after {
+  content: "";
+  position: absolute;
+  bottom: 3px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #ffffff;
 }
 
 .notthatmonth {

@@ -3,9 +3,9 @@ import { TILE_URL } from "@/shared/config";
 export const TILE_DOMAIN = TILE_URL;
 
 export enum EUrls {
-  VIIRS_TILE_ENDPOINT = "{z}/{x}/{y}.png",
+  VIIRS_TILE_ENDPOINT = "{z}/{x}/{-y}.png",
 
-  VIIRS_TILE_URL = `${TILE_DOMAIN}/snpp/20230617/0720/aot550/{z}/{x}/{y}.png`,
+  VIIRS_TILE_URL = `${TILE_DOMAIN}/snpp/20230617/0720/aot550/{z}/{x}/{-y}.png`,
 
   STANDARD_TILE_URL = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
 

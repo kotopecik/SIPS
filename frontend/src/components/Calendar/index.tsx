@@ -24,8 +24,8 @@ const Calendar = () => {
   const nondotdates: string[] =
     useAppSelector((state) => state.tile.nondotdates) || [];
 
-  const [currentDate, setCurrentDate] = useState<Dayjs>(dayjs("2023-06-20"));
-  const [selectedDate, setSelectedDate] = useState<Dayjs>(dayjs("2023-06-20"));
+  const [currentDate, setCurrentDate] = useState<Dayjs>(dayjs("2023-06-17"));
+  const [selectedDate, setSelectedDate] = useState<Dayjs>(dayjs("2023-06-17"));
   const [view, setView] = useState<CalendarView>("days");
 
   useEffect(() => {
@@ -42,11 +42,10 @@ const Calendar = () => {
 
   const years = useMemo(() => {
     const startYear = currentDate.year() - 5;
-
     return Array.from({ length: 12 }, (_, index) => startYear + index);
   }, [currentDate]);
 
-  const handleDayClick = (date: Dayjs) => {
+  const handleDayClick = async (date: Dayjs) => {
     setSelectedDate(date);
     setCurrentDate(date);
     setView("days");
@@ -57,12 +56,29 @@ const Calendar = () => {
     dispatch(setNonDotDate(stringDate));
     dispatch(setDotDate(formattedDate));
 
-    // В примерах сервера рабочее время было 0720
-    dispatch(setTime("0720"));
+    if (!isThereDataForThisDay(stringDate, nondotdates)) {
+      dispatch(setTime(""));
+      dispatch(removeTimes());
+      return;
+    }
 
-    if (isThereDataForThisDay(stringDate, nondotdates)) {
-      dispatch(fetchTimes(formattedDate));
-    } else {
+    try {
+      const times = await dispatch(fetchTimes(formattedDate)).unwrap();
+
+      if (times.length > 0) {
+        const firstTime = String(times[0].label);
+
+        console.log(`Выбрано время для ${formattedDate}:`, firstTime);
+
+        dispatch(setTime(firstTime));
+      } else {
+        console.warn(`Для даты ${formattedDate} сервер не вернул время`);
+        dispatch(setTime(""));
+        dispatch(removeTimes());
+      }
+    } catch (error) {
+      console.error("Ошибка загрузки времени:", error);
+      dispatch(setTime(""));
       dispatch(removeTimes());
     }
   };
@@ -178,7 +194,8 @@ const Calendar = () => {
                     className={[
                       s.normalday,
                       hasData ? s.daygreen : "",
-                      isSelected ? s.selecteddate : "",
+                      isSelected && !hasData ? s.selecteddate : "",
+                      isSelected && hasData ? s.selectedGreenDate : "",
                       !isCurrentMonth ? s.notthatmonth : "",
                     ]
                       .filter(Boolean)

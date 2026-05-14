@@ -7,41 +7,22 @@ import { ICompositeResponse } from "@/interfaces/ICompositeResponse";
 
 export const fetchDates = createAsyncThunk<IDates, string | undefined>(
   "tile/fetchDates",
-  async (_unusedUrl) => {
-    try {
-      return await TileService.getDates();
-    } catch (err) {
-      console.error(err);
-
-      return {
-        dotdates: [],
-        nondotdates: [],
-      };
-    }
+  async () => {
+    return await TileService.getDates();
   }
 );
 
 export const fetchTimes = createAsyncThunk<Mark[], string>(
   "tile/fetchTimes",
   async (date: string) => {
-    try {
-      return await TileService.getTimes(date);
-    } catch (err) {
-      console.error(err);
-      return [];
-    }
+    return await TileService.getTimes(date);
   }
 );
 
 export const fetchSatellites = createAsyncThunk<ISatelliteResponse[]>(
   "tile/fetchSatellites",
   async () => {
-    try {
-      return await TileService.getSatellites();
-    } catch (err) {
-      console.error(err);
-      return [];
-    }
+    return await TileService.getSatellites();
   }
 );
 
@@ -57,22 +38,10 @@ export const fetchComposites = createAsyncThunk<
 >(
   "tile/fetchComposites",
   async (obj: FetchCompositesPayload) => {
-    try {
-      const response = await TileService.getComposites(
-        obj.satellite,
-        obj.dotdate,
-        obj.dottime
-      );
-
-      return {
-        composites: response.composites ?? response.data?.composites ?? [],
-      };
-    } catch (err) {
-      console.error(err);
-
-      return {
-        composites: [],
-      };
-    }
+    return await TileService.getComposites(
+      obj.satellite,
+      obj.dotdate,
+      obj.dottime
+    );
   }
 );

@@ -116,14 +116,14 @@ const Map = () => {
             ) : (
                 <div className="mapPage" onClick={isRulerActive ? addMarker : undefined}>
                     <MapContainer
-                        className="leafletMap"
-                        center={CENTR}
-                        maxZoom={13}
-                        zoom={4}
-                        minZoom={3}
-                        scrollWheelZoom={true}
-                        maxBounds={[[-110, -170], [100, 200]]}
-                        doubleClickZoom={false}
+                    className="leafletMap"
+                    center={CENTR}
+                    maxZoom={13}
+                    zoom={2}
+                    minZoom={2}
+                    scrollWheelZoom={true}
+                    maxBounds={[[-110, -170], [100, 200]]}
+                    doubleClickZoom={false}
                     >
                         <TileLayer
                             key={`${layer}-${baseLayerUrl}`}
