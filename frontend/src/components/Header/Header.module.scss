@@ -1,3 +1,11 @@
+@font-face {
+  font-family: "SouthGhetto";
+  src: url("../../assets/fonts/OFONT.RU_SOUTHGHETTO.TTF") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 .root {
   position: sticky;
   top: 0;
@@ -8,29 +16,71 @@
 }
 
 .inner {
-  max-width: 1400px;
+  position: relative;
+  max-width: 1440px;
+  min-height: 74px;
   margin: 0 auto;
-  padding: 12px 40px;
+  padding: 10px 40px;
   display: flex;
   align-items: center;
 }
 
-/* ==================== ЛОГОТИП ==================== */
 .logo {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  z-index: 2;
+
   img {
     height: 48px;
     width: auto;
   }
 }
 
-/* ==================== НАВИГАЦИЯ (СПРАВА) ==================== */
+.projectTitle {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  line-height: 1.15;
+  color: #1f2937;
+  pointer-events: none;
+}
+
+.projectShort {
+  position: relative;
+  display: inline-block;
+  font-family: "SouthGhetto", "Segoe UI", Arial, sans-serif;
+  font-size: 36px;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  line-height: 0.9;
+  color: #1558c8;
+  text-transform: uppercase;
+}
+
+.projectRu {
+  font-size: 13px;
+  font-weight: 700;
+  color: #374151;
+  white-space: nowrap;
+}
+
+.projectEn {
+  font-size: 12px;
+  font-weight: 600;
+  color: #64748b;
+  white-space: nowrap;
+}
+
 .nav {
   display: flex;
   align-items: center;
   gap: 32px;
   font-size: 17px;
   font-weight: 600;
-  margin-left: auto;     /* ← главное изменение */
+  margin-left: auto;
+  z-index: 2;
 }
 
 .navLink,
@@ -51,7 +101,7 @@
 }
 
 .navLinkActive::after {
-  content: '';
+  content: "";
   position: absolute;
   bottom: -6px;
   left: 0;
@@ -60,7 +110,11 @@
   background: #2563eb;
 }
 
-/* ==================== АВАТАР ==================== */
+.avatarWrapper {
+  position: relative;
+  z-index: 2;
+}
+
 .avatarBtn {
   width: 48px;
   height: 48px;
@@ -97,28 +151,6 @@
   font-weight: 700;
 }
 
-/* ==================== RESPONSIVE ==================== */
-@media (max-width: 980px) {
-  .inner {
-    padding: 12px 20px;
-  }
-
-  .nav {
-    gap: 20px;
-    font-size: 15px;
-  }
-
-  .avatarBtn {
-    width: 42px;
-    height: 42px;
-    margin-left: 16px;
-  }
-}
-
-.avatarWrapper {
-  position: relative;
-}
-
 .dropdown {
   position: absolute;
   top: 58px;
@@ -144,4 +176,32 @@
 
 .dropdownItem:last-child {
   color: #ef4444;
+}
+
+@media (max-width: 1100px) {
+  .projectRu,
+  .projectEn {
+    display: none;
+  }
+
+  .projectShort {
+    font-size: 20px;
+  }
+}
+
+@media (max-width: 980px) {
+  .inner {
+    padding: 10px 20px;
+  }
+
+  .nav {
+    gap: 18px;
+    font-size: 15px;
+  }
+
+  .avatarBtn {
+    width: 42px;
+    height: 42px;
+    margin-left: 16px;
+  }
 }

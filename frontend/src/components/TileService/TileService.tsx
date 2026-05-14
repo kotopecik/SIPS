@@ -16,7 +16,7 @@ export const TileService = () => {
         return null;
     }
 
-    const tileUrl = `${TILE_DOMAIN}/${satellite}/${date}/0720/${composite}/{z}/{x}/{y}.png`;
+    const tileUrl = `${TILE_DOMAIN}/${satellite}/${date}/${time}/${composite}/{z}/{x}/{-y}.png`;
 
     console.log("Загружаем тайлы:", tileUrl);
 

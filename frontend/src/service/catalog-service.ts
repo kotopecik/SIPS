@@ -19,8 +19,7 @@ export default class CatalogService {
 
   static async downloadImage(image: IImage): Promise<void> {
     if (!image.uid) {
-      console.error("Невозможно скачать изображение: отсутствует uid", image);
-      return;
+      throw new Error("Невозможно скачать файл: сервер не вернул uid изображения");
     }
 
     const response = await api.get(`/vCD/composites/download/${image.uid}`, {
@@ -30,9 +29,13 @@ export default class CatalogService {
     const blob = new Blob([response.data]);
     const downloadUrl = window.URL.createObjectURL(blob);
 
+    const fileName = `${image.datetime}_${image.composite}_${image.satellite}.tif`
+      .replaceAll(" ", "_")
+      .replaceAll(":", "-");
+
     const a = document.createElement("a");
     a.href = downloadUrl;
-    a.download = `${image.datetime}_${image.composite}_${image.satellite}.tif`;
+    a.download = fileName;
 
     document.body.appendChild(a);
     a.click();

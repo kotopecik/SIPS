@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useEffect, useMemo, useState } from "react";
 import s from "./Calendar.module.scss";
 import {
   setDotDate,
@@ -14,87 +14,184 @@ import {
   getStringDate,
 } from "@/utils/calendar";
 import { fetchTimes, fetchDates } from "@/store/tile/tile-actions";
-import dayjs from "dayjs";
-import { Dayjs } from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
+
+type CalendarView = "days" | "months" | "years";
 
 const Calendar = () => {
   const dispatch = useAppDispatch();
-  const nondotdates: string[] = useAppSelector((state) => state.tile.nondotdates) || [];
 
-  const [selectDate, setSelectDate] = useState<Dayjs>(dayjs('2023-06-20'));
+  const nondotdates: string[] =
+    useAppSelector((state) => state.tile.nondotdates) || [];
+
+  const [currentDate, setCurrentDate] = useState<Dayjs>(dayjs("2023-06-20"));
+  const [selectedDate, setSelectedDate] = useState<Dayjs>(dayjs("2023-06-20"));
+  const [view, setView] = useState<CalendarView>("days");
 
   useEffect(() => {
     dispatch(fetchDates(""));
   }, [dispatch]);
 
-  useEffect(() => {
-    console.log("=== КАЛЕНДАРЬ ОТЛАДКА ===");
-    console.log("nondotdates.length:", nondotdates.length);
-    console.log("Пример дат:", nondotdates.slice(0, 5));
-  }, [nondotdates]);
+  const calendarDays = useMemo(() => {
+    const startOfMonth = currentDate.startOf("month");
+    const startOffset = (startOfMonth.day() + 6) % 7;
+    const gridStart = startOfMonth.subtract(startOffset, "day");
 
-  // Жёстко генерируем дни июня 2023
-  const calendar = Array.from({ length: 30 }, (_, i) => ({
-    date: dayjs(`2023-06-${i + 1}`),
-  }));
+    return Array.from({ length: 42 }, (_, index) => gridStart.add(index, "day"));
+  }, [currentDate]);
 
-const handleDayClick = (date: Dayjs) => {
-  setSelectDate(date);
-  const stringDate = getStringDate(date);
-  const formattedDate = date.format("YYYY-MM-DD");
+  const years = useMemo(() => {
+    const startYear = currentDate.year() - 5;
 
-  dispatch(setNonDotDate(stringDate));
-  dispatch(setDotDate(formattedDate));
+    return Array.from({ length: 12 }, (_, index) => startYear + index);
+  }, [currentDate]);
 
-  // Устанавливаем время по умолчанию (12:00)
-  dispatch(setTime("1200"));   // ← добавь эту строку
+  const handleDayClick = (date: Dayjs) => {
+    setSelectedDate(date);
+    setCurrentDate(date);
+    setView("days");
 
-  if (isThereDataForThisDay(stringDate, nondotdates)) {
-    dispatch(fetchTimes(formattedDate));
-  } else {
-    dispatch(removeTimes());
-  }
-};
+    const stringDate = getStringDate(date);
+    const formattedDate = date.format("YYYY-MM-DD");
+
+    dispatch(setNonDotDate(stringDate));
+    dispatch(setDotDate(formattedDate));
+
+    // В примерах сервера рабочее время было 0720
+    dispatch(setTime("0720"));
+
+    if (isThereDataForThisDay(stringDate, nondotdates)) {
+      dispatch(fetchTimes(formattedDate));
+    } else {
+      dispatch(removeTimes());
+    }
+  };
+
+  const goPrevMonth = () => {
+    setCurrentDate((date) => date.subtract(1, "month"));
+    setView("days");
+  };
+
+  const goNextMonth = () => {
+    setCurrentDate((date) => date.add(1, "month"));
+    setView("days");
+  };
+
+  const selectMonth = (monthIndex: number) => {
+    setCurrentDate((date) => date.month(monthIndex));
+    setView("days");
+  };
+
+  const selectYear = (year: number) => {
+    setCurrentDate((date) => date.year(year));
+    setView("months");
+  };
 
   return (
     <div className={s.block}>
       <div className={s.calendar}>
         <div className={s.header}>
-          <div className={s.btns}>
-            <span>Июнь</span>
+          <button className={s.navBtn} type="button" onClick={goPrevMonth}>
+            ‹
+          </button>
+
+          <div className={s.currentInfo}>
+            <button
+              type="button"
+              className={s.monthButton}
+              onClick={() => setView(view === "months" ? "days" : "months")}
+            >
+              {months[currentDate.month()]}
+            </button>
+
+            <button
+              type="button"
+              className={s.yearButton}
+              onClick={() => setView(view === "years" ? "days" : "years")}
+            >
+              {currentDate.year()}
+            </button>
           </div>
-          <div className={s.btns}>
-            <span>2023</span>
+
+          <button className={s.navBtn} type="button" onClick={goNextMonth}>
+            ›
+          </button>
+        </div>
+
+        {view === "months" && (
+          <div className={s.monthPicker}>
+            {months.map((month, index) => (
+              <button
+                key={month}
+                type="button"
+                className={
+                  currentDate.month() === index
+                    ? s.monthItemActive
+                    : s.monthItem
+                }
+                onClick={() => selectMonth(index)}
+              >
+                {month.slice(0, 3)}
+              </button>
+            ))}
           </div>
-        </div>
+        )}
 
-        <div className={s.days}>
-          {days.map((day, i) => (
-            <h1 key={i} className={s.day}>{day}</h1>
-          ))}
-        </div>
+        {view === "years" && (
+          <div className={s.yearPicker}>
+            {years.map((year) => (
+              <button
+                key={year}
+                type="button"
+                className={
+                  currentDate.year() === year ? s.yearItemActive : s.yearItem
+                }
+                onClick={() => selectYear(year)}
+              >
+                {year}
+              </button>
+            ))}
+          </div>
+        )}
 
-        <div className={s.days}>
-          {calendar.map(({ date }, index) => {
-            const stringDate = getStringDate(date);
-            const hasData = isThereDataForThisDay(stringDate, nondotdates);
+        {view === "days" && (
+          <>
+            <div className={s.days}>
+              {days.map((day) => (
+                <div key={day} className={s.day}>
+                  {day}
+                </div>
+              ))}
+            </div>
 
-            return (
-              <div key={index} className={s.calendarday}>
-                <h3
-                  className={`
-                    ${selectDate.isSame(date, "day") ? s.selecteddate : ""}
-                    ${hasData ? s.daygreen : ""}
-                    ${s.normalday}
-                  `}
-                  onClick={() => handleDayClick(date)}
-                >
-                  {date.date()}
-                </h3>
-              </div>
-            );
-          })}
-        </div>
+            <div className={s.grid}>
+              {calendarDays.map((date) => {
+                const stringDate = getStringDate(date);
+                const hasData = isThereDataForThisDay(stringDate, nondotdates);
+                const isSelected = selectedDate.isSame(date, "day");
+                const isCurrentMonth = date.month() === currentDate.month();
+
+                return (
+                  <button
+                    key={date.format("YYYY-MM-DD")}
+                    type="button"
+                    className={[
+                      s.normalday,
+                      hasData ? s.daygreen : "",
+                      isSelected ? s.selecteddate : "",
+                      !isCurrentMonth ? s.notthatmonth : "",
+                    ]
+                      .filter(Boolean)
+                      .join(" ")}
+                    onClick={() => handleDayClick(date)}
+                  >
+                    {date.date()}
+                  </button>
+                );
+              })}
+            </div>
+          </>
+        )}
       </div>
     </div>
   );

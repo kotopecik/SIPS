@@ -1,113 +1,116 @@
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
 import s from "./Settings.module.scss";
-import React, { useState } from "react";
+import { useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/hooks/hook";
 import { setComposite, setSatellite } from "@/store/tile/tile-slice";
 import { ESatellite } from "@/enums/ESatellite";
 import { EComposite } from "@/enums/EComposite";
 import { ISatelliteResponse } from "@/interfaces/ISatelliteResponse";
-import { Legend } from "@/components/Settings/Legend/Legend";
 
-// описания композитов
 const compositeDescriptions: Record<string, string> = {
-  aot550: "Оптическая толщина аэрозоля на длине волны 550 нм. Используется для оценки загрязнения воздуха и анализа дымовых шлейфов.",
-  aotaps: "Оптическая толщина аэрозоля, рассчитанная алгоритмом APS с учетом поляризации.",
-  clphs: "Фазовое состояние облаков (жидкая, ледяная или смешанная).",
-  clmsk: "Маска облаков. Фильтрует облачные области.",
-  clmsk2: "Улучшенная версия маски облаков.",
-  frmsk: "Маска пожаров. Определяет активные очаги возгорания.",
-  vievi: "Индекс растительности EVI.",
-  vindvi: "Индекс NDVI. Определяет плотность растительности.",
-  vlst: "Комбинированный продукт: NDVI + температура поверхности.",
-  vscmo: "Снежный покров за месяц."
+  aot550:
+    "Оптическая толщина аэрозоля на длине волны 550 нм. Используется для оценки загрязнения воздуха и анализа дымовых шлейфов.",
+  aotaps:
+    "Оптическая толщина аэрозоля, рассчитанная алгоритмом APS с учетом поляризации.",
+  clphs:
+    "Фазовое состояние облаков: жидкая, ледяная или смешанная фаза.",
+  clmsk:
+    "Маска облаков. Помогает определить облачные области на снимке.",
+  clmsk2:
+    "Улучшенная версия маски облаков с дополнительными признаками.",
+  frmsk:
+    "Маска пожаров. Используется для выявления активных очагов возгорания.",
+  vievi:
+    "Индекс растительности EVI. Показывает состояние и плотность растительности.",
+  vindvi:
+    "Индекс NDVI. Используется для оценки наличия растительной массы.",
+  vlst:
+    "Температура поверхности Земли с учетом данных растительности.",
+  vscmo:
+    "Снежный покров за месяц. Помогает оценивать устойчивые зоны снега.",
 };
 
 const Satelite = () => {
   const dispatch = useAppDispatch();
 
-  const satelliteState: ESatellite = useAppSelector(state => state.tile).satellite;
-  const compositeState: EComposite = useAppSelector(state => state.tile).composite;
+  const satelliteState: ESatellite = useAppSelector((state) => state.tile).satellite;
+  const compositeState: EComposite = useAppSelector((state) => state.tile).composite;
 
-  const satellitesFromStore: ISatelliteResponse[] = useAppSelector(state => state.tile).satellites || [];
+  const satellitesFromStore: ISatelliteResponse[] =
+    useAppSelector((state) => state.tile).satellites || [];
 
-  const satellites: ISatelliteResponse[] = satellitesFromStore.length > 0 
-    ? satellitesFromStore 
-    : [
-        { id: 1, name: "Suomi NPP", tag: ESatellite.SUOMI_NPP },
-        { id: 2, name: "NOAA-20", tag: ESatellite.NOAA_20 },
-      ];
+  const satellites: ISatelliteResponse[] =
+    satellitesFromStore.length > 0
+      ? satellitesFromStore
+      : [
+          { id: 1, name: "Suomi NPP", tag: ESatellite.SUOMI_NPP },
+          { id: 2, name: "NOAA-20", tag: ESatellite.NOAA_20 },
+        ];
 
-  const composites: string[] = useAppSelector(state => state.tile).composites || [];
+  const composites: string[] = useAppSelector((state) => state.tile).composites || [];
 
   const [hoveredComposite, setHoveredComposite] = useState<string | null>(null);
 
-  const compositeHandleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch(setComposite(e.target.value as EComposite));
+  const satelliteHandleChange = (value: string) => {
+    dispatch(setSatellite(value as ESatellite));
   };
 
-  const satelliteHandleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch(setSatellite(e.target.value as ESatellite));
+  const compositeHandleChange = (value: string) => {
+    dispatch(setComposite(value as EComposite));
   };
 
   return (
     <>
-      <p className={s.text}>Спутниковые снимки</p>
+      <div className={s.satelliteList}>
+        {satellites.map((satellite) => (
+          <FormControlLabel
+            key={satellite.id}
+            control={
+              <Switch
+                checked={satelliteState === satellite.tag}
+                onChange={() => satelliteHandleChange(satellite.tag)}
+              />
+            }
+            label={satellite.name}
+          />
+        ))}
+      </div>
 
-      {satellites.map((satellite: ISatelliteResponse) => (
-        <FormControlLabel
-          key={satellite.id}
-          control={
-            <Switch
-              id={String(satellite.id)}
-              size="small"
-              color="secondary"
-              value={satellite.tag}
-              checked={satelliteState === satellite.tag}
-              onChange={satelliteHandleChange}
-            />
-          }
-          label={satellite.name}
-        />
-      ))}
+      {composites.length > 0 ? (
+        <>
+          <div className={s.compositeTitle}>Композиты</div>
 
-      {composites.length > 0 && (
-        <div className={s.composites_block}>
-          <div className={s.text}>Композиты</div>
-
-          <div className={s.composites}>
-            {composites.map((composite, index) => (
+          <div className={s.compositesGrid}>
+            {composites.map((composite) => (
               <div
-                key={index}
-                className={s.compositeItem}
+                key={composite}
+                className={s.compositeWrapper}
                 onMouseEnter={() => setHoveredComposite(composite)}
                 onMouseLeave={() => setHoveredComposite(null)}
               >
                 <FormControlLabel
                   control={
                     <Switch
-                      id={index.toString()}
-                      size="small"
-                      color="secondary"
-                      value={composite}
                       checked={compositeState === composite}
-                      onChange={compositeHandleChange}
+                      onChange={() => compositeHandleChange(composite)}
                     />
                   }
                   label={composite}
                 />
-
-                {hoveredComposite === composite && (
-                  <div className={s.tooltip}>
-                    {compositeDescriptions[composite] || composite}
-                  </div>
-                )}
               </div>
             ))}
           </div>
 
-          <Legend composite={compositeState} />
-        </div>
+          {hoveredComposite && (
+            <div className={s.compositeHint}>
+              <div className={s.compositeHintTitle}>{hoveredComposite}</div>
+              <div>{compositeDescriptions[hoveredComposite] || hoveredComposite}</div>
+            </div>
+          )}
+        </>
+      ) : (
+        <div className={s.emptyText}>Композиты пока не загружены</div>
       )}
     </>
   );

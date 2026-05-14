@@ -11,32 +11,49 @@ export type DownloadHistoryResponse = {
   total: number;
 };
 
-const USE_MOCK_DOWNLOAD_HISTORY = true;
-
-const mockHistory: DownloadHistoryItem[] = [];
+type CreateDownloadHistoryPayload = {
+  data: string;
+};
 
 export default class DownloadHistoryService {
   static async getDownloadHistory(
     page: number,
     limit: number
   ): Promise<DownloadHistoryResponse> {
-    if (USE_MOCK_DOWNLOAD_HISTORY) {
-      const start = (page - 1) * limit;
-      const end = start + limit;
+    try {
+      const response = await api.get<DownloadHistoryResponse>("/download-history", {
+        params: {
+          page,
+          limit,
+        },
+      });
+
+      const data = response.data;
 
       return {
-        items: mockHistory.slice(start, end),
-        total: mockHistory.length,
+        items: data.items ?? [],
+        total: data.total ?? data.items?.length ?? 0,
+      };
+    } catch (error) {
+      console.error("Ошибка загрузки истории скачиваний:", error);
+
+      return {
+        items: [],
+        total: 0,
       };
     }
+  }
 
-    const response = await api.get<DownloadHistoryResponse>("/download-history", {
-      params: {
-        page,
-        limit,
-      },
-    });
-
-    return response.data;
+  static async createDownloadHistoryItem(
+    payload: CreateDownloadHistoryPayload
+  ): Promise<void> {
+    try {
+      await api.post("/download-history", {
+        date: new Date().toISOString(),
+        data: payload.data,
+      });
+    } catch (error) {
+      console.warn("История скачиваний пока не сохранена на сервере:", error);
+    }
   }
 }

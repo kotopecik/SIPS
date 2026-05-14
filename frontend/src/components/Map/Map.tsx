@@ -18,6 +18,8 @@ import { TileService } from "@/components/TileService/TileService";
 import { ESatellite } from "@/enums/ESatellite";
 import { EComposite } from "@/enums/EComposite";
 
+import { Legend } from "@/components/Settings/Legend/Legend";
+
 // спасибо центру за это
 const CENTR: LatLngExpression = [54.84643545576913, 83.05183410644533];
 
@@ -112,8 +114,9 @@ const Map = () => {
             {isLoading ? (
                 <Loading />
             ) : (
-                <div onClick={isRulerActive ? addMarker : undefined}>
+                <div className="mapPage" onClick={isRulerActive ? addMarker : undefined}>
                     <MapContainer
+                        className="leafletMap"
                         center={CENTR}
                         maxZoom={13}
                         zoom={4}
@@ -144,6 +147,8 @@ const Map = () => {
 
                         <Coords />
                         <Settings />
+
+                        {compositeState && <Legend composite={String(compositeState)} />}
 
                         <Ruler />
 

@@ -19,7 +19,6 @@ const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [confirmOpen, setConfirmOpen] = useState(false);
 
-  // Очень надёжное обновление аватарки
   useEffect(() => {
     const loadPhoto = () => {
       const saved = localStorage.getItem("userPhoto");
@@ -29,7 +28,7 @@ const Header = () => {
     loadPhoto();
 
     window.addEventListener("storage", loadPhoto);
-    const interval = setInterval(loadPhoto, 400); // дополнительная проверка
+    const interval = setInterval(loadPhoto, 400);
 
     return () => {
       window.removeEventListener("storage", loadPhoto);
@@ -41,11 +40,11 @@ const Header = () => {
 
   const avatarLetter = useMemo(() => {
     if (!user) return "Л";
+
     const name = user.first_name?.trim() || user.email?.trim() || "";
+
     return name ? name[0].toUpperCase() : "Л";
   }, [user]);
-
-  const toggleMenu = () => setMenuOpen(!menuOpen);
 
   const goToProfile = () => {
     setMenuOpen(false);
@@ -77,12 +76,23 @@ const Header = () => {
             <img src={ivtLogo} alt="ИВТ" />
           </Link>
 
+          <div className={styles.projectTitle}>
+            <div className={styles.projectShort}>SIPS</div>
+            <div className={styles.projectRu}>
+              Система обработки спутниковых изображений
+            </div>
+            <div className={styles.projectEn}>
+              Satellite Image Processing System
+            </div>
+          </div>
+
           <nav className={styles.nav}>
             {links.map((link) => {
               const active = location.pathname === link.to;
+
               return (
                 <Link
-                  key={link.id}
+                  key={link.to}
                   to={link.to}
                   className={active ? styles.navLinkActive : styles.navLink}
                 >
@@ -94,9 +104,10 @@ const Header = () => {
 
           <div className={styles.avatarWrapper}>
             <button
-              type="button"
               className={styles.avatarBtn}
-              onClick={toggleMenu}
+              onClick={() => setMenuOpen((value) => !value)}
+              type="button"
+              aria-label="Профиль"
             >
               {photoUrl ? (
                 <img src={photoUrl} alt="avatar" className={styles.avatarImg} />
@@ -112,6 +123,7 @@ const Header = () => {
                     <div className={styles.dropdownItem} onClick={goToProfile}>
                       Личный кабинет
                     </div>
+
                     <div className={styles.dropdownItem} onClick={openLogoutModal}>
                       Выход
                     </div>
