@@ -1,0 +1,312 @@
+.root {
+  background: #ffffff;
+  color: #111827;
+}
+
+/* ===== HERO ===== */
+
+.hero {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 60px 40px 40px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: 60px;
+}
+
+.heroLeft {
+  max-width: 420px;
+}
+
+.heroText {
+  font-family: "Inter", sans-serif;
+  font-weight: 500;
+  font-size: 17px;
+  line-height: 1.55;
+  color: #374151;
+}
+
+.heroRight {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.heroTitle {
+  margin: 0;
+  font-family: "SouthGhetto", sans-serif;
+  font-size: 52px;
+  font-weight: 400;
+  line-height: 1.05;
+  letter-spacing: 0.5px;
+  color: #111827;
+}
+
+/* ===== SECTION TITLES ===== */
+
+.sectionBigTitle {
+  margin: 0;
+  text-align: center;
+  font-family: "SouthGhetto", sans-serif;
+  font-size: 38px;
+  font-weight: 400;
+  letter-spacing: 0.8px;
+  transform: scale(0.97);
+}
+
+/* ===== PRODUCTS + CAROUSEL (современные карточки) ===== */
+
+.products {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 44px 18px 12px;
+}
+
+.track {
+  margin-top: 22px;
+  display: flex;
+  gap: 20px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  padding: 10px 4px 20px;
+
+  scrollbar-width: none;
+}
+.track::-webkit-scrollbar {
+  display: none;
+}
+
+.card {
+  scroll-snap-align: start;
+  flex: 0 0 calc((100% - 40px) / 3);
+  min-width: 300px;
+
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 20px 20px 22px;
+  min-height: 160px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  transition: all 0.2s ease;
+}
+
+.card:hover {
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  transform: translateY(-4px);
+  border-color: #2f66ff;
+}
+
+.cardTitle {
+  font-family: "SouthGhetto", sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  color: #2f66ff;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  margin-bottom: 12px;
+  line-height: 1.3;
+}
+
+.cardText {
+  font-family: "Inter", sans-serif;
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 1.5;
+  color: #374151;
+}
+
+.dots {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.dot,
+.dotActive {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+  background: #cbd5e1;
+}
+
+.dotActive {
+  background: #2f66ff;
+}
+
+/* ===== GUIDE (ЛЕСЕНКА) ===== */
+
+.guide {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 60px 40px 50px;
+}
+
+.steps {
+  margin-top: 32px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.step {
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  align-items: flex-start;
+  gap: 20px;
+  padding: 28px 0;
+  border-top: 1px solid #e2e8f0;
+}
+
+.step:nth-child(1) { margin-left: 0; }
+.step:nth-child(2) { margin-left: 120px; }
+.step:nth-child(3) { margin-left: 240px; }
+.step:nth-child(4) { margin-left: 360px; }
+
+.step:last-child {
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.stepNum {
+  font-size: 56px;
+  font-family: "SouthGhetto", sans-serif;
+  font-weight: 700;
+  color: #2f66ff;
+  line-height: 1;
+  text-align: center;
+}
+
+.stepText {
+  font-family: "Inter", sans-serif;
+  font-weight: 500;
+  font-size: 15.5px;
+  line-height: 1.6;
+  color: #334155;
+  max-width: 620px;
+  padding-top: 8px;
+}
+
+.toMapBtn {
+  margin: 32px auto 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 420px;
+  height: 56px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #2f66ff, #1e4fd1);
+  color: #ffffff;
+  text-decoration: none;
+  font-family: "SouthGhetto", sans-serif;
+  font-size: 22px;
+  font-weight: 400;
+  letter-spacing: 1px;
+  box-shadow: 0 8px 25px rgba(47, 102, 255, 0.35);
+  transition: all 0.3s ease;
+}
+
+.toMapBtn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 15px 35px rgba(47, 102, 255, 0.45);
+}
+
+/* ===== FOOTER ===== */
+
+.footer {
+  position: relative;
+  margin-top: 24px;
+  color: #ffffff;
+  overflow: hidden;
+}
+
+.footer::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+
+  background-image: url("../../../assets/images/Rectangle.png");
+  background-size: cover;
+  background-position: center;
+
+  filter: brightness(0.35);
+  z-index: 0;
+}
+
+.footerInner {
+  position: relative;
+  z-index: 1;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 40px 18px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+
+.footerTitle {
+  font-weight: 900;
+  margin-bottom: 8px;
+}
+
+.footerLink {
+  display: inline-block;
+  margin-top: 12px;
+  color: #ffffff;
+  text-decoration: underline;
+  font-size: 15px;
+  opacity: 0.9;
+  transition: opacity 0.2s ease;
+}
+
+.footerLink:hover {
+  opacity: 1;
+  color: #a5b4fc;
+}
+
+/* ===== RESPONSIVE ===== */
+
+@media (max-width: 980px) {
+  .hero {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .heroRight {
+    justify-content: flex-start;
+  }
+
+  .card {
+    flex: 0 0 calc((100% - 18px) / 2);
+  }
+
+  .step {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .stepNum {
+    font-size: 36px;
+  }
+}
+
+@media (max-width: 560px) {
+  .sectionBigTitle {
+    font-size: 32px;
+  }
+
+  .heroTitle {
+    font-size: 38px;
+  }
+
+  .card {
+    flex: 0 0 100%;
+  }
+
+  .footerInner {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,13 @@
+.timeline{
+  background: white;
+  border: 2px solid rgba(0, 98, 255, 0.3);
+  border-radius: 8px;
+  padding: 10px;
+
+  span:not(:last-child){
+    margin-right: 5px;
+  }
+  .box{
+    margin: 0 auto;
+  }
+}
