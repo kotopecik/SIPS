@@ -8,21 +8,11 @@ export const TileService = () => {
   const date = useAppSelector((state) => state.tile.dateTime.nondotdate);
   const time = useAppSelector((state) => state.tile.dateTime.time);
 
-  console.log("TileService state:", {
-    satellite,
-    composite,
-    date,
-    time,
-  });
-
   if (!satellite || !composite || !date || !time) {
-    console.log("Тайлы не загружаются: не все параметры выбраны");
     return null;
   }
 
   const tileUrl = `${TILE_DOMAIN}/${satellite}/${date}/${time}/${composite}/${EUrls.VIIRS_TILE_ENDPOINT}`;
-
-  console.log("Загружаем тайлы:", tileUrl);
 
   return (
     <TileLayer
@@ -30,13 +20,8 @@ export const TileService = () => {
       url={tileUrl}
       opacity={0.75}
       zIndex={10}
-      maxNativeZoom={2}
+      maxNativeZoom={3}
       maxZoom={13}
-      eventHandlers={{
-        tileerror: (event) => {
-          console.warn("Ошибка загрузки тайла:", event);
-        },
-      }}
     />
   );
 };
