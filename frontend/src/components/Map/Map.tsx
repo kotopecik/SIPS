@@ -3,6 +3,7 @@ import { MapContainer, TileLayer } from "react-leaflet";
 import { LatLngExpression, LatLngLiteral } from "leaflet";
 import type { MouseEvent } from "react";
 
+import { Legend } from "@/components/Settings/Legend/Legend";
 import { useAppDispatch, useAppSelector } from "@/hooks/hook";
 import Coords from "@/components/Map/Coords/Coords";
 import Settings from "@/components/Settings";
@@ -84,6 +85,8 @@ const Map = () => {
 
         <Coords />
         <Settings />
+        {compositeState && <Legend composite={compositeState} />}
+
         <Ruler />
 
         {isCursorActive && <Cursor />}

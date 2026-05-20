@@ -18,6 +18,20 @@ import dayjs, { Dayjs } from "dayjs";
 
 type CalendarView = "days" | "months" | "years";
 
+const normalizeTime = (value: unknown): string => {
+  if (typeof value !== "string" && typeof value !== "number") {
+    return "";
+  }
+
+  const onlyDigits = String(value).replace(/\D/g, "");
+
+  if (!onlyDigits) {
+    return "";
+  }
+
+  return onlyDigits.padStart(4, "0").slice(0, 4);
+};
+
 const Calendar = () => {
   const dispatch = useAppDispatch();
 
@@ -65,14 +79,13 @@ const Calendar = () => {
     try {
       const times = await dispatch(fetchTimes(formattedDate)).unwrap();
 
-      if (times.length > 0) {
-        const firstTime = String(times[0].label);
-
-        console.log(`Выбрано время для ${formattedDate}:`, firstTime);
+      if (times && times.length > 0) {
+        const firstLabel = normalizeTime(times[0].label);
+        const firstValue = normalizeTime(times[0].value);
+        const firstTime = firstLabel || firstValue;
 
         dispatch(setTime(firstTime));
       } else {
-        console.warn(`Для даты ${formattedDate} сервер не вернул время`);
         dispatch(setTime(""));
         dispatch(removeTimes());
       }

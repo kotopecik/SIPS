@@ -150,4 +150,10 @@ devServer: {
       "@": path.resolve(__dirname, "src"),
     },
   },
+  ignoreWarnings: [
+  {
+    module: /sass-loader/,
+    message: /Deprecation The legacy JS API is deprecated/,
+  },
+],
 };

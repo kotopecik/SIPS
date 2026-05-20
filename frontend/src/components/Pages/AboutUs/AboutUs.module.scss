@@ -1,5 +1,8 @@
 .root {
-  background: #ffffff;
+  background:
+    radial-gradient(circle at 12% 8%, rgba(47, 102, 255, 0.08), transparent 28%),
+    radial-gradient(circle at 88% 18%, rgba(21, 88, 200, 0.07), transparent 30%),
+    linear-gradient(180deg, #f8fbff 0%, #ffffff 42%, #ffffff 100%);
   color: #111827;
 }
 
@@ -8,15 +11,15 @@
 .hero {
   max-width: 1280px;
   margin: 0 auto;
-  padding: 60px 40px 40px;
+  padding: 42px 40px 24px;
   display: grid;
   grid-template-columns: 1fr 1fr;
   align-items: center;
-  gap: 60px;
+  gap: 46px;
 }
 
 .heroLeft {
-  max-width: 420px;
+  max-width: 440px;
 }
 
 .heroText {
@@ -25,6 +28,7 @@
   font-size: 17px;
   line-height: 1.55;
   color: #374151;
+  margin: 0;
 }
 
 .heroRight {
@@ -44,22 +48,95 @@
 
 /* ===== SECTION TITLES ===== */
 
-.sectionBigTitle {
+.sectionBigTitle,
+.featuresTitle {
   margin: 0;
   text-align: center;
   font-family: "SouthGhetto", sans-serif;
-  font-size: 38px;
+  font-size: 42px;
   font-weight: 400;
-  letter-spacing: 0.8px;
+  letter-spacing: 0.9px;
+  line-height: 1.1;
+  color: #111827;
   transform: scale(0.97);
 }
 
-/* ===== PRODUCTS + CAROUSEL (современные карточки) ===== */
+.featuresTitle {
+  margin-bottom: 26px;
+}
+
+/* ===== FEATURES ===== */
+
+.features {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 18px 40px 24px;
+}
+
+.featuresGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+
+.featureCard {
+  position: relative;
+  min-height: 150px;
+  padding: 22px 22px 24px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.88);
+  border: 1px solid rgba(37, 99, 235, 0.12);
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.07);
+  overflow: hidden;
+  transition: all 0.2s ease;
+}
+
+.featureCard:hover {
+  transform: translateY(-4px);
+  border-color: rgba(47, 102, 255, 0.4);
+  box-shadow: 0 16px 34px rgba(15, 23, 42, 0.11);
+}
+
+.featureCard::after {
+  content: "";
+  position: absolute;
+  right: -34px;
+  top: -34px;
+  width: 96px;
+  height: 96px;
+  border-radius: 999px;
+  background: rgba(47, 102, 255, 0.08);
+}
+
+.featureNumber {
+  font-family: "SouthGhetto", sans-serif;
+  font-size: 18px;
+  color: #2f66ff;
+  margin-bottom: 12px;
+  letter-spacing: 1px;
+}
+
+.featureTitle {
+  font-family: "Inter", sans-serif;
+  font-size: 18px;
+  font-weight: 800;
+  color: #111827;
+  margin-bottom: 8px;
+}
+
+.featureText {
+  font-family: "Inter", sans-serif;
+  font-size: 14.5px;
+  line-height: 1.55;
+  color: #475569;
+}
+
+/* ===== PRODUCTS + CAROUSEL ===== */
 
 .products {
   max-width: 1280px;
   margin: 0 auto;
-  padding: 44px 18px 12px;
+  padding: 34px 18px 12px;
 }
 
 .track {
@@ -73,46 +150,71 @@
 
   scrollbar-width: none;
 }
+
 .track::-webkit-scrollbar {
   display: none;
 }
 
 .card {
+  position: relative;
   scroll-snap-align: start;
   flex: 0 0 calc((100% - 40px) / 3);
   min-width: 300px;
 
   background: #ffffff;
   border: 1px solid #e5e7eb;
-  border-radius: 12px;
-  padding: 20px 20px 22px;
-  min-height: 160px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  border-radius: 18px;
+  padding: 24px 22px 24px;
+  min-height: 235px;
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.07);
+  overflow: hidden;
   transition: all 0.2s ease;
 }
 
 .card:hover {
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 16px 32px rgba(15, 23, 42, 0.12);
   transform: translateY(-4px);
-  border-color: #2f66ff;
+  border-color: var(--accent);
+}
+
+.cardAccent {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 5px;
+  width: 100%;
+  background: var(--accent);
+}
+
+.cardHeader {
+  margin-bottom: 16px;
 }
 
 .cardTitle {
   font-family: "SouthGhetto", sans-serif;
-  font-size: 13px;
+  font-size: 26px;
   font-weight: 400;
-  color: #2f66ff;
+  color: var(--accent);
   text-transform: uppercase;
-  letter-spacing: 0.8px;
-  margin-bottom: 12px;
-  line-height: 1.3;
+  letter-spacing: 1px;
+  line-height: 1.1;
+}
+
+.cardCategory {
+  margin-top: 8px;
+  font-family: "Inter", sans-serif;
+  font-size: 13px;
+  font-weight: 800;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .cardText {
   font-family: "Inter", sans-serif;
   font-weight: 500;
-  font-size: 15px;
-  line-height: 1.5;
+  font-size: 14.5px;
+  line-height: 1.55;
   color: #374151;
 }
 
@@ -131,13 +233,14 @@
   border: none;
   cursor: pointer;
   background: #cbd5e1;
+  padding: 0;
 }
 
 .dotActive {
   background: #2f66ff;
 }
 
-/* ===== GUIDE (ЛЕСЕНКА) ===== */
+/* ===== GUIDE ===== */
 
 .guide {
   max-width: 1280px;
@@ -161,10 +264,21 @@
   border-top: 1px solid #e2e8f0;
 }
 
-.step:nth-child(1) { margin-left: 0; }
-.step:nth-child(2) { margin-left: 120px; }
-.step:nth-child(3) { margin-left: 240px; }
-.step:nth-child(4) { margin-left: 360px; }
+.step:nth-child(1) {
+  margin-left: 0;
+}
+
+.step:nth-child(2) {
+  margin-left: 120px;
+}
+
+.step:nth-child(3) {
+  margin-left: 240px;
+}
+
+.step:nth-child(4) {
+  margin-left: 360px;
+}
 
 .step:last-child {
   border-bottom: 1px solid #e2e8f0;
@@ -279,12 +393,21 @@
     justify-content: flex-start;
   }
 
+  .features {
+    padding: 18px 28px 24px;
+  }
+
+  .featuresGrid {
+    grid-template-columns: 1fr;
+  }
+
   .card {
     flex: 0 0 calc((100% - 18px) / 2);
   }
 
   .step {
-    flex-direction: column;
+    margin-left: 0 !important;
+    grid-template-columns: 60px 1fr;
     gap: 12px;
   }
 
@@ -294,12 +417,21 @@
 }
 
 @media (max-width: 560px) {
-  .sectionBigTitle {
+  .sectionBigTitle,
+  .featuresTitle {
     font-size: 32px;
+  }
+
+  .hero {
+    padding: 32px 22px 18px;
   }
 
   .heroTitle {
     font-size: 38px;
+  }
+
+  .features {
+    padding: 16px 22px 20px;
   }
 
   .card {

@@ -1,13 +1,23 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { MouseEvent, WheelEvent } from "react";
+import { DomEvent } from "leaflet";
 import s from "./Settings.module.scss";
+
+import { useAppSelector } from "@/hooks/hook";
+
 import LayerSwitch from "./LayerSwitch/LayerSwitch";
 import AdditionalInformation from "./AdditionalInformation/AdditionalInformation";
 import Satelite from "./Satelite";
+
 import Calendar from "@/components/Calendar";
+import TimeLine from "@/components/Calendar/TimeLine/TimeLine";
 import DownloadSelectedProduct from "@/components/Settings/DownloadSelectedProduct/DownloadSelectedProduct";
 
 const Settings = () => {
+  const panelRef = useRef<HTMLElement | null>(null);
+
+
+
   const [isPanelOpen, setIsPanelOpen] = useState(true);
 
   const [layerOpen, setLayerOpen] = useState(true);
@@ -15,11 +25,18 @@ const Settings = () => {
   const [satelliteOpen, setSatelliteOpen] = useState(true);
   const [dateOpen, setDateOpen] = useState(true);
 
-  const stopMapWheel = (event: WheelEvent<HTMLDivElement>) => {
-    event.stopPropagation();
-  };
+  useEffect(() => {
+    if (!isPanelOpen || !panelRef.current) {
+      return;
+    }
 
-  const stopMapClick = (event: MouseEvent<HTMLDivElement>) => {
+    DomEvent.disableScrollPropagation(panelRef.current);
+    DomEvent.disableClickPropagation(panelRef.current);
+  }, [isPanelOpen]);
+
+  const stopMapEvents = (
+    event: MouseEvent<HTMLElement> | WheelEvent<HTMLElement>
+  ) => {
     event.stopPropagation();
   };
 
@@ -27,14 +44,14 @@ const Settings = () => {
     return (
       <div
         className={s.hiddenPanel}
-        onWheel={stopMapWheel}
-        onWheelCapture={stopMapWheel}
-        onMouseDown={stopMapClick}
-        onClick={stopMapClick}
+        onWheel={stopMapEvents}
+        onClick={stopMapEvents}
+        onMouseDown={stopMapEvents}
+        onDoubleClick={stopMapEvents}
       >
         <button
-          className={s.openPanelButton}
           type="button"
+          className={s.openPanelButton}
           onClick={() => setIsPanelOpen(true)}
         >
           Фильтры ›
@@ -44,19 +61,21 @@ const Settings = () => {
   }
 
   return (
-    <div
+    <aside
+      ref={panelRef}
       className={s.sidebar}
-      onWheel={stopMapWheel}
-      onWheelCapture={stopMapWheel}
-      onMouseDown={stopMapClick}
-      onClick={stopMapClick}
+      onWheel={stopMapEvents}
+      onWheelCapture={stopMapEvents}
+      onClick={stopMapEvents}
+      onMouseDown={stopMapEvents}
+      onDoubleClick={stopMapEvents}
     >
       <div className={s.topLine}>
         <h2 className={s.title}>Фильтры</h2>
 
         <button
-          className={s.hideButton}
           type="button"
+          className={s.hideButton}
           onClick={() => setIsPanelOpen(false)}
           title="Скрыть панель"
         >
@@ -64,7 +83,11 @@ const Settings = () => {
         </button>
       </div>
 
-      <div className={s.scroll}>
+      <div
+        className={s.scroll}
+        onWheel={stopMapEvents}
+        onWheelCapture={stopMapEvents}
+      >
         <div className={s.filterBlock}>
           <div
             className={s.filterHeader}
@@ -87,7 +110,9 @@ const Settings = () => {
             onClick={() => setAdditionalOpen(!additionalOpen)}
           >
             <span>Дополнительные данные</span>
-            <span className={s.filterArrow}>{additionalOpen ? "▾" : "▸"}</span>
+            <span className={s.filterArrow}>
+              {additionalOpen ? "▾" : "▸"}
+            </span>
           </div>
 
           {additionalOpen && (
@@ -103,7 +128,9 @@ const Settings = () => {
             onClick={() => setSatelliteOpen(!satelliteOpen)}
           >
             <span>Спутниковые снимки</span>
-            <span className={s.filterArrow}>{satelliteOpen ? "▾" : "▸"}</span>
+            <span className={s.filterArrow}>
+              {satelliteOpen ? "▾" : "▸"}
+            </span>
           </div>
 
           {satelliteOpen && (
@@ -118,19 +145,24 @@ const Settings = () => {
             className={s.filterHeader}
             onClick={() => setDateOpen(!dateOpen)}
           >
-            <span>Дата</span>
+            <span>Дата и время</span>
             <span className={s.filterArrow}>{dateOpen ? "▾" : "▸"}</span>
           </div>
 
           {dateOpen && (
-            <div className={s.calendarWrapper}>
-              <Calendar />
+            <div className={s.filterContent}>
+              <div className={s.calendarWrapper}>
+                <Calendar />
+              </div>
+
+              <TimeLine />
+
               <DownloadSelectedProduct />
             </div>
           )}
         </div>
       </div>
-    </div>
+    </aside>
   );
 };
 

@@ -1,11 +1,3 @@
-@font-face {
-  font-family: "SouthGhetto";
-  src: url("../../assets/fonts/OFONT.RU_SOUTHGHETTO.TTF") format("truetype");
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
-}
-
 .root {
   position: sticky;
   top: 0;
@@ -16,71 +8,83 @@
 }
 
 .inner {
-  position: relative;
   max-width: 1440px;
-  min-height: 74px;
+  height: 88px;
+  min-height: 88px;
   margin: 0 auto;
-  padding: 10px 40px;
-  display: flex;
+  padding: 8px 42px;
+  box-sizing: border-box;
+
+  display: grid;
+  grid-template-columns: minmax(300px, 390px) 1fr minmax(390px, auto);
   align-items: center;
+  column-gap: 28px;
 }
 
-.logo {
+.brand {
+  height: 64px;
   display: flex;
   align-items: center;
+  gap: 10px;
   text-decoration: none;
-  z-index: 2;
+  min-width: 0;
+  overflow: visible;
+}
 
-  img {
-    height: 48px;
-    width: auto;
-  }
+.logoImg {
+  width: auto;
+  height: 54px;
+  flex-shrink: 0;
+}
+
+.sipsLogoImg {
+  width: auto;
+  height: 92px;
+  flex-shrink: 0;
+  display: block;
+  object-fit: contain;
+  transform: translate(-30px, 5px);
 }
 
 .projectTitle {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
   text-align: center;
-  line-height: 1.15;
+  line-height: 1.2;
   color: #1f2937;
-  pointer-events: none;
-}
-
-.projectShort {
-  position: relative;
-  display: inline-block;
-  font-family: "SouthGhetto", "Segoe UI", Arial, sans-serif;
-  font-size: 36px;
-  font-weight: 400;
-  letter-spacing: 0.08em;
-  line-height: 0.9;
-  color: #1558c8;
-  text-transform: uppercase;
-}
-
-.projectRu {
-  font-size: 13px;
-  font-weight: 700;
-  color: #374151;
-  white-space: nowrap;
+  justify-self: center;
+  max-width: 620px;
+  padding: 0 12px;
 }
 
 .projectEn {
-  font-size: 12px;
-  font-weight: 600;
+  font-size: 18px;
+  font-weight: 800;
+  color: #1f2937;
+  white-space: nowrap;
+}
+
+.projectRu {
+  margin-top: 5px;
+  font-size: 15px;
+  font-weight: 700;
   color: #64748b;
   white-space: nowrap;
+}
+
+.rightSide {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 26px;
+  min-width: 0;
 }
 
 .nav {
   display: flex;
   align-items: center;
-  gap: 32px;
-  font-size: 17px;
-  font-weight: 600;
-  margin-left: auto;
-  z-index: 2;
+  gap: 34px;
+  font-size: 19px;
+  font-weight: 700;
+  white-space: nowrap;
 }
 
 .navLink,
@@ -88,7 +92,7 @@
   color: #374151;
   text-decoration: none;
   transition: color 0.2s ease;
-  padding: 4px 0;
+  padding: 6px 0;
 }
 
 .navLink:hover {
@@ -103,34 +107,35 @@
 .navLinkActive::after {
   content: "";
   position: absolute;
-  bottom: -6px;
+  bottom: -8px;
   left: 0;
   width: 100%;
   height: 2px;
   background: #2563eb;
+  border-radius: 999px;
 }
 
 .avatarWrapper {
   position: relative;
-  z-index: 2;
+  flex-shrink: 0;
 }
 
 .avatarBtn {
-  width: 48px;
-  height: 48px;
+  width: 56px;
+  height: 56px;
   border-radius: 999px;
   overflow: hidden;
-  border: 2.5px solid #2563eb;
+  border: 3px solid #2563eb;
   background: #f1f5f9;
   padding: 0;
   cursor: pointer;
   flex-shrink: 0;
-  transition: transform 0.2s ease;
-  margin-left: 24px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .avatarBtn:hover {
-  transform: scale(1.08);
+  transform: scale(1.05);
+  box-shadow: 0 7px 16px rgba(37, 99, 235, 0.22);
 }
 
 .avatarImg {
@@ -142,32 +147,42 @@
 .avatarFallback {
   width: 100%;
   height: 100%;
+
   display: flex;
   align-items: center;
   justify-content: center;
+
   background: #2563eb;
   color: white;
-  font-size: 20px;
-  font-weight: 700;
+  font-size: 24px;
+  font-weight: 800;
 }
 
 .dropdown {
   position: absolute;
-  top: 58px;
+  top: 68px;
   right: 0;
+
+  width: 190px;
   background: white;
   border: 1px solid #e5e7eb;
-  border-radius: 10px;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-  width: 180px;
+  border-radius: 12px;
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.12);
   overflow: hidden;
   z-index: 2200;
 }
 
 .dropdownItem {
-  padding: 12px 16px;
+  width: 100%;
+  padding: 13px 16px;
+
+  border: none;
+  background: white;
   cursor: pointer;
-  font-size: 15px;
+
+  text-align: left;
+  font-size: 16px;
+  color: #111827;
 }
 
 .dropdownItem:hover {
@@ -178,30 +193,69 @@
   color: #ef4444;
 }
 
-@media (max-width: 1100px) {
-  .projectRu,
-  .projectEn {
-    display: none;
+@media (max-width: 1260px) {
+  .inner {
+    grid-template-columns: minmax(260px, 320px) 1fr minmax(330px, auto);
+    column-gap: 20px;
+    padding: 10px 26px;
   }
 
-  .projectShort {
-    font-size: 20px;
+  .logoImg {
+    height: 48px;
+  }
+
+  .sipsLogoImg {
+    height: 36px;
+  }
+
+  .projectEn {
+    font-size: 16px;
+  }
+
+  .projectRu {
+    font-size: 13px;
+  }
+
+  .nav {
+    gap: 22px;
+    font-size: 17px;
+  }
+
+  .avatarBtn {
+    width: 50px;
+    height: 50px;
   }
 }
 
 @media (max-width: 980px) {
   .inner {
-    padding: 10px 20px;
+    grid-template-columns: auto 1fr auto;
+    padding: 10px 18px;
+  }
+
+  .projectTitle {
+    display: none;
+  }
+
+  .brand {
+    gap: 12px;
+  }
+
+  .logoImg {
+    height: 42px;
+  }
+
+  .sipsLogoImg {
+    height: 30px;
   }
 
   .nav {
-    gap: 18px;
+    gap: 15px;
     font-size: 15px;
   }
 
   .avatarBtn {
-    width: 42px;
-    height: 42px;
-    margin-left: 16px;
+    width: 44px;
+    height: 44px;
   }
 }

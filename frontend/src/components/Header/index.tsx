@@ -5,6 +5,7 @@ import { headerLinksAuth, headerLinksNotAuth } from "@/data/links";
 import { useAppSelector, useAppDispatch } from "@/hooks/hook";
 import { logoutUser } from "@/store/user/user-actions";
 import ivtLogo from "@/assets/ivt-logo.svg";
+import sipsLogo from "@/assets/sips-logo.svg";
 import { ConfirmLogoutModal } from "@/components/ConfirmLogoutModal/ConfirmLogoutModal";
 
 const Header = () => {
@@ -12,8 +13,8 @@ const Header = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const isAuth = useAppSelector((s) => s.user.isAuth);
-  const user = useAppSelector((s) => s.user.user);
+  const isAuth = useAppSelector((state) => state.user.isAuth);
+  const user = useAppSelector((state) => state.user.user);
 
   const [photoUrl, setPhotoUrl] = useState<string | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -39,7 +40,9 @@ const Header = () => {
   const links = isAuth ? headerLinksAuth : headerLinksNotAuth;
 
   const avatarLetter = useMemo(() => {
-    if (!user) return "Л";
+    if (!user) {
+      return "Л";
+    }
 
     const name = user.first_name?.trim() || user.email?.trim() || "";
 
@@ -72,69 +75,89 @@ const Header = () => {
     <>
       <header className={styles.root}>
         <div className={styles.inner}>
-          <Link to="/" className={styles.logo}>
-            <img src={ivtLogo} alt="ИВТ" />
+          <Link to="/home" className={styles.brand}>
+            <img className={styles.logoImg} src={ivtLogo} alt="ИВТ" />
+
+            <img className={styles.sipsLogoImg} src={sipsLogo} alt="SIPS" />
           </Link>
 
           <div className={styles.projectTitle}>
-            <div className={styles.projectShort}>SIPS</div>
-            <div className={styles.projectRu}>
-              Система обработки спутниковых изображений
-            </div>
             <div className={styles.projectEn}>
               Satellite Image Processing System
             </div>
+
+            <div className={styles.projectRu}>
+              Система обработки спутниковых изображений
+            </div>
           </div>
 
-          <nav className={styles.nav}>
-            {links.map((link) => {
-              const active = location.pathname === link.to;
+          <div className={styles.rightSide}>
+            <nav className={styles.nav}>
+              {links.map((link) => {
+                const active = location.pathname === link.to;
 
-              return (
-                <Link
-                  key={link.to}
-                  to={link.to}
-                  className={active ? styles.navLinkActive : styles.navLink}
-                >
-                  {link.title}
-                </Link>
-              );
-            })}
-          </nav>
+                return (
+                  <Link
+                    key={link.id}
+                    to={link.to}
+                    className={active ? styles.navLinkActive : styles.navLink}
+                  >
+                    {link.title}
+                  </Link>
+                );
+              })}
+            </nav>
 
-          <div className={styles.avatarWrapper}>
-            <button
-              className={styles.avatarBtn}
-              onClick={() => setMenuOpen((value) => !value)}
-              type="button"
-              aria-label="Профиль"
-            >
-              {photoUrl ? (
-                <img src={photoUrl} alt="avatar" className={styles.avatarImg} />
-              ) : (
-                <div className={styles.avatarFallback}>{avatarLetter}</div>
-              )}
-            </button>
-
-            {menuOpen && (
-              <div className={styles.dropdown}>
-                {isAuth ? (
-                  <>
-                    <div className={styles.dropdownItem} onClick={goToProfile}>
-                      Личный кабинет
-                    </div>
-
-                    <div className={styles.dropdownItem} onClick={openLogoutModal}>
-                      Выход
-                    </div>
-                  </>
+            <div className={styles.avatarWrapper}>
+              <button
+                className={styles.avatarBtn}
+                onClick={() => setMenuOpen((value) => !value)}
+                type="button"
+                aria-label="Профиль"
+              >
+                {photoUrl ? (
+                  <img
+                    className={styles.avatarImg}
+                    src={photoUrl}
+                    alt="Аватар пользователя"
+                  />
                 ) : (
-                  <div className={styles.dropdownItem} onClick={goToLogin}>
-                    Войти
-                  </div>
+                  <div className={styles.avatarFallback}>{avatarLetter}</div>
                 )}
-              </div>
-            )}
+              </button>
+
+              {menuOpen && (
+                <div className={styles.dropdown}>
+                  {isAuth ? (
+                    <>
+                      <button
+                        type="button"
+                        className={styles.dropdownItem}
+                        onClick={goToProfile}
+                      >
+                        Личный кабинет
+                      </button>
+
+                      <button
+                        type="button"
+                        className={styles.dropdownItem}
+                        onClick={openLogoutModal}
+                      >
+                        Выход
+                      </button>
+                    </>
+                  ) : (
+                    <button
+                      type="button"
+                      className={styles.dropdownItem}
+                      onClick={goToLogin}
+                    >
+                      Войти
+                    </button>
+                  )}
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </header>

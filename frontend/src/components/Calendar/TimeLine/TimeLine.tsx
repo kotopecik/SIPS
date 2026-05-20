@@ -1,61 +1,76 @@
-import React from 'react';
-import s from './TimeLine.module.scss';
-import { Dayjs } from 'dayjs';
-import {
-  getMarksWithEqualIntervals,
-  getMaxValue,
-  getMinValue,
-  months,
-} from '@/utils/calendar';
-import { Box } from '@mui/system';
-import Slider from '@mui/material/Slider';
-import { useAppDispatch, useAppSelector } from '@/hooks/hook';
-import { Mark } from '@mui/base';
-import { setTime } from '@/store/tile/tile-slice';
+import type { ChangeEvent } from "react";
+import s from "./TimeLine.module.scss";
+import { useAppDispatch, useAppSelector } from "@/hooks/hook";
+import { setTime } from "@/store/tile/tile-slice";
+import { Mark } from "@mui/base";
 
-interface Props {
-  selectDate: Dayjs;
-}
+const normalizeTime = (value: unknown): string => {
+  if (typeof value !== "string" && typeof value !== "number") {
+    return "";
+  }
 
-const TimeLine = ({ selectDate }: Props) => {
-  // Убрана бесполезная и ошибочная строка
-  // const dates = useAppSelector(state => state.tile).dates;
+  const onlyDigits = String(value).replace(/\D/g, "");
 
-  const times: Mark[] = useAppSelector(state => state.tile.times);
+  if (!onlyDigits) {
+    return "";
+  }
+
+  return onlyDigits.padStart(4, "0").slice(0, 4);
+};
+
+const formatTimeLabel = (time: string): string => {
+  if (time.length !== 4) {
+    return time;
+  }
+
+  return `${time.slice(0, 2)}:${time.slice(2, 4)}`;
+};
+
+const TimeLine = () => {
   const dispatch = useAppDispatch();
 
-  const handleSliderChange = (event: Event, newValue: number | number[]) => {
-    const marks = getMarksWithEqualIntervals(times);
-    const foundMark = marks.find((el: Mark) => el.value === (newValue as number));
-    const newTime = foundMark?.label?.toString().replace(':', '') ?? '';
-    dispatch(setTime(newTime));
+  const times: Mark[] = useAppSelector((state) => state.tile.times) || [];
+  const selectedTime = useAppSelector((state) => state.tile.dateTime.time);
+
+  const normalizedTimes = times
+    .map((time) => {
+      const label = normalizeTime(time.label);
+      const value = normalizeTime(time.value);
+
+      const normalizedValue = value || label;
+
+      return {
+        label: formatTimeLabel(normalizedValue),
+        value: normalizedValue,
+      };
+    })
+    .filter((time) => time.value);
+
+  const handleChange = (event: ChangeEvent<HTMLSelectElement>) => {
+    dispatch(setTime(event.target.value));
   };
 
-  const marksLength = getMarksWithEqualIntervals(times).length;
-
   return (
-    <div className={s.timeline}>
-      <span>{selectDate.date()}</span>
-      <span>{months[selectDate.month()]}</span>
-      <span>{selectDate.year()}</span>
+    <div className={s.timeBlock}>
+      <label className={s.label}>Время съёмки</label>
 
-      <Box
-        className={s.box}
-        sx={{
-          width: 370,
-          overflow: marksLength > 8 ? 'auto' : 'hidden',
-          padding: '0 20px 20px 20px',
-        }}
-      >
-        <Slider
-          style={{ width: marksLength > 8 ? `${marksLength * 60}px` : '100%' }} // чуть улучшил расчёт ширины
-          min={getMinValue(times)}
-          max={getMaxValue(times)}
-          step={null}
-          marks={times}
-          onChange={handleSliderChange}
-        />
-      </Box>
+      {normalizedTimes.length > 0 ? (
+        <select
+          className={s.select}
+          value={selectedTime || normalizedTimes[0].value}
+          onChange={handleChange}
+        >
+          {normalizedTimes.map((time) => (
+            <option key={time.value} value={time.value}>
+              {time.label}
+            </option>
+          ))}
+        </select>
+      ) : (
+        <div className={s.emptyTime}>
+          Для выбранной даты время не найдено
+        </div>
+      )}
     </div>
   );
 };
