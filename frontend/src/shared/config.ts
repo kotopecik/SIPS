@@ -1,4 +1,4 @@
-export const USE_MOCK_AUTH = true;
+export const USE_MOCK_AUTH = false;
 
 export const SERVER_URL = "https://gis-eng3.esemc.nsc.ru:8443";
 

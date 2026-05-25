@@ -6,7 +6,11 @@ import { ICompositeResponse } from "@/interfaces/ICompositeResponse";
 import { ESatellite } from "@/enums/ESatellite";
 
 type DatesServerResponse = {
-  dates: Record<string, Record<string, string[]>>;
+  dates: Record<string, Record<string, Record<string, string[]>>>;
+};
+
+type TimesServerResponse = {
+  times: string[];
 };
 
 const FALLBACK_DATES: IDates = {
@@ -83,6 +87,7 @@ const normalizeDates = (data: IDates | DatesServerResponse): IDates => {
   if ("dates" in data) {
     const dotdates = Object.values(data.dates)
       .flatMap((months) => Object.values(months))
+      .flatMap((weeks) => Object.values(weeks))
       .flat()
       .sort();
 
@@ -100,46 +105,51 @@ const normalizeDates = (data: IDates | DatesServerResponse): IDates => {
   };
 };
 
-const normalizeTimes = (data: any): Mark[] => {
-  if (Array.isArray(data)) {
-    return data.map((item) => {
-      if (typeof item === "string") {
-        return {
-          label: item,
-          value: Number(item),
-        };
-      }
+const timeToSliderValue = (time: string): number => {
+  return Number(time.replace(/[:\-]/g, ""));
+};
 
-      return {
-        label: String(item.label ?? item.time ?? item.value ?? ""),
-        value: Number(item.value ?? item.time ?? item.label ?? 0),
-      };
-    });
+const normalizeTimeLabel = (time: string): string => {
+  return time.replace("-", ":");
+};
+
+const normalizeTimes = (data: TimesServerResponse | string[] | any): Mark[] => {
+  const times = Array.isArray(data) ? data : data?.times;
+
+  if (!Array.isArray(times)) {
+    return [];
   }
 
-  if (data?.times && Array.isArray(data.times)) {
-    return data.times.map((item: any) => {
-      if (typeof item === "string") {
-        return {
-          label: item,
-          value: Number(item),
-        };
-      }
+  return times.map((item) => {
+    const label = normalizeTimeLabel(String(item));
 
-      return {
-        label: String(item.label ?? item.time ?? item.value ?? ""),
-        value: Number(item.value ?? item.time ?? item.label ?? 0),
-      };
-    });
+    return {
+      label,
+      value: timeToSliderValue(label),
+    };
+  });
+};
+
+const toServerTime = (time: string): string => {
+  if (time.includes("-")) {
+    return time;
   }
 
-  return [];
+  if (time.includes(":")) {
+    return time.replace(":", "-");
+  }
+
+  if (time.length === 4) {
+    return `${time.slice(0, 2)}-${time.slice(2)}`;
+  }
+
+  return time;
 };
 
 export default class TileService {
   static async getDates(): Promise<IDates> {
     try {
-      const response = await api.get<IDates | DatesServerResponse>("/vICOD/dates");
+      const response = await api.get<IDates | DatesServerResponse>("/vicod/dates");
 
       return normalizeDates(response.data);
     } catch (error) {
@@ -154,9 +164,9 @@ export default class TileService {
 
   static async getTimes(date: string): Promise<Mark[]> {
     try {
-      const response = await api.post(`/vICOD/dates/${date}/times`, {
-        date,
-      });
+      const response = await api.get<TimesServerResponse>(
+        `/vicod/dates/${date}/times`
+      );
 
       const times = normalizeTimes(response.data);
 
@@ -169,7 +179,7 @@ export default class TileService {
       if (date === "2023-06-17") {
         return [
           {
-            label: "0720",
+            label: "07:20",
             value: 720,
           },
         ];
@@ -181,7 +191,7 @@ export default class TileService {
 
   static async getSatellites(): Promise<ISatelliteResponse[]> {
     try {
-      const response = await api.get<ISatelliteResponse[]>("/vICOD/satellites");
+      const response = await api.get<ISatelliteResponse[]>("/vicod/satellites");
 
       return response.data;
     } catch (error) {
@@ -200,13 +210,11 @@ export default class TileService {
     time: string
   ): Promise<ICompositeResponse> {
     try {
-      const response = await api.get<ICompositeResponse>("/vCD/composites", {
-        params: {
-          satellite,
-          date,
-          time,
-        },
-      });
+      const serverTime = toServerTime(time);
+
+      const response = await api.get<ICompositeResponse>(
+        `/vicod/composites/${satellite}/${date}/${serverTime}`
+      );
 
       return {
         composites: response.data.composites ?? [],

@@ -7,7 +7,12 @@ import { logoutUser } from "@/store/user/user-actions";
 import ivtLogo from "@/assets/ivt-logo.svg";
 import sipsLogo from "@/assets/sips-logo.svg";
 import { ConfirmLogoutModal } from "@/components/ConfirmLogoutModal/ConfirmLogoutModal";
+import AuthService from "@/service/auth-service";
 
+type HeaderProfile = {
+  first_name?: string;
+  email?: string;
+} | null;
 const Header = () => {
   const dispatch = useAppDispatch();
   const location = useLocation();
@@ -15,6 +20,7 @@ const Header = () => {
 
   const isAuth = useAppSelector((state) => state.user.isAuth);
   const user = useAppSelector((state) => state.user.user);
+  const [profileUser, setProfileUser] = useState<HeaderProfile>(null);
 
   const [photoUrl, setPhotoUrl] = useState<string | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -37,17 +43,52 @@ const Header = () => {
     };
   }, []);
 
+  useEffect(() => {
+  if (!isAuth) {
+    setProfileUser(null);
+    return;
+  }
+
+  let isMounted = true;
+
+  const loadProfile = async () => {
+    try {
+      const response = await AuthService.getProfile();
+
+      if (!isMounted) return;
+
+      setProfileUser(response.data);
+    } catch (error) {
+      console.error("Ошибка загрузки профиля в шапке:", error);
+    }
+  };
+
+  loadProfile();
+
+  const handleProfileUpdated = () => {
+    loadProfile();
+  };
+
+  window.addEventListener("profileUpdated", handleProfileUpdated);
+
+  return () => {
+    isMounted = false;
+    window.removeEventListener("profileUpdated", handleProfileUpdated);
+  };
+}, [isAuth]);
+
   const links = isAuth ? headerLinksAuth : headerLinksNotAuth;
 
   const avatarLetter = useMemo(() => {
-    if (!user) {
-      return "Л";
-    }
+  const name =
+    profileUser?.first_name?.trim() ||
+    user?.first_name?.trim() ||
+    profileUser?.email?.trim() ||
+    user?.email?.trim() ||
+    "";
 
-    const name = user.first_name?.trim() || user.email?.trim() || "";
-
-    return name ? name[0].toUpperCase() : "Л";
-  }, [user]);
+  return (name.charAt(0) || "Л").toUpperCase();
+}, [profileUser, user]);
 
   const goToProfile = () => {
     setMenuOpen(false);

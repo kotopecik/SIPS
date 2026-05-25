@@ -1,6 +1,6 @@
-import { TileLayer } from "react-leaflet";
-import { EUrls, TILE_DOMAIN } from "@/enums/EUrls";
+﻿import { TileLayer } from "react-leaflet";
 import { useAppSelector } from "@/hooks/hook";
+import { buildTileUrl } from "@/utils/tileUrl";
 
 export const TileService = () => {
   const satellite = useAppSelector((state) => state.tile.satellite);
@@ -12,7 +12,7 @@ export const TileService = () => {
     return null;
   }
 
-  const tileUrl = `${TILE_DOMAIN}/${satellite}/${date}/${time}/${composite}/${EUrls.VIIRS_TILE_ENDPOINT}`;
+  const tileUrl = buildTileUrl(satellite, date, time, composite);
 
   return (
     <TileLayer

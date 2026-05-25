@@ -7,10 +7,27 @@ const api = axios.create({
   withCredentials: false,
 });
 
+const publicAuthEndpoints = [
+  "/account/auth/token/",
+  "/account/auth/token/refresh/",
+  "/account/auth/token/verify/",
+  "/account/register/",
+  "/account/register/verify/",
+  "/account/register-email/",
+  "/account/register-email/verify/",
+  "/account/reset-password/send-link/",
+  "/account/reset-password/",
+];
+
 api.interceptors.request.use((config: InternalAxiosRequestConfig) => {
   const token = localStorage.getItem("token");
+  const url = config.url || "";
 
-  if (token && !token.startsWith("mock_")) {
+  const isPublicAuthEndpoint = publicAuthEndpoints.some((endpoint) =>
+    url.startsWith(endpoint)
+  );
+
+  if (token && !token.startsWith("mock_") && !isPublicAuthEndpoint) {
     config.headers.set("Authorization", `Bearer ${token}`);
   }
 

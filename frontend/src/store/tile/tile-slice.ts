@@ -1,6 +1,6 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+﻿import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import dayjs from "dayjs";
-import { Mark } from "@mui/base";
+import type { Mark } from "@mui/base";
 import { ISatelliteResponse } from "@/interfaces/ISatelliteResponse";
 import { ESatellite } from "@/enums/ESatellite";
 import { EComposite } from "@/enums/EComposite";

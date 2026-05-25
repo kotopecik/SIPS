@@ -60,7 +60,13 @@ devServer: {
   allowedHosts: "all",
   host: "0.0.0.0",
 
-  proxy: {
+    proxy: {
+    "/api/account": {
+      target: "http://127.0.0.1:5000",
+      changeOrigin: true,
+      secure: false,
+    },
+
     "/api": {
       target: "https://gis-eng3.esemc.nsc.ru:8443/api",
       changeOrigin: true,

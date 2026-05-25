@@ -3,6 +3,7 @@ import styles from "./ProfilePage.module.scss";
 import { useAppDispatch, useAppSelector } from "@/hooks/hook";
 import { logoutUser } from "@/store/user/user-actions";
 import { useNavigate } from "react-router-dom";
+import AuthService from "@/service/auth-service";
 import { ConfirmLogoutModal } from "@/components/ConfirmLogoutModal/ConfirmLogoutModal";
 import DownloadHistoryService, {
   type DownloadHistoryItem,
@@ -11,6 +12,12 @@ import DownloadHistoryService, {
 type ProfileTab = "profile" | "history";
 
 const ITEMS_PER_PAGE = 10;
+
+const getAvatarLetter = (firstName?: string, email?: string): string => {
+  const value = String(firstName || email || "").trim();
+
+  return (value.charAt(0) || "Л").toUpperCase();
+};
 
 export default function Profile() {
   const dispatch = useAppDispatch();
@@ -56,19 +63,45 @@ export default function Profile() {
   const [isSavingPassword, setIsSavingPassword] = useState(false);
 
   useEffect(() => {
-    const saved = localStorage.getItem("userPhoto");
-    if (saved) setPhotoUrl(saved);
+    let isMounted = true;
+
+    const loadProfile = async () => {
+      try {
+        const response = await AuthService.getProfile();
+        const profile = response.data;
+
+        if (!isMounted) return;
+
+        setPersonalForm((prev) => ({
+          ...prev,
+          last_name: profile.last_name || "",
+          first_name: profile.first_name || "",
+          middle_name: profile.middle_name || "",
+          email: profile.email || "",
+        }));
+      } catch (error) {
+        console.error("Ошибка загрузки профиля:", error);
+      }
+    };
+
+    loadProfile();
+
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
-  useEffect(() => {
-    setPersonalForm({
-      last_name: user?.last_name || "",
-      first_name: user?.first_name || "",
-      middle_name: user?.middle_name || "",
-      organization: user?.organization || "",
-      email: user?.email || "",
-    });
-  }, [user]);
+useEffect(() => {
+  const saved = localStorage.getItem("userPhoto");
+
+  if (saved?.startsWith("data:image/")) {
+    setPhotoUrl(saved);
+    return;
+  }
+
+  localStorage.removeItem("userPhoto");
+  setPhotoUrl(null);
+}, []);
 
   useEffect(() => {
     if (activeTab !== "history") return;
@@ -132,15 +165,22 @@ export default function Profile() {
   };
 
   const onPickPhoto = (e: ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
+  const file = e.target.files?.[0];
 
-    if (!file || !file.type.startsWith("image/")) return;
+  if (!file || !file.type.startsWith("image/")) return;
 
-    const url = URL.createObjectURL(file);
-    setPhotoUrl(url);
-    localStorage.setItem("userPhoto", url);
-    e.target.value = "";
+  const reader = new FileReader();
+
+  reader.onload = () => {
+    const result = String(reader.result || "");
+
+    setPhotoUrl(result);
+    localStorage.setItem("userPhoto", result);
   };
+
+  reader.readAsDataURL(file);
+  e.target.value = "";
+};
 
   const onDeletePhoto = () => {
     setPhotoUrl(null);
@@ -169,13 +209,41 @@ export default function Profile() {
       return;
     }
 
-    setIsSavingPersonal(true);
-    await new Promise((r) => setTimeout(r, 800));
-    setPersonalMsg({
-      type: "success",
-      text: "Данные успешно обновлены ✓",
-    });
-    setIsSavingPersonal(false);
+        setIsSavingPersonal(true);
+
+    try {
+      const response = await AuthService.updateProfile({
+        last_name: personalForm.last_name,
+        first_name: personalForm.first_name,
+        middle_name: personalForm.middle_name,
+        email: personalForm.email,
+      });
+
+      const updatedProfile = response.data;
+
+      setPersonalForm((prev) => ({
+        ...prev,
+        last_name: updatedProfile.last_name || "",
+        first_name: updatedProfile.first_name || "",
+        middle_name: updatedProfile.middle_name || "",
+        email: updatedProfile.email || "",
+      }));
+
+      setPersonalMsg({
+        type: "success",
+        text: "Данные успешно обновлены ✓",
+      });
+      window.dispatchEvent(new Event("profileUpdated"));
+    } catch (error) {
+      console.error("Ошибка обновления профиля:", error);
+
+      setPersonalMsg({
+        type: "error",
+        text: "Не удалось обновить данные профиля",
+      });
+    } finally {
+      setIsSavingPersonal(false);
+    }
   };
 
   const handlePasswordSave = async () => {
@@ -209,18 +277,35 @@ export default function Profile() {
       return;
     }
 
-    setIsSavingPassword(true);
-    await new Promise((r) => setTimeout(r, 800));
-    setPasswordMsg({
-      type: "success",
-      text: "Пароль успешно изменён ✓",
-    });
-    setPasswordForm({
-      old_password: "",
-      new_password: "",
-      new_password2: "",
-    });
-    setIsSavingPassword(false);
+        setIsSavingPassword(true);
+
+    try {
+      await AuthService.changePassword({
+        old_password: passwordForm.old_password,
+        password: passwordForm.new_password,
+        password_confirm: passwordForm.new_password2,
+      });
+
+      setPasswordMsg({
+        type: "success",
+        text: "Пароль успешно изменён ✓",
+      });
+
+      setPasswordForm({
+        old_password: "",
+        new_password: "",
+        new_password2: "",
+      });
+    } catch (error) {
+      console.error("Ошибка смены пароля:", error);
+
+      setPasswordMsg({
+        type: "error",
+        text: "Не удалось изменить пароль",
+      });
+    } finally {
+      setIsSavingPassword(false);
+    }
   };
 
   const onLogout = async () => {
@@ -243,7 +328,7 @@ export default function Profile() {
                 <img src={photoUrl} alt="avatar" />
               ) : (
                 <div className={styles.avatarFallbackBig}>
-                  {(user?.first_name || user?.email || "Л")[0].toUpperCase()}
+                  {getAvatarLetter(personalForm.first_name, personalForm.email)}
                 </div>
               )}
             </div>

@@ -20,6 +20,7 @@ const UserGuide = lazy(() => import("@/components/Pages/UserGuide/UserGuide"));
 const AboutUs = lazy(() => import("@/components/Pages/AboutUs"));
 const Map = lazy(() => import("@/components/Map/Map"));
 const Profile = lazy(() => import("@/components/Pages/Profile"));
+const VerifyUser = lazy(() => import("@/components/Pages/VerifyUser"));
 
 function Main() {
   const dispatch = useAppDispatch();
@@ -100,6 +101,13 @@ function Main() {
         />
 
         <Route
+          path="/reset-password"
+          element={
+            <RestoreAccess />
+          }
+        />
+
+        <Route
           path="/management"
           element={
             <Suspense fallback={<Loading />}>
@@ -123,6 +131,13 @@ function Main() {
             <Suspense fallback={<Loading />}>
               {isAuth ? <Profile /> : <NotFound />}
             </Suspense>
+          }
+        />
+
+        <Route
+          path="/verify-user"
+          element={
+            <VerifyUser />
           }
         />
 
