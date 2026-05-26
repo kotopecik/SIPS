@@ -1,11 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import s from "./Calendar.module.scss";
-import {
-  setDotDate,
-  setNonDotDate,
-  setTime,
-  removeTimes,
-} from "@/store/tile/tile-slice";
+import { setDotDate, setTime, removeTimes } from "@/store/tile/tile-slice";
 import { useAppDispatch, useAppSelector } from "@/hooks/hook";
 import {
   days,
@@ -13,38 +8,45 @@ import {
   isThereDataForThisDay,
   getStringDate,
 } from "@/utils/calendar";
-import { fetchTimes, fetchDates } from "@/store/tile/tile-actions";
+import { fetchTimes } from "@/store/tile/tile-actions";
 import dayjs, { Dayjs } from "dayjs";
 
 type CalendarView = "days" | "months" | "years";
 
-const normalizeTime = (value: unknown): string => {
-  if (typeof value !== "string" && typeof value !== "number") {
-    return "";
-  }
+interface CalendarProps {
+  disabled?: boolean;
+}
 
-  const onlyDigits = String(value).replace(/\D/g, "");
-
-  if (!onlyDigits) {
-    return "";
-  }
-
-  return onlyDigits.padStart(4, "0").slice(0, 4);
-};
-
-const Calendar = () => {
+const Calendar = ({ disabled = false }: CalendarProps) => {
   const dispatch = useAppDispatch();
 
   const nondotdates: string[] =
     useAppSelector((state) => state.tile.nondotdates) || [];
 
-  const [currentDate, setCurrentDate] = useState<Dayjs>(dayjs("2023-06-17"));
-  const [selectedDate, setSelectedDate] = useState<Dayjs>(dayjs("2023-06-17"));
+  const selectedDotDate = useAppSelector(
+    (state) => state.tile.dateTime.dotdate
+  );
+
+  const [currentDate, setCurrentDate] = useState<Dayjs>(dayjs("2023-06-01"));
+  const [selectedDate, setSelectedDate] = useState<Dayjs | null>(null);
   const [view, setView] = useState<CalendarView>("days");
 
   useEffect(() => {
-    dispatch(fetchDates(""));
-  }, [dispatch]);
+    if (selectedDotDate) {
+      setSelectedDate(dayjs(selectedDotDate));
+      setCurrentDate(dayjs(selectedDotDate));
+      return;
+    }
+
+    setSelectedDate(null);
+  }, [selectedDotDate]);
+
+  useEffect(() => {
+    if (!selectedDotDate && nondotdates.length > 0) {
+      const firstDate = dayjs(nondotdates[0], "YYYYMMDD");
+      setCurrentDate(firstDate);
+    }
+  }, [nondotdates, selectedDotDate]);
 
   const calendarDays = useMemo(() => {
     const startOfMonth = currentDate.startOf("month");
@@ -60,35 +62,27 @@ const Calendar = () => {
   }, [currentDate]);
 
   const handleDayClick = async (date: Dayjs) => {
-    setSelectedDate(date);
-    setCurrentDate(date);
-    setView("days");
+    if (disabled) {
+      return;
+    }
 
     const stringDate = getStringDate(date);
     const formattedDate = date.format("YYYY-MM-DD");
 
-    dispatch(setNonDotDate(stringDate));
-    dispatch(setDotDate(formattedDate));
-
     if (!isThereDataForThisDay(stringDate, nondotdates)) {
-      dispatch(setTime(""));
-      dispatch(removeTimes());
       return;
     }
 
+    setSelectedDate(date);
+    setCurrentDate(date);
+    setView("days");
+
+    dispatch(setDotDate(formattedDate));
+    dispatch(setTime(""));
+    dispatch(removeTimes());
+
     try {
-      const times = await dispatch(fetchTimes(formattedDate)).unwrap();
-
-      if (times && times.length > 0) {
-        const firstLabel = normalizeTime(times[0].label);
-        const firstValue = normalizeTime(times[0].value);
-        const firstTime = firstLabel || firstValue;
-
-        dispatch(setTime(firstTime));
-      } else {
-        dispatch(setTime(""));
-        dispatch(removeTimes());
-      }
+      await dispatch(fetchTimes(formattedDate)).unwrap();
     } catch (error) {
       console.error("Ошибка загрузки времени:", error);
       dispatch(setTime(""));
@@ -115,6 +109,16 @@ const Calendar = () => {
     setCurrentDate((date) => date.year(year));
     setView("months");
   };
+
+  if (disabled) {
+    return (
+      <div className={s.block}>
+        <div className={s.calendar}>
+          <div>Сначала выберите спутник</div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className={s.block}>
@@ -197,13 +201,14 @@ const Calendar = () => {
               {calendarDays.map((date) => {
                 const stringDate = getStringDate(date);
                 const hasData = isThereDataForThisDay(stringDate, nondotdates);
-                const isSelected = selectedDate.isSame(date, "day");
+                const isSelected = selectedDate?.isSame(date, "day") ?? false;
                 const isCurrentMonth = date.month() === currentDate.month();
 
                 return (
                   <button
                     key={date.format("YYYY-MM-DD")}
                     type="button"
+                    disabled={!hasData}
                     className={[
                       s.normalday,
                       hasData ? s.daygreen : "",

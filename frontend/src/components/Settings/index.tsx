@@ -8,6 +8,7 @@ import { useAppSelector } from "@/hooks/hook";
 import LayerSwitch from "./LayerSwitch/LayerSwitch";
 import AdditionalInformation from "./AdditionalInformation/AdditionalInformation";
 import Satelite from "./Satelite";
+import Composites from "./Composites";
 
 import Calendar from "@/components/Calendar";
 import TimeLine from "@/components/Calendar/TimeLine/TimeLine";
@@ -16,7 +17,13 @@ import DownloadSelectedProduct from "@/components/Settings/DownloadSelectedProdu
 const Settings = () => {
   const panelRef = useRef<HTMLElement | null>(null);
 
+  const satellite = useAppSelector((state) => state.tile.satellite);
+  const dotDate = useAppSelector((state) => state.tile.dateTime.dotdate);
+  const time = useAppSelector((state) => state.tile.dateTime.time);
 
+  const isDateEnabled = Boolean(satellite);
+  const isTimeEnabled = Boolean(satellite && dotDate);
+  const isCompositeEnabled = Boolean(satellite && dotDate && time);
 
   const [isPanelOpen, setIsPanelOpen] = useState(true);
 
@@ -24,6 +31,7 @@ const Settings = () => {
   const [additionalOpen, setAdditionalOpen] = useState(true);
   const [satelliteOpen, setSatelliteOpen] = useState(true);
   const [dateOpen, setDateOpen] = useState(true);
+  const [compositeOpen, setCompositeOpen] = useState(true);
 
   useEffect(() => {
     if (!isPanelOpen || !panelRef.current) {
@@ -152,12 +160,30 @@ const Settings = () => {
           {dateOpen && (
             <div className={s.filterContent}>
               <div className={s.calendarWrapper}>
-                <Calendar />
+                <Calendar disabled={!isDateEnabled} />
               </div>
 
-              <TimeLine />
+              <TimeLine disabled={!isTimeEnabled} />
 
               <DownloadSelectedProduct />
+            </div>
+          )}
+        </div>
+
+        <div className={s.filterBlock}>
+          <div
+            className={s.filterHeader}
+            onClick={() => setCompositeOpen(!compositeOpen)}
+          >
+            <span>Композиты VIIRS</span>
+            <span className={s.filterArrow}>
+              {compositeOpen ? "▾" : "▸"}
+            </span>
+          </div>
+
+          {compositeOpen && (
+            <div className={s.filterContent}>
+              <Composites disabled={!isCompositeEnabled} />
             </div>
           )}
         </div>

@@ -26,89 +26,41 @@ interface TileState {
   times: Mark[];
   satellites: ISatelliteResponse[];
   composites: string[];
-  satellite: ESatellite;
-  composite: EComposite;
+  satellite: ESatellite | null;
+  composite: EComposite | null;
   isLoading: boolean;
 }
 
 const initialState: TileState = {
   currentDate: dayjs(),
   calendar: [],
-
-  dotdates: [
-    "2023-06-17",
-    "2023-06-18",
-    "2023-06-19",
-    "2023-06-20",
-    "2023-06-21",
-    "2023-06-22",
-    "2023-06-23",
-    "2023-06-24",
-    "2023-06-25",
-    "2023-06-26",
-    "2023-06-27",
-    "2023-06-28",
-    "2023-06-29",
-    "2023-06-30",
-  ],
-
-  nondotdates: [
-    "20230617",
-    "20230618",
-    "20230619",
-    "20230620",
-    "20230621",
-    "20230622",
-    "20230623",
-    "20230624",
-    "20230625",
-    "20230626",
-    "20230627",
-    "20230628",
-    "20230629",
-    "20230630",
-  ],
-
+  dotdates: [],
+  nondotdates: [],
   dateTime: {
-    dotdate: "2023-06-17",
-    nondotdate: "20230617",
-    time: "0720",
+    dotdate: "",
+    nondotdate: "",
+    time: "",
   },
-
-  times: [{ label: "0720", value: 720 }],
-
-  satellites: [
-    { id: 1, name: "Suomi NPP", tag: ESatellite.SUOMI_NPP },
-    { id: 2, name: "NOAA-20", tag: ESatellite.NOAA_20 },
-  ],
-
-  composites: [
-    "aot550",
-    "aotaps",
-    "clphs",
-    "clmsk",
-    "clmsk2",
-    "frmsk",
-    "vievi",
-    "vindvi",
-    "vlst",
-    "vscmo",
-  ],
-
-  satellite: "snpp" as ESatellite,
-  composite: "aot550" as EComposite,
+  times: [],
+  satellites: [],
+  composites: [],
+  satellite: null,
+  composite: null,
   isLoading: false,
 };
 
 const tileSlice = createSlice({
   name: "tile",
-
   initialState,
 
   reducers: {
     setDotDate: (state, action: PayloadAction<string>) => {
       state.dateTime.dotdate = action.payload;
       state.dateTime.nondotdate = action.payload.replace(/-/g, "");
+      state.dateTime.time = "";
+      state.composite = null;
+      state.times = [];
+      state.composites = [];
     },
 
     setNonDotDate: (state, action: PayloadAction<string>) => {
@@ -117,18 +69,38 @@ const tileSlice = createSlice({
 
     setTime: (state, action: PayloadAction<string>) => {
       state.dateTime.time = action.payload;
+      state.composite = null;
+      state.composites = [];
     },
 
     setSatellite: (state, action: PayloadAction<ESatellite>) => {
       state.satellite = action.payload;
+      state.dateTime = {
+        dotdate: "",
+        nondotdate: "",
+        time: "",
+      };
+      state.composite = null;
+      state.times = [];
+      state.composites = [];
     },
 
-    setComposite: (state, action: PayloadAction<EComposite>) => {
+    setComposite: (state, action: PayloadAction<EComposite | null>) => {
       state.composite = action.payload;
+    },
+
+    toggleComposite: (state, action: PayloadAction<EComposite>) => {
+      state.composite =
+        state.composite === action.payload ? null : action.payload;
     },
 
     removeTimes: (state) => {
       state.times = [];
+    },
+
+    clearComposites: (state) => {
+      state.composites = [];
+      state.composite = null;
     },
   },
 
@@ -169,6 +141,10 @@ const tileSlice = createSlice({
 
       .addCase(fetchComposites.fulfilled, (state, action) => {
         state.composites = action.payload?.composites ?? [];
+      })
+
+      .addCase(fetchComposites.rejected, (state) => {
+        state.composites = [];
       });
   },
 });
@@ -179,7 +155,9 @@ export const {
   setTime,
   setSatellite,
   setComposite,
+  toggleComposite,
   removeTimes,
+  clearComposites,
 } = tileSlice.actions;
 
 export default tileSlice.reducer;

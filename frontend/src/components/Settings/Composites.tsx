@@ -1,6 +1,8 @@
 import { useState } from "react";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Switch from "@mui/material/Switch";
 import { useAppDispatch, useAppSelector } from "@/hooks/hook";
-import { setComposite } from "@/store/tile/tile-slice";
+import { toggleComposite } from "@/store/tile/tile-slice";
 import { EComposite } from "@/enums/EComposite";
 import s from "./Settings.module.scss";
 
@@ -9,34 +11,38 @@ const compositeDescriptions: Record<string, string> = {
     "Продукт, отражающий концентрацию аэрозольных частиц в атмосфере по ослаблению солнечного излучения на длине волны 550 нм. Используется для оценки качества воздуха и анализа дымовых шлейфов.",
 
   aotaps:
-    "Продукт, отражающий концентрацию аэрозольных частиц в атмосфере по ослаблению солнечного излучения на длине волны 550 нм с учетом поляризационных характеристик рассеянного излучения. Получен по алгоритму APS.",
+    "Продукт, отражающий концентрацию аэрозольных частиц в атмосфере с учетом поляризационных характеристик рассеянного излучения. Получен по алгоритму APS.",
 
   clphs:
-    "Продукт, определяющий фазовое состояние облаков (жидкая, ледяная, смешанная) на основе теплового излучения в инфракрасных каналах.",
+    "Продукт, определяющий фазовое состояние облаков: жидкая, ледяная или смешанная фаза.",
 
   clmsk:
-    "Продукт, классифицирующий пиксели по наличию облаков на основе данных каналов M1–M16 радиометра VIIRS. Используется для исключения облачных зон при анализе поверхности.",
+    "Маска облаков. Используется для определения облачных областей на спутниковом снимке.",
 
   clmsk2:
-    "Улучшенная версия продукта clmsk с учетом фазы облаков и дополнительных спектральных признаков.",
+    "Улучшенная версия маски облаков с учетом дополнительных спектральных признаков.",
 
   frmsk:
-    "Продукт, выявляющий активные очаги пожаров по аномально высокой яркостной температуре в инфракрасном диапазоне.",
+    "Маска пожаров. Используется для выявления активных очагов возгорания.",
 
   vievi:
-    "Продукт, корректирующий атмосферные эффекты и насыщение сигнала в густой растительности, обеспечивая повышенную чувствительность.",
+    "Индекс растительности EVI. Показывает состояние и плотность растительности.",
 
   vindvi:
-    "Продукт, вычисляемый как нормализованная разность отражений в ближнем инфракрасном и красном спектральных диапазонах.",
+    "Индекс растительности NDVI. Используется для оценки наличия и состояния растительной массы.",
 
   vlst:
-    "Продукт, объединяющий вегетационный индекс с данными о температуре поверхности Земли.",
+    "Температура поверхности Земли с учетом данных о растительности.",
 
   vscmo:
-    "Продукт, формирующийся путем агрегации ежедневных наблюдений за месяц для определения устойчивых зон снега.",
+    "Снежный покров за месяц. Используется для оценки устойчивых зон снежного покрова.",
 };
 
-const Composites = () => {
+interface CompositesProps {
+  disabled?: boolean;
+}
+
+const Composites = ({ disabled = false }: CompositesProps) => {
   const dispatch = useAppDispatch();
 
   const composites = useAppSelector((state) => state.tile.composites) || [];
@@ -44,36 +50,48 @@ const Composites = () => {
 
   const [hovered, setHovered] = useState<string | null>(null);
 
-  if (!composites || composites.length === 0) return null;
+  if (disabled) {
+    return (
+      <div className={s.emptyText}>
+        Сначала выберите спутник, дату и время съёмки
+      </div>
+    );
+  }
+
+  if (!composites || composites.length === 0) {
+    return <div className={s.emptyText}>Композиты пока не загружены</div>;
+  }
 
   return (
-    <div className={s.compositesGrid}>
-      {composites.map((item) => (
-        <div
-          key={item}
-          className={s.compositeWrapper}
-          onMouseEnter={() => setHovered(item)}
-          onMouseLeave={() => setHovered(null)}
-        >
-          <button
-            className={
-              selectedComposite === (item as EComposite)
-                ? s.compositeActive
-                : s.compositeChip
-            }
-            onClick={() => dispatch(setComposite(item as EComposite))}
+    <>
+      <div className={s.compositesGrid}>
+        {composites.map((item) => (
+          <div
+            key={item}
+            className={s.compositeWrapper}
+            onMouseEnter={() => setHovered(item)}
+            onMouseLeave={() => setHovered(null)}
           >
-            {item}
-          </button>
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={selectedComposite === (item as EComposite)}
+                  onChange={() => dispatch(toggleComposite(item as EComposite))}
+                />
+              }
+              label={item}
+            />
+          </div>
+        ))}
+      </div>
 
-          {hovered === item && (
-            <div className={s.tooltipUnder}>
-              {compositeDescriptions[item] || "Описание отсутствует"}
-            </div>
-          )}
+      {hovered && (
+        <div className={s.compositeHint}>
+          <div className={s.compositeHintTitle}>{hovered}</div>
+          <div>{compositeDescriptions[hovered] || hovered}</div>
         </div>
-      ))}
-    </div>
+      )}
+    </>
   );
 };
 
