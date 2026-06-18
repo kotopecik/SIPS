@@ -2,9 +2,8 @@
 **/db.sqlite3
 **/celerybeat-schedule
 
-**/migrations/**
-!**/migrations
-!**/migrations/__init__.py
+**/CompositeDataRESTAPIService/api/appsw.py
+**/CompositeDataRESTAPIService/api/testflask.py
 
 **/static/admin
 **/static/assets/images
