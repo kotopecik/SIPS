@@ -23,4 +23,4 @@ class UserModel(AbstractUser):
     objects = UserManagerCustom()
 
     class Meta:
-        db_table = "auth_user"
+        db_table = "AccountApp_usermodel"
