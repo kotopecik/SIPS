@@ -32,6 +32,18 @@ export type SendResetPasswordLinkPayload = {
   login: string;
 };
 
+export type VerifyResetPasswordOtpPayload = {
+  email: string;
+  otp_code: string;
+};
+
+export type VerifyResetPasswordOtpResponse = {
+  detail: string;
+  user_id: string;
+  timestamp: number;
+  signature: string;
+};
+
 export type ResetPasswordPayload = {
   user_id: string;
   timestamp: number;
@@ -92,6 +104,15 @@ export default class AuthService {
     payload: SendResetPasswordLinkPayload
   ): Promise<AxiosResponse<void>> {
     return api.post<void>("/vaccount/reset/password/", payload);
+  }
+
+  static async verifyResetPasswordOtp(
+    payload: VerifyResetPasswordOtpPayload
+  ): Promise<AxiosResponse<VerifyResetPasswordOtpResponse>> {
+    return api.post<VerifyResetPasswordOtpResponse>(
+      "/vaccount/reset/password/otpcode/verify/",
+      payload
+    );
   }
 
   static async resetPassword(
